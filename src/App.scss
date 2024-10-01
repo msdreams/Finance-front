@@ -1,8 +1,38 @@
-body {
-  font-family: 'Old Standard TT', serif;
+* {
+  box-sizing: border-box;
 }
 
-.App {
+body {
+  font-family: 'Old Standard TT', serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.modal-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login__modal {
+
+  border-radius: 8px;
+  width: 368px;
+  height: 539px;
+  box-shadow: 8px 8px 1px 0 rgba(64, 87, 109, 0.07), -8px -8px 8px 0 rgba(57, 76, 96, 0.15);
+  background: #383636;
+}
+
+.triagle {
+  position: absolute; 
+  bottom: 0;
+  left: 0;
+  z-index: -1;
 }

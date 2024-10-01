@@ -4,7 +4,7 @@ export const Header = () => {
   return (
     <header className="header">
       <div className="header__logo">
-        <img src="/Finance-front/img/Logo(Nav).svg" alt="img" />
+        <img src="./img/Logo(Nav).svg" alt="img" />
         <p className='header__logo--text'>MONETA</p>
       </div>
 
