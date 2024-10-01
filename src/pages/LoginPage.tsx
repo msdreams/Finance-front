@@ -3,16 +3,30 @@ export const LoginPage = () => {
     <>
       <div className="modal-container">
         <div className="login__modal">
-          <h1>Login or register in seconds</h1>
-          <p>Use your email or other service to continue working with MONETA. It's free!</p>
+          <h1 className="login__modal--text">Login or <br /> register in <br /> seconds</h1>
+          <p className="login__modal--text-p">Use your email <br /> or other service to continue <br /> working with MONETA. It's free!</p>
 
-          <button>Login with Google</button>
-          <button>Login with Facebook</button>
-          <button>Continue with email</button>
+          <div className="login__modal--buttons">
+            <div className="login__modal--button">
+              <img src="./img/google-button.svg" alt="" />
+              Login with Google
+            </div>
+            <div className="login__modal--button">
+              <img src="./img/facebook-button.svg" alt="" />
+              Login with Facebook
+            </div>
+            <div className="login__modal--button">
+              <img src="./img/email-button.svg" alt="" />
+              Continue with email
+            </div>
+          </div>
 
-          <p>View other options..</p>
+          <div className="login__modal--button-outher">View other options..</div>
 
-          <p>Register with your work email</p>
+          <div className="login__modal--button-work-email">
+            <img src="./img/work-email-button.svg" alt="" />
+            Register with your work email
+            </div>
         </div>
         <img className="triagle" src="./img/triagle.svg" />
       </div>

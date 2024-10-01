@@ -26,18 +26,78 @@ body {
   height: 100vh;
 }
 
-.login__modal {
+.login__modal--button-work-email {
+  font-family: "Noto Sans", sans-serif;
 
+  font-weight: 600;
+  font-size: 14px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.login__modal {
+  padding-left: 32px;
+  padding-right: 32px;
+  color: #fff;
   border-radius: 8px;
   width: 368px;
   height: 539px;
   box-shadow: 8px 8px 1px 0 rgba(64, 87, 109, 0.07), -8px -8px 8px 0 rgba(57, 76, 96, 0.15);
   background: #383636;
+
+  &--button {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    width: 304px;
+    height: 40px;
+
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-outher {
+      display: flex;
+      justify-content: center;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.login__modal--text {
+  font-family: "Noto Sans", sans-serif;
+
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.login__modal--text-p {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.login__modal--buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+
+  margin-bottom: 16px;
 }
 
 .triagle {
-  position: absolute; 
+  position: absolute;
   bottom: 0;
   left: 0;
   z-index: -1;
 }
+
