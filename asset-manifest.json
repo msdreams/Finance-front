@@ -1,16 +1,13 @@
 {
   "files": {
-    "main.css": "/Finance-front/static/css/main.f855e6bc.css",
-    "main.js": "/Finance-front/static/js/main.35e53872.js",
-    "static/js/453.42b2e536.chunk.js": "/Finance-front/static/js/453.42b2e536.chunk.js",
-    "static/media/logo.svg": "/Finance-front/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "main.css": "/Finance-front/static/css/main.881d7737.css",
+    "main.js": "/Finance-front/static/js/main.6f2816fc.js",
     "index.html": "/Finance-front/index.html",
-    "main.f855e6bc.css.map": "/Finance-front/static/css/main.f855e6bc.css.map",
-    "main.35e53872.js.map": "/Finance-front/static/js/main.35e53872.js.map",
-    "453.42b2e536.chunk.js.map": "/Finance-front/static/js/453.42b2e536.chunk.js.map"
+    "main.881d7737.css.map": "/Finance-front/static/css/main.881d7737.css.map",
+    "main.6f2816fc.js.map": "/Finance-front/static/js/main.6f2816fc.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.35e53872.js"
+    "static/css/main.881d7737.css",
+    "static/js/main.6f2816fc.js"
   ]
 }
