@@ -1,4 +1,4 @@
-const BASE_URL = 'https://mate.academy/students-api';
+const BASE_URL = 'http://64.225.109.144';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
