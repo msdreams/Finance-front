@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { createUser } from "../api/users";
+import { UserResponse, createUser } from "../api/users";
+
+
+type FormData = {
+  email: string,
+  password: string,
+  repeatPassword: string,
+  firstName: string,
+  lastName: string,
+  shippingAddress: string,
+};
+
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -7,18 +18,22 @@ export const LoginPage = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
 
-  const registerUser = async (formData: any) => {
+  const [res, setRes] = useState<UserResponse | null >(null)
+
+
+  const registerUser = async (formData: FormData) => {
     try {
       const response = await createUser(formData);
+      setRes(response)
       console.log(response);
     } catch (error) {
       console.error('Error:', error);
-    } finally {
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = {
@@ -27,6 +42,7 @@ export const LoginPage = () => {
       repeatPassword,
       firstName,
       lastName,
+      shippingAddress,
     };
 
     registerUser(formData)
@@ -64,60 +80,71 @@ export const LoginPage = () => {
       </div>
 
       <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Пароль:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="repeatPassword">Повторите пароль:</label>
-        <input
-          type="password"
-          id="repeatPassword"
-          value={repeatPassword}
-          onChange={(e) => setRepeatPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="firstName">Имя:</label>
-        <input
-          type="text"
-          id="firstName"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="lastName">Фамилия:</label>
-        <input
-          type="text"
-          id="lastName"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-      </div>
-      <button type="submit">Зарегистрироваться</button>
-    </form>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Пароль:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="repeatPassword">Повторите пароль:</label>
+          <input
+            type="password"
+            id="repeatPassword"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="firstName">Имя:</label>
+          <input
+            type="text"
+            id="firstName"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName">Фамилия:</label>
+          <input
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="shippingAddress">Адреса доставки:</label>
+          <input
+            type="text"
+            id="shippingAddress"
+            value={shippingAddress}
+            onChange={(e) => setShippingAddress(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit">Зарегистрироваться</button>
+      </form>
+
+      {res && <div>Ваш ID: {res.id}</div>}
     </>
   );
 };

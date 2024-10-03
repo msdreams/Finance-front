@@ -1,4 +1,4 @@
-const BASE_URL = 'http://64.225.109.144';
+const BASE_URL = 'http://206.81.17.104';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
