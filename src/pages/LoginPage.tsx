@@ -8,7 +8,6 @@ type FormData = {
   repeatPassword: string,
   firstName: string,
   lastName: string,
-  shippingAddress: string,
 };
 
 
@@ -18,7 +17,6 @@ export const LoginPage = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [shippingAddress, setShippingAddress] = useState('');
 
   const [res, setRes] = useState<UserResponse | null >(null)
 
@@ -42,7 +40,6 @@ export const LoginPage = () => {
       repeatPassword,
       firstName,
       lastName,
-      shippingAddress,
     };
 
     registerUser(formData)
@@ -130,17 +127,6 @@ export const LoginPage = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="shippingAddress">Адреса доставки:</label>
-          <input
-            type="text"
-            id="shippingAddress"
-            value={shippingAddress}
-            onChange={(e) => setShippingAddress(e.target.value)}
-            required
-          />
-        </div>
-
         <button type="submit">Зарегистрироваться</button>
       </form>
 

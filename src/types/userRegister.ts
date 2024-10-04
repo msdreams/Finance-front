@@ -4,5 +4,4 @@ export type Data = {
   repeatPassword: string,
   firstName: string,
   lastName: string,
-  shippingAddress: string
 };

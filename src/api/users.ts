@@ -6,7 +6,6 @@ export type UserResponse = {
   email: string,
   firstName: string,
   lastName: string,
-  shippingAddress: string,
 }
 
 export const createUser = (data: Data): Promise<UserResponse> => {
