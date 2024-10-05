@@ -1,4 +1,4 @@
-const BASE_URL = 'http://206.81.17.104';
+const BASE_URL = 'https://budgetapp.space';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 

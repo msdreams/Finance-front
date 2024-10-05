@@ -19,11 +19,10 @@ body {
 }
 
 .modal-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
 }
 
 .login__modal--button-work-email {
@@ -96,14 +95,46 @@ body {
 }
 
 .triangle-bg {
+  background-image: url('../public/img/triagle.svg');
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-size: 50%;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: url('../public/img/triagle.svg');
-  background-repeat: no-repeat;
-  background-position: top right; /* Налаштуйте розташування */
-  background-size: contain; /* Або cover, якщо потрібно покрити весь елемент */
-  z-index: -1; /* Щоб фон був позаду модального вікна */
+  z-index: -5;
+
+  &-up {
+    background-image: url('../public/img/triagle-up.svg');
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 60%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -3;
+  }
+}
+
+.reg--email {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+
+  &-input {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    width: 304px;
+    height: 40px;
+
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+
+    z-index: 3;
+  }
 }
