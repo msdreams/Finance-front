@@ -64,7 +64,7 @@ export const LoginPage = () => {
                   <img src="./img/facebook-button.svg" alt="Facebook login" />
                   Login with Facebook
                 </div>
-                <div onClick={() => setActiveEmailModal(true)}  className="login__modal--button">
+                <div style={{cursor: 'pointer'}} onClick={() => setActiveEmailModal(true)}  className="login__modal--button">
                   <img src="./img/email-button.svg" alt="Email login" />
                   Continue with email
                 </div>
@@ -133,6 +133,7 @@ export const LoginPage = () => {
                 />
               </div>
               <button type="submit">Зарегистрироваться</button>
+              <button onClick={() => setActiveEmailModal(false)}>выйти</button>
             </form>
 
             
