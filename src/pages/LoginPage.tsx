@@ -57,14 +57,14 @@ export const LoginPage = () => {
 
               <div className="login__modal--buttons">
                 <div className="login__modal--button">
-                  <img onClick={() => setActiveEmailModal(true)} src="./img/google-button.svg" alt="Google login" />
+                  <img src="./img/google-button.svg" alt="Google login" />
                   Login with Google
                 </div>
                 <div className="login__modal--button">
                   <img src="./img/facebook-button.svg" alt="Facebook login" />
                   Login with Facebook
                 </div>
-                <div className="login__modal--button">
+                <div onClick={() => setActiveEmailModal(true)}  className="login__modal--button">
                   <img src="./img/email-button.svg" alt="Email login" />
                   Continue with email
                 </div>
@@ -134,6 +134,8 @@ export const LoginPage = () => {
               </div>
               <button type="submit">Зарегистрироваться</button>
             </form>
+
+            
           )}
         </div>
       </div>
