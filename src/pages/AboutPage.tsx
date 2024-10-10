@@ -1,3 +1,5 @@
 export const AboutPage = () => {
-  return 
+  return (
+    <h1>AboutPage</h1>
+  )
 }

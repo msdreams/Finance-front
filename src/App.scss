@@ -138,3 +138,82 @@ body {
     z-index: 3;
   }
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.contact__block {
+  border: 1px solid #272528;
+ 
+}
+
+.contact__button {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 120%;
+  text-align: center;
+  color: #fff;
+  border-radius: 54px;
+  width: 215px;
+  height: 54px;
+  background: #383636;
+}
+
+.partners__block {
+  border: 1px solid #272528;
+ 
+}
+
+.partners__button {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 120%;
+  text-align: center;
+  color: #fff;
+  border-radius: 54px;
+  width: 215px;
+  height: 54px;
+  background: #383636;
+}
+
+.legal__block {
+  border: 1px solid #272528;
+ 
+}
+
+.legal__button {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 120%;
+  text-align: center;
+  color: #fff;
+  border-radius: 54px;
+  width: 215px;
+  height: 54px;
+  background: #383636;
+}
+
+.back-to-top {
+  font-family: var(--font-family);
+font-weight: 600;
+font-size: 21px;
+line-height: 120%;
+text-align: center;
+color: #000;
+  background: #b2eed0;
+  border-radius: 68px;
+width: 235px;
+height: 68px;
+}
+
+.new-target__input-name {
+  border: 2px solid #000;
+border-radius: 9px;
+width: 391px;
+height: 54px;
+}

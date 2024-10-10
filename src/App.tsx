@@ -8,8 +8,8 @@ function App() {
       <Header />
 
       <div className="container">
-        <div className="triangle-bg"></div>
-        <div className="triangle-bg-up"></div>
+        {/* <div className="triangle-bg"></div>
+        <div className="triangle-bg-up"></div> */}
         <Outlet />
       </div>
 

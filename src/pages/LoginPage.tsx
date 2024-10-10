@@ -64,7 +64,7 @@ export const LoginPage = () => {
                   <img src="./img/facebook-button.svg" alt="Facebook login" />
                   Login with Facebook
                 </div>
-                <div style={{cursor: 'pointer'}} onClick={() => setActiveEmailModal(true)}  className="login__modal--button">
+                <div style={{ cursor: 'pointer' }} onClick={() => setActiveEmailModal(true)} className="login__modal--button">
                   <img src="./img/email-button.svg" alt="Email login" />
                   Continue with email
                 </div>
@@ -83,6 +83,7 @@ export const LoginPage = () => {
           {activeEmailModal && (
             <form className="reg--email" onSubmit={handleSubmit}>
               <div>
+                <p>Print email</p>
                 <input
                   className="reg--email-input"
                   type="email"
@@ -93,6 +94,7 @@ export const LoginPage = () => {
                 />
               </div>
               <div>
+                <p>Print password</p>
                 <input
                   className="reg--email-input"
                   type="password"
@@ -103,6 +105,7 @@ export const LoginPage = () => {
                 />
               </div>
               <div>
+                <p>Please repeat password</p>
                 <input
                   className="reg--email-input"
                   type="password"
@@ -113,6 +116,7 @@ export const LoginPage = () => {
                 />
               </div>
               <div>
+              <p>Print name</p>
                 <input
                   className="reg--email-input"
                   type="text"
@@ -123,6 +127,7 @@ export const LoginPage = () => {
                 />
               </div>
               <div>
+              <p>Print lastname</p>
                 <input
                   className="reg--email-input"
                   type="text"
@@ -136,7 +141,7 @@ export const LoginPage = () => {
               <button onClick={() => setActiveEmailModal(false)}>выйти</button>
             </form>
 
-            
+
           )}
         </div>
       </div>
