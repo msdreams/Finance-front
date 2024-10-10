@@ -1,3 +1,14 @@
+:root {
+  --font-family: "Golos Text", sans-serif;
+  --second-family: "Old Standard TT", sans-serif;
+  --third-family: "DM Serif Display", sans-serif;
+  --font3: "Lexend", sans-serif;
+  --font4: "OdorMeanChey", sans-serif;
+  --font5: "Noto Sans", sans-serif;
+  --font6: "Inter", sans-serif;
+  --font7: "Oleo Script", sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,7 +19,7 @@ a {
 }
 
 body {
-  font-family: 'Old Standard TT', serif;
+  font-family: "Old Standard TT", serif;
   margin: 0;
   padding: 0;
 }
@@ -22,7 +33,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
 }
 
 .login__modal--button-work-email {
@@ -43,7 +54,8 @@ body {
   border-radius: 8px;
   width: 368px;
   height: 539px;
-  box-shadow: 8px 8px 1px 0 rgba(64, 87, 109, 0.07), -8px -8px 8px 0 rgba(57, 76, 96, 0.15);
+  box-shadow: 8px 8px 1px 0 rgba(64, 87, 109, 0.07),
+    -8px -8px 8px 0 rgba(57, 76, 96, 0.15);
   background: #383636;
 
   &--button {
@@ -95,7 +107,7 @@ body {
 }
 
 .triangle-bg {
-  background-image: url('../public/img/triagle.svg');
+  background-image: url("../public/img/triagle.svg");
   background-position: left bottom;
   background-repeat: no-repeat;
   background-size: 50%;
@@ -107,7 +119,7 @@ body {
   z-index: -5;
 
   &-up {
-    background-image: url('../public/img/triagle-up.svg');
+    background-image: url("../public/img/triagle-up.svg");
     background-position: right top;
     background-repeat: no-repeat;
     background-size: 60%;
@@ -146,7 +158,6 @@ p {
 
 .contact__block {
   border: 1px solid #272528;
- 
 }
 
 .contact__button {
@@ -164,7 +175,6 @@ p {
 
 .partners__block {
   border: 1px solid #272528;
- 
 }
 
 .partners__button {
@@ -182,7 +192,6 @@ p {
 
 .legal__block {
   border: 1px solid #272528;
- 
 }
 
 .legal__button {
@@ -200,20 +209,104 @@ p {
 
 .back-to-top {
   font-family: var(--font-family);
-font-weight: 600;
-font-size: 21px;
-line-height: 120%;
-text-align: center;
-color: #000;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 120%;
+  text-align: center;
+  color: #000;
   background: #b2eed0;
   border-radius: 68px;
-width: 235px;
-height: 68px;
+  width: 235px;
+  height: 68px;
 }
 
 .new-target__input-name {
   border: 2px solid #000;
-border-radius: 9px;
-width: 391px;
-height: 54px;
+  border-radius: 9px;
+  width: 391px;
+  height: 54px;
+}
+
+.history {
+  &__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+    background: #b2eed0;
+    border-radius: 13px;
+    width: 338px;
+    height: 80px;
+    margin-bottom: 20px;
+
+    &-h {
+      margin: 0;
+      font-family: var(--third-family);
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 100%;
+      color: #000;
+    }
+
+    &-p {
+      font-family: var(--third-family);
+      font-weight: 400;
+      font-size: 25px;
+      line-height: 100%;
+      color: #858585;
+    }
+
+    &-price {
+      font-family: var(--third-family);
+      font-weight: 400;
+      font-size: 40px;
+      line-height: 100%;
+      color: #000;
+    }
+  }
+}
+
+.nav-item {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  color: #000;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    border: 1px solid rgb(15, 15, 17);
+    opacity: 0;
+    transform: translateX(-50%);
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+
+  &:hover {
+    &::before {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+
+  &-is-active {
+    position: relative;
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 100%;
+    color: #000;
+
+    &::before {
+      content: "";
+      border: 1px solid #000;
+      position: absolute;
+      width: 100%;
+      bottom: -5px;
+    }
+  }
 }
