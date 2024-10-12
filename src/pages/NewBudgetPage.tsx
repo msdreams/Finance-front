@@ -2,6 +2,8 @@ export const NewBudgetPage = () => {
   return (
     <>
       <h1>New budget</h1>
+      <div className="triangle-bg"></div>
+      <div className="triangle-bg-up"></div>
 
       <form style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
         <input
@@ -25,7 +27,7 @@ export const NewBudgetPage = () => {
           type="text"
         />
 
-        <button type='submit'>Save</button>
+        <button className="new-target__button" type='submit'>Save</button>
       </form>
     </>
   );

@@ -46,6 +46,27 @@ body {
   justify-content: center;
 }
 
+.new-target__button {
+  cursor: pointer;
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 100%;
+  color: #fff;
+  position: absolute;
+  bottom: 20%;
+  right: 25%;
+  border-radius: 8px;
+  width: 294px;
+  height: 87px;
+  background: #383636;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
 .login__modal {
   padding-left: 32px;
   padding-right: 32px;
@@ -275,7 +296,7 @@ p {
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -5px;
     left: 50%;
@@ -308,5 +329,17 @@ p {
       width: 100%;
       bottom: -5px;
     }
+  }
+}
+
+.home {
+  &__change {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    width: 294px;
+    height: 112px;
+    background: #383636;
   }
 }

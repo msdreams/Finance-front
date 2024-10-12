@@ -2,8 +2,10 @@ export const NewTargetPage = () => {
   return (
     <>
       <h1>New target</h1>
+      <div className="triangle-bg"></div>
+      <div className="triangle-bg-up"></div>
 
-      <form style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+      <form style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         <input
           className="new-target__input-name"
           placeholder="name"
@@ -25,7 +27,7 @@ export const NewTargetPage = () => {
           type="text"
         />
 
-        <button type='submit'>Save</button>
+        <button className="new-target__button" type="submit">Save</button>
       </form>
     </>
   );
