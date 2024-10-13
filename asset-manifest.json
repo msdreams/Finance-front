@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Finance-front/static/css/main.ee9d656e.css",
-    "main.js": "/Finance-front/static/js/main.27365d10.js",
+    "main.css": "/Finance-front/static/css/main.08c4e486.css",
+    "main.js": "/Finance-front/static/js/main.7d5d18ce.js",
     "index.html": "/Finance-front/index.html",
     "static/media/triagle-up.svg": "/Finance-front/static/media/triagle-up.4fb6e864d60c333bcd16.svg",
     "static/media/triagle.svg": "/Finance-front/static/media/triagle.5bb308dd1de74de20b2a.svg",
-    "main.ee9d656e.css.map": "/Finance-front/static/css/main.ee9d656e.css.map",
-    "main.27365d10.js.map": "/Finance-front/static/js/main.27365d10.js.map"
+    "main.08c4e486.css.map": "/Finance-front/static/css/main.08c4e486.css.map",
+    "main.7d5d18ce.js.map": "/Finance-front/static/js/main.7d5d18ce.js.map"
   },
   "entrypoints": [
-    "static/css/main.ee9d656e.css",
-    "static/js/main.27365d10.js"
+    "static/css/main.08c4e486.css",
+    "static/js/main.7d5d18ce.js"
   ]
 }
