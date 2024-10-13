@@ -1,13 +1,19 @@
-import { Data } from "../types/userRegister"
+import { userLogin, userRegister } from "../types/userRegister"
 import { client } from "../utils/fetchClient"
 
 export type UserResponse = {
-  id: number,
-  email: string,
-  firstName: string,
-  lastName: string,
+  accessToken: string,
+  refreshToken: string,
 }
 
-export const createUser = (data: Data): Promise<UserResponse> => {
+export type UserResponseR = {
+  message: string;
+}
+
+export const createUser = (data: userRegister): Promise<UserResponseR> => {
   return client.post('/auth/register', data)
+}
+
+export const LoginUser = (data: userLogin): Promise<UserResponse> => {
+  return client.post('/auth/login', data)
 }

@@ -5,10 +5,10 @@ import classnames from "classnames";
 export const Header = () => {
   return (
     <header className="header">
-      <Link to="/" className="header__logo">
-        <img src="./img/Logo(Nav).svg" alt="img" />
+      <div className="header__logo">
+        <img src="Finance-front/img/Logo(Nav).svg" alt="img" />
         <p className="header__logo--text">MONETA</p>
-      </Link>
+      </div>
 
       <nav className="header__nav">
         <NavLink

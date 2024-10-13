@@ -103,19 +103,31 @@ export const HomePage = () => {
     <>
       <h1>Home page</h1>
 
+      <img src="Finance-front/img/Logo(Nav).svg" alt="img" />
+      <img style={{opacity: "40%"}} src="Finance-front/img/Logo(Nav).svg" alt="img" />
+      <button>Filter</button>
+
       {schedule === "Line" ? (
-        <div style={{ width: "100%" }}>
+        <div style={{ width: "100%", margin: '0 auto' }}>
           <Line data={lineData} options={lineOptions} />
         </div>
       ) : (
-        <div style={{ width: "500px" }}>
+        <div style={{ width: "500px", margin: '0 auto' }}>
           <Pie data={pieData} options={pieOptions} />
         </div>
       )}
 
       <div className="home__change">
-        <img src="./img/change-pie" alt="img" />
-        <img src="./img/change-line" alt="img" />
+        <img
+          onClick={() => setSchedule("Pie")}
+          src="Finance-front/img/change-pie.svg"
+          alt="img"
+        />
+        <img
+          onClick={() => setSchedule("Line")}
+          src="Finance-front/img/change-line.svg"
+          alt="img"
+        />
       </div>
     </>
   );

@@ -1,18 +1,40 @@
 import { Outlet } from 'react-router-dom';
 import './App.scss';
 import { Header } from './components/Header/Header';
+import { useEffect, useState } from 'react';
+import { refreshAccessToken } from './features/authSlice';
+import { useAppDispatch } from './app/hooks';
+import { LoadingScreen } from './components/LoadingScreen';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setLoading(false);
+    };
+
+    fetchData();
+
+    const interval = setInterval(() => {
+      dispatch(refreshAccessToken());
+    }, 15 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div className="App">
       <Header />
-
       <div className="container">
-        {/* <div className="triangle-bg"></div>
-        <div className="triangle-bg-up"></div> */}
         <Outlet />
       </div>
-
     </div>
   );
 }
