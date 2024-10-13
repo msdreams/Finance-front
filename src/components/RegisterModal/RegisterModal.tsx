@@ -22,7 +22,7 @@ export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }
           onClick={() => setActiveEmailModal('RegisterEm')}
           className="login__modal--button"
         >
-          <img src="Finance-front/img/email-button.svg" alt="Email login" />
+          <img src="./img/email-button.svg" alt="Email login" />
           Register with email
         </div>
 
@@ -31,13 +31,13 @@ export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }
           onClick={() => setActiveEmailModal('RegisterEm')}
           className="login__modal--button"
         >
-          <img src="Finance-front/img/telegram.svg" alt="Email login" />
+          <img src="./img/telegram.svg" alt="Email login" />
           Register with Telegram
         </div>
       </div>
 
       <div onClick={() => setModal('Login')} className="login__modal--button-work-email">
-        <img src="Finance-front/img/work-email-button.svg" alt="Work email" />
+        <img src="./img/work-email-button.svg" alt="Work email" />
         Login
       </div>
     </>

@@ -103,8 +103,8 @@ export const HomePage = () => {
     <>
       <h1>Home page</h1>
 
-      <img src="Finance-front/img/Logo(Nav).svg" alt="img" />
-      <img style={{opacity: "40%"}} src="Finance-front/img/Logo(Nav).svg" alt="img" />
+      <img src="./img/Logo(Nav).svg" alt="img" />
+      <img style={{opacity: "40%"}} src="./img/Logo(Nav).svg" alt="img" />
       <button>Filter</button>
 
       {schedule === "Line" ? (
@@ -120,12 +120,12 @@ export const HomePage = () => {
       <div className="home__change">
         <img
           onClick={() => setSchedule("Pie")}
-          src="Finance-front/img/change-pie.svg"
+          src="./img/change-pie.svg"
           alt="img"
         />
         <img
           onClick={() => setSchedule("Line")}
-          src="Finance-front/img/change-line.svg"
+          src="./img/change-line.svg"
           alt="img"
         />
       </div>
