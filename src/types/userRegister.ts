@@ -16,3 +16,7 @@ export type userChangePassword = {
   newPassword: string,
   repeatNewPassword: string,
 }
+
+export type ForgotPasswordType = {
+  email: string,
+}

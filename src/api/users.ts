@@ -1,4 +1,4 @@
-import { userChangePassword, userLogin, userRegister } from "../types/userRegister"
+import { ForgotPasswordType, userChangePassword, userLogin, userRegister } from "../types/userRegister"
 import { client } from "../utils/fetchClient"
 
 export type UserResponse = {
@@ -9,6 +9,9 @@ export type UserResponse = {
 export type UserResponseR = {
   message: string;
 }
+export type UserResponseF = {
+  response: string;
+}
 
 export const createUser = (data: userRegister): Promise<UserResponseR> => {
   return client.post('/auth/register', data)
@@ -16,6 +19,10 @@ export const createUser = (data: userRegister): Promise<UserResponseR> => {
 
 export const LoginUser = (data: userLogin): Promise<UserResponse> => {
   return client.post('/auth/login', data)
+}
+
+export const ForgotPassword = (data: ForgotPasswordType): Promise<UserResponseF> => {
+  return client.post('/auth/forgot-password', data)
 }
 
 export const changePassword = (data: userChangePassword, accessToken: string): Promise<UserResponseR> => {

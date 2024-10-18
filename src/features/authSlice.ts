@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { changePassword, createUser, LoginUser, UserResponse, UserResponseR } from "../api/users";
+import { changePassword, createUser, ForgotPassword, LoginUser, UserResponse, UserResponseR } from "../api/users";
 import Cookies from 'js-cookie'
-import { userChangePassword, userRegister } from "../types/userRegister";
+import { ForgotPasswordType, userChangePassword, userRegister } from "../types/userRegister";
 
 type AuthState = {
   user: UserResponse | null;
@@ -26,39 +26,44 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (formData: Log
   const response = await LoginUser(formData);
   localStorage.setItem('accessToken', response.accessToken);
 
-  const setCookie = (name: string, value: string, days?: number) => {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/; secure; SameSite=Strict";
-};
+  const expiresDate = new Date();
+  expiresDate.setDate(expiresDate.getDate() + 7);
 
-  setCookie('refreshToken', response.refreshToken, 7);
+  Cookies.set('refreshToken', response.refreshToken, {
+    expires: expiresDate,
+    path: '/'
+  });
+
+  Cookies.set('refreshTokenExpires', expiresDate.toUTCString(), {
+    expires: expiresDate,
+    path: '/'
+  });
 
   return response;
 });
-
 
 export const registerUser = createAsyncThunk('auth/registerUser', async (formData: userRegister) => {
   const response: UserResponseR = await createUser(formData);
   return response;
 });
 
+export const forgorPassword = createAsyncThunk('auth/forgotPassword', async (formData: ForgotPasswordType) => {
+  const response = ForgotPassword(formData);
+
+  return response;
+})
+
 export const changePasswordUser = createAsyncThunk('auth/changePasswordUser', async (formData: userChangePassword) => {
-  const accessToken = localStorage.getItem('accessToken'); // Получите токен доступа
+  const accessToken = localStorage.getItem('accessToken');
 
   if (!accessToken) {
     throw new Error('Access token is missing');
   }
 
-  const response: UserResponseR = await changePassword(formData, accessToken); // Передаем токен в функцию
+  const response: UserResponseR = await changePassword(formData, accessToken);
 
   return response;
 });
-
 
 export const refreshAccessToken = createAsyncThunk(
   'auth/refreshAccessToken',
@@ -77,9 +82,12 @@ export const refreshAccessToken = createAsyncThunk(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({
-      }),
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+    }
 
     const data = await response.json();
 
@@ -87,6 +95,7 @@ export const refreshAccessToken = createAsyncThunk(
     return data.accessToken;
   }
 );
+
 
 
 export const authSlice = createSlice({
@@ -123,12 +132,28 @@ export const authSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload.message);
+      console.log('Password recovery email sent:', action.payload.message); // Выводим сообщение об успешном выполнении
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Registration failed';
     });
+
+    //forgot password
+    builder.addCase(forgorPassword.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+
+    builder.addCase(forgorPassword.fulfilled, (state, action) => {
+      state.loading = false;
+      console.log(action.payload.response);
+    })
+
+    builder.addCase(forgorPassword.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'forgorPassword failed';
+    })
 
     // change password
     builder.addCase(changePasswordUser.pending, (state) => {
