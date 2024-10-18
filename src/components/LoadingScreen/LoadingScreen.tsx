@@ -8,7 +8,7 @@ export const LoadingScreen = () => {
           <div className="cssload-cube cssload-c4"></div>
           <div className="cssload-cube cssload-c3"></div>
         </div>
-        <p>Пожалуйста, подождите, пока мы загружаем данные.</p>
+        <h1>Пожалуйста, подождите, пока мы загружаем данные.</h1>
       </div>
     </div>
   );

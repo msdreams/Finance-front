@@ -7,6 +7,12 @@ export type userRegister = {
 };
 
 export type userLogin = {
-  email: string,
+  userName: string,
   password: string,
 };
+
+export type userChangePassword = {
+  currentPassword: string,
+  newPassword: string,
+  repeatNewPassword: string,
+}

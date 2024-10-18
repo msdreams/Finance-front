@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { createUser } from "../../api/users";
+import { useAppDispatch } from "../../app/hooks";
+import { registerUser } from "../../features/authSlice";
 
 type FormData = {
   email: string;
@@ -16,10 +17,12 @@ export const RegisterEm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  const registerUser = async (formData: FormData) => {
+  const dispatch = useAppDispatch();
+
+  const handleRegisterUser = async (formData: FormData) => {
     try {
-      const response = await createUser(formData);
-      console.log(response);
+      const response = await dispatch(registerUser(formData));
+      console.log(response)
     } catch (error) {
       console.error("Error:", error);
     }
@@ -36,7 +39,7 @@ export const RegisterEm = () => {
       lastName,
     };
 
-    registerUser(formData);
+    handleRegisterUser(formData);
   };
 
   return (

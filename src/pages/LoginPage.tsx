@@ -3,10 +3,11 @@ import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
 import { LoginEm } from "../components/LoginEm";
 import { RegisterEm } from "../components/RegisterEm";
+import { LoginTg } from "../components/LoginTg";
 
 export const LoginPage = () => {
   const [activeEmailModal, setActiveEmailModal] = useState<
-    "LoginEm" | "RegisterEm" | null
+    "LoginEm" | "RegisterEm" | "LoginTg" | null
   >(null);
   const [modal, setModal] = useState<"Login" | "Register">("Login");
 
@@ -34,6 +35,10 @@ export const LoginPage = () => {
 
           {activeEmailModal === "RegisterEm" && activeEmailModal !== null && (
             <RegisterEm />
+          )}
+
+          {activeEmailModal === "LoginTg" && activeEmailModal !== null && (
+            <LoginTg />
           )}
         </div>
       </div>

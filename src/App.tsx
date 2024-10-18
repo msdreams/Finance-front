@@ -1,10 +1,10 @@
-import { Outlet } from 'react-router-dom';
-import './App.scss';
-import { Header } from './components/Header/Header';
-import { useEffect, useState } from 'react';
-import { refreshAccessToken } from './features/authSlice';
-import { useAppDispatch } from './app/hooks';
-import { LoadingScreen } from './components/LoadingScreen';
+import { Outlet } from "react-router-dom";
+import "./App.scss";
+import { Header } from "./components/Header/Header";
+import { useEffect, useState } from "react";
+import { logout, refreshAccessToken } from "./features/authSlice";
+import { useAppDispatch } from "./app/hooks";
+import { LoadingScreen } from "./components/LoadingScreen";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -12,14 +12,20 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setLoading(false);
     };
 
     fetchData();
 
     const interval = setInterval(() => {
-      dispatch(refreshAccessToken());
+      dispatch(refreshAccessToken())
+        .unwrap() // Разворачиваем результат, чтобы catch отработал
+        .catch((error) => {
+          console.error("Failed to refresh token:", error);
+
+          dispatch(logout()); // Логаут, если refresh токен недействителен
+        });
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);

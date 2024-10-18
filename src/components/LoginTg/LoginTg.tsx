@@ -7,7 +7,7 @@ type FormData = {
   password: string;
 };
 
-export const LoginEm = () => {
+export const LoginTg = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
@@ -35,10 +35,10 @@ export const LoginEm = () => {
   return (
     <form className="reg--email" onSubmit={handleSubmit}>
       <div>
-        <p>Print email</p>
+        <p>Print name</p>
         <input
           className="reg--email-input"
-          type="email"
+          type="text"
           id="email"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
@@ -46,7 +46,7 @@ export const LoginEm = () => {
         />
       </div>
       <div>
-        <p>Print password</p>
+        <p>Print phone</p>
         <input
           className="reg--email-input"
           type="password"

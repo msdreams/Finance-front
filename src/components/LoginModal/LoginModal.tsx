@@ -1,7 +1,7 @@
 import React from "react";
 
 type Props = {
-  setActiveEmailModal: React.Dispatch<React.SetStateAction<"LoginEm" | "RegisterEm" | null>>
+  setActiveEmailModal: React.Dispatch<React.SetStateAction<"LoginEm" | "RegisterEm" | 'LoginTg' | null>>
   setModal: React.Dispatch<React.SetStateAction<"Login" | "Register">>
 }
 
@@ -28,7 +28,7 @@ export const LoginModal: React.FC<Props> = ({ setModal, setActiveEmailModal }) =
 
         <div
           style={{ cursor: "pointer" }}
-          onClick={() => setActiveEmailModal('LoginEm')}
+          onClick={() => setActiveEmailModal('LoginTg')}
           className="login__modal--button"
         >
           <img src="./img/telegram.svg" alt="Email login" />

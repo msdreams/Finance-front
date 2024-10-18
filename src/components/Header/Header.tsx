@@ -1,8 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Header.scss";
 import classnames from "classnames";
+import { useAppSelector } from "../../app/hooks";
 
 export const Header = () => {
+  const { accessToken } = useAppSelector((state) => state.auth);
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -11,53 +14,76 @@ export const Header = () => {
       </div>
 
       <nav className="header__nav">
-        <NavLink
-          className={({ isActive }) =>
-            classnames({
-              "nav-item-is-active": isActive,
-              "nav-item": !isActive,
-            })
-          }
-          to="/plan"
-        >
-          Plan
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            classnames({
-              "nav-item-is-active": isActive,
-              "nav-item": !isActive,
-            })
-          }
-          to="/history"
-        >
-          History
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            classnames({
-              "nav-item-is-active": isActive,
-              "nav-item": !isActive,
-            })
-          }
-          to="/home"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            classnames({
-              "nav-item-is-active": isActive,
-              "nav-item": !isActive,
-            })
-          }
-          to="/about"
-        >
-          About
-        </NavLink>
-        <Link to="/login" className="header__nav--login-or-name">
-          Login
-        </Link>
+        {accessToken ? (
+          <>
+            <NavLink
+              className={({ isActive }) =>
+                classnames({
+                  "nav-item-is-active": isActive,
+                  "nav-item": !isActive,
+                })
+              }
+              to="/plan"
+            >
+              Plan
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                classnames({
+                  "nav-item-is-active": isActive,
+                  "nav-item": !isActive,
+                })
+              }
+              to="/history"
+            >
+              History
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                classnames({
+                  "nav-item-is-active": isActive,
+                  "nav-item": !isActive,
+                })
+              }
+              to="/home"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                classnames({
+                  "nav-item-is-active": isActive,
+                  "nav-item": !isActive,
+                })
+              }
+              to="/about"
+            >
+              About
+            </NavLink>
+
+            <Link to="/settings" className="header__nav--login-or-name">
+              name
+            </Link>
+          </>
+        ) : (
+          <>
+            <NavLink
+              className={({ isActive }) =>
+                classnames({
+                  "nav-item-is-active": isActive,
+                  "nav-item": !isActive,
+                })
+              }
+              to="/about"
+            >
+              About
+            </NavLink>
+
+            <Link to="/login" className="header__nav--login-or-name">
+              Login
+            </Link>
+          </>
+        )}
       </nav>
     </header>
   );

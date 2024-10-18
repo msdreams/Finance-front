@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 type Props = {
-  setActiveEmailModal: React.Dispatch<React.SetStateAction<"LoginEm" | "RegisterEm" | null>>;
+  setActiveEmailModal: React.Dispatch<React.SetStateAction<"LoginEm" | "RegisterEm" | 'LoginTg' | null>>;
   setModal: React.Dispatch<React.SetStateAction<"Login" | "Register">>
 }
 
@@ -26,14 +27,14 @@ export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }
           Register with email
         </div>
 
-        <div
+        <Link
+          to='https://t.me/BudgetApplicationBot'
           style={{ cursor: "pointer" }}
-          onClick={() => setActiveEmailModal('RegisterEm')}
           className="login__modal--button"
         >
           <img src="./img/telegram.svg" alt="Email login" />
           Register with Telegram
-        </div>
+        </Link>
       </div>
 
       <div onClick={() => setModal('Login')} className="login__modal--button-work-email">

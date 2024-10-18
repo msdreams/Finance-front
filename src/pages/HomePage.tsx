@@ -23,6 +23,18 @@ ChartJS.register(
   Legend
 );
 
+const backgroundPlugin = {
+  id: "customCanvasBackgroundColor",
+  beforeDraw: (chart: any) => {
+    const { ctx } = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.fillStyle = "#383636"; // Черный фон
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  },
+};
+
 const lineData = {
   labels: ["January", "February", "March", "April", "May", "June"],
   datasets: [
@@ -52,6 +64,27 @@ const lineOptions = {
     title: {
       display: true,
       text: "Monthly Sales Data",
+    },
+    customCanvasBackgroundColor: {
+      color: "black",
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        color: "rgba(255, 255, 255, 0.2)",
+      },
+      ticks: {
+        color: "white",
+      },
+    },
+    y: {
+      grid: {
+        color: "rgba(255, 255, 255, 0.2)",
+      },
+      ticks: {
+        color: "white",
+      },
     },
   },
 };
@@ -93,6 +126,9 @@ const pieOptions = {
       display: true,
       text: "Votes Distribution",
     },
+    customCanvasBackgroundColor: {
+      color: "black",
+    },
   },
 };
 
@@ -101,19 +137,41 @@ export const HomePage = () => {
 
   return (
     <>
-      <h1>Home page</h1>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: 'center'}}>
+            <img src="./img/Logo(Nav).svg" alt="img" />
+            <div className="animated-button">Filter</div>
+          </div>
 
-      <img src="./img/Logo(Nav).svg" alt="img" />
-      <img style={{opacity: "40%"}} src="./img/Logo(Nav).svg" alt="img" />
-      <button>Filter</button>
+          <div style={{ display: "flex", alignItems: 'center'}}>
+            <img
+              style={{ opacity: "40%" }}
+              src="./img/Logo(Nav).svg"
+              alt="img"
+            />
+            <div className="animated-button">Select period</div>
+          </div>
+        </div>
+
+        <div className="animated-button">Filter</div>
+      </div>
 
       {schedule === "Line" ? (
-        <div style={{ width: "100%", margin: '0 auto' }}>
-          <Line data={lineData} options={lineOptions} />
+        <div style={{ width: "100%", margin: "0 auto" , marginBottom: '30px'}}>
+          <Line
+            data={lineData}
+            options={lineOptions}
+            plugins={[backgroundPlugin]}
+          />
         </div>
       ) : (
-        <div style={{ width: "500px", margin: '0 auto' }}>
-          <Pie data={pieData} options={pieOptions} />
+        <div style={{ width: "500px", margin: "0 auto" }}>
+          <Pie
+            data={pieData}
+            options={pieOptions}
+            plugins={[backgroundPlugin]}
+          />
         </div>
       )}
 
