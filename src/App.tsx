@@ -26,7 +26,7 @@ function App() {
 
           dispatch(logout()); // Логаут, если refresh токен недействителен
         });
-    }, 15 * 60 * 1000);
+    }, 15 * 60 * 10);
 
     return () => clearInterval(interval);
   }, [dispatch]);

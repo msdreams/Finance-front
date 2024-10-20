@@ -31,12 +31,10 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (formData: Log
 
   Cookies.set('refreshToken', response.refreshToken, {
     expires: expiresDate,
-    path: '/'
-  });
-
-  Cookies.set('refreshTokenExpires', expiresDate.toUTCString(), {
-    expires: expiresDate,
-    path: '/'
+    path: '/',
+    domain: '.budgetapp.space',
+    secure: true,
+    sameSite: 'None',
   });
 
   return response;
@@ -74,10 +72,6 @@ export const refreshAccessToken = createAsyncThunk(
       throw new Error('No refresh token');
     }
 
-    const expires = Cookies.get('refreshTokenExpires');
-    const path = '/'
-    console.log(refreshToken, path, expires);
-
     const response = await fetch('https://budgetapp.space/auth/refreshAccessToken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -96,8 +90,6 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
-
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -106,7 +98,7 @@ export const authSlice = createSlice({
       state.user = null;
       state.accessToken = null;
       localStorage.removeItem('accessToken');
-      Cookies.remove('refreshToken', { path: '/auth/refreshAccessToken' });
+      Cookies.remove('refreshToken', { path: '/', domain: '.budgetapp.space' });
     },
   },
   extraReducers: (builder) => {
