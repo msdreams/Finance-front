@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -133,32 +134,134 @@ const pieOptions = {
 };
 
 export const HomePage = () => {
+  const navigate = useNavigate();
+
   const [schedule, setSchedule] = useState<"Pie" | "Line">("Line");
+  const [modalFilter, setModalFilter] = useState(false);
+  const [modalData, setModalData] = useState(false);
+  const [modalFirst, setModalFirst] = useState(false);
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value);
+  };
+
+  const isEndDateValid = endDate === "" || endDate >= startDate;
 
   return (
     <>
+      <div className="triangle-bg"></div>
+      <div className="triangle-bg-up"></div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-          <div style={{ display: "flex", alignItems: 'center'}}>
-            <img src="./img/Logo(Nav).svg" alt="img" />
-            <div className="animated-button">Filter</div>
-          </div>
-
-          <div style={{ display: "flex", alignItems: 'center'}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center" }}>
             <img
-              style={{ opacity: "40%" }}
+              style={{ height: "38px" }}
               src="./img/Logo(Nav).svg"
               alt="img"
             />
-            <div className="animated-button">Select period</div>
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setModalFirst(!modalFirst)}
+                style={{ height: "38px" }}
+                className="animated-button"
+              >
+                Filter
+              </button>
+
+              {modalFirst && (
+                <div className="home__modal-filter">
+                  <p>Expense</p>
+                  <p>Income</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              style={{ opacity: "40%", height: "38px" }}
+              src="./img/Logo(Nav).svg"
+              alt="img"
+            />
+
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setModalData(!modalData)}
+                style={{ height: "38px" }}
+                className="animated-button"
+              >
+                Period
+              </button>
+
+              {modalData && (
+                <div className="home__modal-data">
+                  <div>
+                    <input
+                      type="date"
+                      id="startDate"
+                      value={startDate}
+                      onChange={handleStartDateChange}
+                    />
+                  </div>
+
+                  <div>
+                    <input
+                      type="date"
+                      id="endDate"
+                      value={endDate}
+                      onChange={handleEndDateChange}
+                      min={startDate} // Ограничение, чтобы конец диапазона не был меньше начала
+                    />
+                    {!isEndDateValid && (
+                      <p style={{ color: "red" }}>
+                        End date cannot be before start date
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <p>From: {startDate || "Not selected"} </p>
+                    <p>To: {endDate || "Not selected"}</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="animated-button">Filter</div>
+        <div style={{ position: "relative" }}>
+          <button
+            onClick={() => setModalFilter(!modalFilter)}
+            style={{ height: "38px" }}
+            className="animated-button"
+          >
+            Filter
+          </button>
+
+          {modalFilter && (
+            <div className="home__modal-filter">
+              <p>Expense</p>
+              <p>Income</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {schedule === "Line" ? (
-        <div style={{ width: "100%", margin: "0 auto" , marginBottom: '30px'}}>
+        <div style={{ width: "100%", margin: "0 auto", marginBottom: "30px" }}>
           <Line
             data={lineData}
             options={lineOptions}
@@ -166,7 +269,7 @@ export const HomePage = () => {
           />
         </div>
       ) : (
-        <div style={{ width: "500px", margin: "0 auto" }}>
+        <div style={{ width: "100%", margin: "0 auto" }}>
           <Pie
             data={pieData}
             options={pieOptions}
@@ -175,17 +278,26 @@ export const HomePage = () => {
         </div>
       )}
 
-      <div className="home__change">
-        <img
-          onClick={() => setSchedule("Pie")}
-          src="./img/change-pie.svg"
-          alt="img"
-        />
-        <img
-          onClick={() => setSchedule("Line")}
-          src="./img/change-line.svg"
-          alt="img"
-        />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="home__change">
+          <img
+            onClick={() => setSchedule("Pie")}
+            src="./img/change-pie.svg"
+            alt="img"
+            className="change-pie-img"
+
+          />
+          <img
+            onClick={() => setSchedule("Line")}
+            src="./img/change-line.svg"
+            alt="img"
+            className="change-line-img"
+          />
+        </div>
+
+        <div onClick={() => navigate('/add-transaction')} className="transaction__button">
+          Add transaction
+        </div>
       </div>
     </>
   );

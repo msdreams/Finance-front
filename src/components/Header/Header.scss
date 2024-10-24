@@ -5,16 +5,16 @@
   font-weight: 400;
   font-size: 20px;
   height: 60px;
-  padding: 0 100px;
   z-index: 10;
   position: relative;
+  margin-bottom: 30px;
 
   &__logo {
     display: flex;
     align-items: center;
 
     &--text {
-      font-family: 'DM Serif Display', serif;
+      font-family: "DM Serif Display", serif;
       font-weight: 400;
       font-size: 24px;
     }
@@ -26,8 +26,20 @@
     column-gap: 30px;
     align-items: center;
 
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
+
+    &-burger {
+      display: none;
+
+      @media screen and (max-width: 640px) {
+        display: block;
+      }
+    }
+
     &--login-or-name {
-      font-family: 'Inter', serif;
+      font-family: "Inter", serif;
       font-weight: 800;
       font-size: 16px;
 

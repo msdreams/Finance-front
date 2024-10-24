@@ -3,7 +3,12 @@ import "./Header.scss";
 import classnames from "classnames";
 import { useAppSelector } from "../../app/hooks";
 
-export const Header = () => {
+type Props = {
+  activeBurger: boolean;
+  setActiveBurger: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
   const { accessToken } = useAppSelector((state) => state.auth);
 
   return (
@@ -13,6 +18,13 @@ export const Header = () => {
         <p className="header__logo--text">MONETA</p>
       </div>
 
+      <nav className="header__nav-burger">
+        <img
+          onClick={() => setActiveBurger(!activeBurger)}
+          src="./img/Menu.png"
+          alt=""
+        />
+      </nav>
       <nav className="header__nav">
         {accessToken ? (
           <>

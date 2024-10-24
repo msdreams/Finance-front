@@ -35,7 +35,7 @@ export const LoginTg = () => {
   return (
     <form className="reg--email" onSubmit={handleSubmit}>
       <div>
-        <p>Print name</p>
+        <p>Print phone</p>
         <input
           className="reg--email-input"
           type="text"
@@ -46,7 +46,7 @@ export const LoginTg = () => {
         />
       </div>
       <div>
-        <p>Print phone</p>
+        <p>Print password</p>
         <input
           className="reg--email-input"
           type="password"

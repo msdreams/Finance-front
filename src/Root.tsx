@@ -11,6 +11,7 @@ import { NewTargetPage } from "./pages/NewTargetPage";
 import { NewBudgetPage } from "./pages/NewBudgetPage";
 import { NameSettingsA } from "./components/NameSettingsA";
 import ProtectedRoute from "./ProtectedRoute";
+import { AddTransaction } from "./pages/AddTransactionPage";
 
 export const Root = () => {
   return (
@@ -79,6 +80,15 @@ export const Root = () => {
             element={
               <ProtectedRoute>
                 <NameSettingsA />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="add-transaction"
+            element={
+              <ProtectedRoute>
+                <AddTransaction />
               </ProtectedRoute>
             }
           />

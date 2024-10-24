@@ -17,6 +17,12 @@
     background: #9ad1b6;
 
   }
+
+  @media screen and (max-width: 400px) {
+    width: 100%;
+  font-size: 28px;
+
+  }
 }
 
 .name__set {

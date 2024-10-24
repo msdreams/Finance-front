@@ -1,14 +1,11 @@
-import Cookies from "js-cookie";
+import { AboutText } from "../components/AboutText";
 
 export const AboutPage = () => {
-  const refreshToken = Cookies.get('refreshToken')
-
   return (
     <div>
-      <h1>О нас</h1>
-      <p>Здесь находится информация о нашей компании.</p>
+      <h1>About</h1>
 
-      {refreshToken}
+      <AboutText />
     </div>
   );
 };

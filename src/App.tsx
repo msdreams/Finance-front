@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import { logout, refreshAccessToken } from "./features/authSlice";
 import { useAppDispatch } from "./app/hooks";
 import { LoadingScreen } from "./components/LoadingScreen";
+import { BurgerMenu } from "./components/BurgerMenu";
 
 function App() {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
+
+  const [activeBurger, setActiveBurger] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +40,9 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
       <div className="container">
+        <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
+        <BurgerMenu activeBurger={activeBurger} />
         <Outlet />
       </div>
     </div>

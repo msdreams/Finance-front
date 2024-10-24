@@ -52,19 +52,27 @@ export const LoginModal: React.FC<Props> = ({
               <img src="./img/telegram.svg" alt="Email login" />
               Login with Telegram
             </div>
-            <p onClick={() => setFPassword(true)}>Forgot password</p>
+            <p
+              className="login__modal--forgot"
+              onClick={() => setFPassword(true)}
+            >
+              Forgot password
+            </p>
           </div>
         </>
       ) : (
         <form className="reg--email" onSubmit={forgotPasswordHandle}>
           <input
+            className="reg--email-input"
             value={inputFPassword}
             onChange={(e) => setInputFPassword(e.target.value)}
             type="email"
             placeholder="email"
             required
           />
-          <button type="submit">Register</button>
+          <button style={{ marginBottom: "20px" }} type="submit">
+            Recover password
+          </button>
         </form>
       )}
 

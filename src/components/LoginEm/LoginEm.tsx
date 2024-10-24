@@ -38,6 +38,7 @@ export const LoginEm = () => {
         <p>Print email</p>
         <input
           className="reg--email-input"
+          placeholder="email"
           type="email"
           id="email"
           value={userName}
@@ -49,6 +50,8 @@ export const LoginEm = () => {
         <p>Print password</p>
         <input
           className="reg--email-input"
+          placeholder="password"
+
           type="password"
           id="password"
           value={password}

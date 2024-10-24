@@ -13,34 +13,32 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className="modal-container">
-        <div className="login__modal">
-          {modal === "Login" && activeEmailModal === null && (
-            <LoginModal
-              setModal={setModal}
-              setActiveEmailModal={setActiveEmailModal}
-            />
-          )}
+      <div className="login__modal">
+        {modal === "Login" && activeEmailModal === null && (
+          <LoginModal
+            setModal={setModal}
+            setActiveEmailModal={setActiveEmailModal}
+          />
+        )}
 
-          {modal === "Register" && activeEmailModal === null && (
-            <RegisterModal
-              setModal={setModal}
-              setActiveEmailModal={setActiveEmailModal}
-            />
-          )}
+        {modal === "Register" && activeEmailModal === null && (
+          <RegisterModal
+            setModal={setModal}
+            setActiveEmailModal={setActiveEmailModal}
+          />
+        )}
 
-          {activeEmailModal === "LoginEm" && activeEmailModal !== null && (
-            <LoginEm />
-          )}
+        {activeEmailModal === "LoginEm" && activeEmailModal !== null && (
+          <LoginEm />
+        )}
 
-          {activeEmailModal === "RegisterEm" && activeEmailModal !== null && (
-            <RegisterEm />
-          )}
+        {activeEmailModal === "RegisterEm" && activeEmailModal !== null && (
+          <RegisterEm />
+        )}
 
-          {activeEmailModal === "LoginTg" && activeEmailModal !== null && (
-            <LoginTg />
-          )}
-        </div>
+        {activeEmailModal === "LoginTg" && activeEmailModal !== null && (
+          <LoginTg />
+        )}
       </div>
     </>
   );
