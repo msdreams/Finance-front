@@ -38,7 +38,6 @@ body {
 .transaction__button {
   cursor: pointer;
   border-radius: 8px;
-  width: 320px;
   height: 112px;
   background: #373836;
   font-family: var(--second-family);
@@ -96,10 +95,12 @@ body {
   transform: translate(0, 20px);
 
   transition: all 0.5s;
+  pointer-events: none; /* Включаем взаимодействие при активности */
 
   &-is-active {
     opacity: 100%;
     transform: translate(-20px, 20px);
+    pointer-events: auto; /* Включаем взаимодействие при активности */
   }
 }
 
@@ -131,10 +132,12 @@ body {
   transform: translate(0, 20px);
 
   transition: all 0.5s;
+  pointer-events: none; /* Включаем взаимодействие при активности */
 
   &-is-active {
     opacity: 100%;
     transform: translate(20px, 20px);
+    pointer-events: auto; /* Включаем взаимодействие при активности */
   }
 }
 
@@ -452,5 +455,67 @@ p {
     &-price {
       font-size: 30px;
     }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .transaction__button {
+    font-size: 30px;
+  }
+}
+
+.home__modal-balance {
+  position: relative;
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 26px;
+}
+
+.home__modal-balance-r {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: absolute;
+
+  top: 100%; /* расположить под родителем */
+
+  margin-top: 14px; /* дополнительный отступ, если нужно */
+
+  padding: 20px 10px;
+  background-color: #cbeeb7;
+  width: 100%;
+  height: auto;
+}
+
+.home__modal-g {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 70%;
+  }
+}
+
+.button-s {
+  font-family: "Inter", serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #383636;
+  border-radius: 13px;
+  padding: 0px 20px;
+  width: 77px;
+  height: 40px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  margin: 0 auto;
+
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  &:hover {
+    background: #e6ffdc;
+    transform: scale(1.1);
   }
 }

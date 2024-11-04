@@ -140,6 +140,7 @@ export const HomePage = () => {
   const [modalFilter, setModalFilter] = useState(false);
   const [modalData, setModalData] = useState(false);
   const [modalFirst, setModalFirst] = useState(false);
+  const [modalBalance, setModalBalance] = useState(false);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -158,7 +159,13 @@ export const HomePage = () => {
     <>
       <div className="triangle-bg"></div>
       <div className="triangle-bg-up"></div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -242,6 +249,31 @@ export const HomePage = () => {
           </div>
         </div>
 
+        <div
+          style={{
+            display: "flex",
+            columnGap: "3px",
+            position: "relative",
+            marginBottom: "14px",
+            marginTop: "14px",
+          }}
+        >
+          <p className="home__modal-balance">Balance: 100$</p>
+          <img
+            onClick={() => setModalBalance(!modalBalance)}
+            src="./img/Group 25 (1).svg"
+            className="home__modal-g"
+            alt=""
+          />
+
+          {modalBalance && (
+            <div className="home__modal-balance-r">
+              <p>Expense</p>
+              <p>Income</p>
+            </div>
+          )}
+        </div>
+
         <div style={{ position: "relative" }}>
           <button
             onClick={() => setModalFilter(!modalFilter)}
@@ -285,7 +317,6 @@ export const HomePage = () => {
             src="./img/change-pie.svg"
             alt="img"
             className="change-pie-img"
-
           />
           <img
             onClick={() => setSchedule("Line")}
@@ -295,7 +326,10 @@ export const HomePage = () => {
           />
         </div>
 
-        <div onClick={() => navigate('/add-transaction')} className="transaction__button">
+        <div
+          onClick={() => navigate("/add-transaction")}
+          className="transaction__button"
+        >
           Add transaction
         </div>
       </div>

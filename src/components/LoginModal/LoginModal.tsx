@@ -70,8 +70,8 @@ export const LoginModal: React.FC<Props> = ({
             placeholder="email"
             required
           />
-          <button style={{ marginBottom: "20px" }} type="submit">
-            Recover password
+          <button className="button-s" style={{ marginBottom: "20px" }} type="submit">
+            Recover
           </button>
         </form>
       )}

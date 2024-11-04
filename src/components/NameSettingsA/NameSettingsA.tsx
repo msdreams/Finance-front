@@ -76,7 +76,7 @@ export const NameSettingsA = () => {
                 placeholder="repeatNewPassword"
               />
 
-              <button type="submit">Change password</button>
+              <button className="button-s" type="submit">Change password</button>
             </form>
           </div>
           {successMessage && <p style={{color: 'green'}}>{successMessage}</p>}

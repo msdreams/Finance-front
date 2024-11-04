@@ -1,6 +1,7 @@
 .burger {
   position: fixed;
   right: 0;
+  top: 80px;
   display: flex;
   flex-direction: column-reverse;
 
@@ -10,7 +11,7 @@
   row-gap: 20px;
 
   background-color: #def9dd;
-  height: 80vh;
+  height: 60vh;
   width: 50vw;
 
   transform: translateX(100%);

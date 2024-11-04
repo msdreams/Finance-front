@@ -6,8 +6,8 @@ export const AddTransaction = () => {
   const [modalExpense, setModalExpense] = useState(false);
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <div style={{ position: "relative" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", columnGap: '10px' }}>
+      <div className="transaction__button-div" style={{ position: "relative" }}>
         <button
           onClick={() => setModalIncome(!modalIncome)}
           className="transaction__button"
@@ -36,10 +36,10 @@ export const AddTransaction = () => {
             <textarea placeholder="Comment" style={{ width: "50%" }}></textarea>
           </label>
 
-          <button type="submit">submit</button>
+          <button className="button-s" type="submit">submit</button>
         </form>
       </div>
-      <div style={{ position: "relative" }}>
+      <div className="transaction__button-div" style={{ position: "relative" }}>
         <button
           onClick={() => setModalExpense(!modalExpense)}
           className="transaction__button"
@@ -69,7 +69,7 @@ export const AddTransaction = () => {
             <textarea placeholder="Comment" style={{ width: "50%" }}></textarea>
           </label>
 
-          <button type="submit">submit</button>
+          <button className="button-s" type="submit">submit</button>
 
         </form>
       </div>

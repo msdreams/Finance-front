@@ -56,7 +56,7 @@ export const LoginTg = () => {
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button className="button-s" type="submit">Login</button>
       {/* <button onClick={() => setActiveEmailModal(false)}>выйти</button> */}
     </form>
   );

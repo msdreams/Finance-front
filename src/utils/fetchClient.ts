@@ -1,6 +1,6 @@
 const BASE_URL = 'https://budgetapp.space';
 
-type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
+type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
 function request<T>(
   url: string,
@@ -30,8 +30,9 @@ function request<T>(
 }
 
 export const client = {
-  get: <T>(url: string) => request<T>(url),
-  post: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'POST', data, headers), // Change made here
-  patch: <T>(url: string, data: any) => request<T>(url, 'PATCH', data),
-  delete: (url: string) => request(url, 'DELETE'),
+  get: <T>(url: string, headers?: Record<string, string>) => request<T>(url, 'GET', null, headers),
+  post: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'POST', data, headers),
+  put: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PUT', data, headers),
+  patch: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PATCH', data, headers),
+  delete: (url: string, data: any, headers?: Record<string, string>) => request(url, 'DELETE', data, headers),
 };
