@@ -1,3 +1,4 @@
+import { AccountAddAccount, AccountAddTransfer, AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
 import { client } from "../utils/fetchClient";
 import { DataAllTarget } from "./target";
 
@@ -23,57 +24,64 @@ export type DataAddTransfer = {
   toAccountId: number,
 }
 
-export const UpdateAccount = (id: string, accessToken: string) => {
+export const UpdateAccount = (id: string, accessToken: string): Promise<AccountPut> => {
   return client.put(`/account/update-account/${id}`, {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const SetAccountByDefault = (id: string, accessToken: string) => {
+export const SetAccountByDefault = (id: string, accessToken: string): Promise<AccountPut> => {
   return client.put(`/account/set-account-by-default/${id}`, {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const addTransfer = (data: DataAddTransfer, accessToken: string) => {
+export const addTransfer = (data: DataAddTransfer, accessToken: string): Promise<AccountAddTransfer> => {
   return client.post('/transfer/add-transfer', data, {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
-export const addAccount = (data: DataAddAccount, accessToken: string) => {
+export const addAccount = (data: DataAddAccount, accessToken: string): Promise<AccountAddAccount> => {
   return client.post('/account/add-account', data, {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const getAllTransfers = (data: DataAllTarget, accessToken: string) => {
-  return client.get(`/transfer/get-all-transfers?page=${data.page}&size=${data.size}`, {
-    'Content-type': 'application/json',
+export const getAllTransfers = (data: DataAllTarget, accessToken: string): Promise<GetAllTransfers> => {
+  const { page, size } = data;
+
+  const queryParams = new URLSearchParams({
+    page: page.toString(),
+    size: size.toString(),
+  })
+
+  return client.get(`/transfer/get-all-transfers?${queryParams.toString()}`, {
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const getAllAccounts = (accessToken: string) => {
+export const getAllAccounts = (accessToken: string): Promise<GetAllAccounts> => {
   return client.get('/account/get-all-accounts', {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const getAccountById = (id: string, accessToken: string) => {
+export const getAccountById = (id: string, accessToken: string): Promise<AccountAddAccount> => {
   return client.get(`/account/get-account-by-id/${id}`, {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const getAccountByDefault = (accessToken: string) => {
+export const getAccountByDefault = (accessToken: string): Promise<AccountAddAccount> => {
   return client.get('/account/get-account-by-default', {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
