@@ -22,7 +22,6 @@ export type DataDeleteTarget = {
 export type DataAllTarget = {
   page: number,
   size: number,
-  sort: string[],
 }
 
 export const replenishTarget = (data: DataReplenishTarget, accessToken: string): Promise<TargetAdd> => {
@@ -39,21 +38,15 @@ export const addTarget = (data: DataAddTarget, accessToken: string): Promise<Tar
   })
 }
 
-export const getAllTargets = (data: DataAllTarget, accessToken: string): Promise<TargetAdd> => {
-  const { page, size } = data;
+export const getAllTargets = (accessToken: string): Promise<TargetAdd> => {
 
-  const queryParams = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-  })
-
-  return client.get(`/account/get-all-accounts?${queryParams.toString()}`, {
+  return client.get(`/targets/get-all-targets`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const deleteBudget = (data: DataDeleteTarget, accessToken: string) => {
+export const deleteTarget = (data: DataDeleteTarget, accessToken: string) => {
   return client.delete(`/targets/destroy-target`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,

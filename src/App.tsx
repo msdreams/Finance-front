@@ -21,20 +21,17 @@ function App() {
 
     fetchData();
 
-    // Проверка на наличие accessToken перед запуском интервала
-    if (localStorage.getItem("accessToken")) {
-      const interval = setInterval(() => {
-        dispatch(refreshAccessToken())
-          .unwrap() // Разворачиваем результат, чтобы catch отработал
-          .catch((error) => {
-            console.error("Failed to refresh token:", error);
+    const interval = setInterval(() => {
+      dispatch(refreshAccessToken())
+        .unwrap() // Разворачиваем результат, чтобы catch отработал
+        .catch((error) => {
+          console.error("Failed to refresh token:", error);
 
-            dispatch(logout()); // Логаут, если refresh токен недействителен
-          });
-      }, 15 * 60 * 10); // Интервал обновления
+          dispatch(logout()); // Логаут, если refresh токен недействителен
+        });
+    }, 15 * 60 * 1000);
 
-      return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
-    }
+    return () => clearInterval(interval);
   }, [dispatch]);
 
   if (loading) {

@@ -5,7 +5,7 @@ export type DataAddBudget = {
   name: string,
   fromDate: string,
   toDate: string,
-  categoryIds: number[],
+  categoryIds: string,
   limitSum: string,
 }
 
@@ -23,7 +23,7 @@ export const getTopLvlBudget = (accessToken: string): Promise<BudgetAdd> => {
   })
 }
 
-export const getAllBudget = (accessToken: string): Promise<BudgetAdd> => {
+export const getAllBudget = (accessToken: string): Promise<BudgetAdd[]> => {
   return client.get('/budgets/get-all-budgets', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
