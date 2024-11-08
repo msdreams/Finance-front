@@ -3,7 +3,7 @@ export type BudgetAdd = {
   name: string;
   fromDate: string;
   toDate: string;
-  categoryIds: number[];
+  categoryId: number;
   limitSum: number;
   currentSum: number;
   exceeded: boolean;

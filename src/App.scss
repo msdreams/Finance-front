@@ -340,6 +340,17 @@ p {
   height: 54px;
 }
 
+.target__block {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
+  background: #b2eed0;
+  border-radius: 13px;
+  width: 338px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
 .history {
   &__block {
     display: flex;

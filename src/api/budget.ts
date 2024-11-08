@@ -5,7 +5,7 @@ export type DataAddBudget = {
   name: string,
   fromDate: string,
   toDate: string,
-  categoryIds: string,
+  categoryId: number,
   limitSum: string,
 }
 

@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AccountResponse } from "../api/account";
 
 type AuthState = {
-  account: AccountResponse | null;
+  account: | null;
   loading: boolean;
   error: string | null;
 }

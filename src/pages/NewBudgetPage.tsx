@@ -7,7 +7,7 @@ export const NewBudgetPage = () => {
   const [name, setName] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [categoryIds, setCategoryIds] = useState('');
+  const [categoryId, setCategoryId] = useState('');
   const [limitSum, setLimitSum] = useState("");
 
   const dispatch = useAppDispatch();
@@ -23,22 +23,23 @@ export const NewBudgetPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const parsedExpectedSum = parseFloat(categoryId);
+    if (isNaN(parsedExpectedSum)) {
+      console.error("Expected Sum is not a valid number");
+      return;
+    }
+  
     const formData = {
       name,
       fromDate,
       toDate,
-      categoryIds,
+      categoryId: parsedExpectedSum,
       limitSum,
     };
 
     regBudget(formData);
   };
 
-  // name: string;
-  // fromDate: string;
-  // toDate: string;
-  // categoryIds: number[];
-  // limitSum: string;
   return (
     <>
       <h1>New budget</h1>
@@ -71,8 +72,8 @@ export const NewBudgetPage = () => {
           type="date"
         />
         <input
-          value={categoryIds}
-          onChange={(e) => setCategoryIds(e.target.value)}
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
           className="new-target__input-name"
           placeholder="name"
           type="text"

@@ -2,14 +2,6 @@ import { AccountAddAccount, AccountAddTransfer, AccountPut, GetAllAccounts, GetA
 import { client } from "../utils/fetchClient";
 import { DataAllTarget } from "./target";
 
-export type AccountResponse = {
-  userId: number;
-  name: string;
-  balance: number;
-  currency: string;
-  byDefault: boolean;
-}
-
 export type DataAddAccount = {
   name: string,
   balance: number,
@@ -24,14 +16,14 @@ export type DataAddTransfer = {
   toAccountId: number,
 }
 
-export const UpdateAccount = (id: string, accessToken: string): Promise<AccountPut> => {
+export const updateAccount = (id: string, accessToken: string): Promise<AccountPut> => {
   return client.put(`/account/update-account/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
 }
 
-export const SetAccountByDefault = (id: string, accessToken: string): Promise<AccountPut> => {
+export const setAccountByDefault = (id: string, accessToken: string): Promise<AccountPut> => {
   return client.put(`/account/set-account-by-default/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,

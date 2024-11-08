@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { GetAllTargets } from "../features/targetSlice";
+import { GetAllBudgets } from "../features/budgetSlice";
 
 export const PlanPage = () => {
   const { targets } = useAppSelector((state) => state.target); // Получаем данные из Redux
+  const { budgets } = useAppSelector((state) => state.budget); // Получаем данные из Redux
   const dispatch = useAppDispatch();
 
   const regTarget = async () => {
@@ -16,10 +18,19 @@ export const PlanPage = () => {
     }
   };
 
+  const regBudget = async () => {
+    try {
+      const response = await dispatch(GetAllBudgets());
+      console.log(response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     regTarget();
+    regBudget();
   }, [dispatch]);
-
 
   return (
     <>
@@ -31,18 +42,18 @@ export const PlanPage = () => {
       </div>
       {targets && targets.length > 0 ? (
         targets.map((el) => (
-          <div key={el.name + el.id} className="history__block">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                rowGap: "10px",
-              }}
-            >
-              <h2 className="history__block-h">{el.name}</h2>
-            </div>
+          <div key={el.name + el.id}>
+            <div className="target__block">
+              <div>
+                <h3 className="target__block-h">{el.name}</h3>
+                <p className="target__block-price">{el.expectedSum}$</p>
+              </div>
 
-            <p className="history__block-price">{el.expectedSum}$</p>
+              <div>
+                <p className="target__block-price">{el.expectedSum}$</p>
+                <h2 className="target__block-h">{el.currentSum}</h2>
+              </div>
+            </div>
           </div>
         ))
       ) : (
@@ -53,6 +64,27 @@ export const PlanPage = () => {
         <h2>Budget</h2>
         <Link to="/new-budget">+</Link>
       </div>
+      {budgets && budgets.length > 0 ? (
+        budgets.map((el) => (
+          <div key={el.name + el.id}>
+            <div className="history__block">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  rowGap: "10px",
+                }}
+              >
+                <h2 className="history__block-h">{el.name}</h2>
+              </div>
+
+              <p className="history__block-price">{el.limitSum}$</p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No targets available.</p>
+      )}
     </>
   );
 };

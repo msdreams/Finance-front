@@ -58,7 +58,7 @@ export const DeleteBudget = createAsyncThunk('account/DeleteBudget', async (id: 
 })
 
 
-export const accountSlice = createSlice({
+export const budgetSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
@@ -120,3 +120,5 @@ export const accountSlice = createSlice({
       })
   },
 })
+
+export default budgetSlice.reducer;
