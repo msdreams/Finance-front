@@ -1,15 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { DataNewName, expenseDeleteCategory, expenseGetAllCategories, expenseUpdateCategory, incomeDeleteCategory, incomeGetAllCategories, incomeUpdateCategory } from "../api/expenseIncomeCategory";
 import { DataAllTarget } from "../api/target";
+import { AllCategories } from "../types/expenseIncomeCategory";
 
 type AuthState = {
-  expenseIncomeCategory: | null;
+  expenseCategoryAll: AllCategories | null;
+  incomeCategoryAll: AllCategories | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
-  expenseIncomeCategory: null,
+  expenseCategoryAll: null,
+  incomeCategoryAll: null,
   loading: false,
   error: null,
 }
@@ -112,13 +115,61 @@ export const ExpenseDeleteCategory = createAsyncThunk('expenseIncomeCategory/Exp
 })
 
 
-export const accountSlice = createSlice({
+export const expenseIncomeCategorySlice = createSlice({
   name: 'expenseIncomeCategory',
   initialState,
   reducers: {
 
   },
   extraReducers: (builder) => {
+    builder
+    .addCase(IncomeUpdateCategory.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(IncomeUpdateCategory.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(IncomeUpdateCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to update income category';
+    })
 
-  },
+    .addCase(ExpenseUpdateCategory.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(ExpenseUpdateCategory.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(ExpenseUpdateCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to update expense category';
+    })
+
+    // --- Обработка успешного ответа на запрос получения всех категорий доходов ---
+    .addCase(IncomeGetAllCategories.pending, (state) => {
+      state.loading = true; // Начинаем загрузку
+    })
+    .addCase(IncomeGetAllCategories.fulfilled, (state, action) => {
+      state.loading = false; // Загрузка завершена
+      state.incomeCategoryAll = action.payload; // Устанавливаем полученные категории доходов
+    })
+    .addCase(IncomeGetAllCategories.rejected, (state, action) => {
+      state.loading = false; // Завершаем загрузку
+      state.error = action.error.message || 'Failed to load income categories'; // Устанавливаем ошибку
+    })
+
+    // --- Обработка успешного ответа на запрос получения всех категорий расходов ---
+    .addCase(ExpenseGetAllCategories.pending, (state) => {
+      state.loading = true; // Начинаем загрузку
+    })
+    .addCase(ExpenseGetAllCategories.fulfilled, (state, action) => {
+      state.loading = false; // Загрузка завершена
+      state.expenseCategoryAll = action.payload; // Устанавливаем полученные категории расходов
+    })
+    .addCase(ExpenseGetAllCategories.rejected, (state, action) => {
+      state.loading = false; // Завершаем загрузку
+      state.error = action.error.message || 'Failed to load expense categories'; // Устанавливаем ошибку
+    })
+  }
+  
 })
