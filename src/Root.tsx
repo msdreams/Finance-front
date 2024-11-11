@@ -12,6 +12,7 @@ import { NewBudgetPage } from "./pages/NewBudgetPage";
 import { NameSettingsA } from "./components/NameSettingsA";
 import ProtectedRoute from "./ProtectedRoute";
 import { AddTransaction } from "./pages/AddTransactionPage";
+import { NewAccountPage } from "./pages/NewAccountPage";
 
 export const Root = () => {
   return (
@@ -63,6 +64,14 @@ export const Root = () => {
             element={
               <ProtectedRoute>
                 <NewTargetPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="new-account"
+            element={
+              <ProtectedRoute>
+                <NewAccountPage />
               </ProtectedRoute>
             }
           />

@@ -258,7 +258,7 @@ export const accountSlice = createSlice({
     .addCase(fetchTransactionsAddIncome.pending, (state) => {
       state.loading = true;
     })
-    .addCase(fetchTransactionsUpdateExpense.fulfilled, (state) => {
+    .addCase(fetchTransactionsAddIncome.fulfilled, (state) => {
       state.loading = false;
     })
     .addCase(fetchTransactionsAddIncome.rejected, (state, action) => {
@@ -331,19 +331,6 @@ export const accountSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch expense charts (months/years)';
       })
 
-      // --- Обработка запросов для расходов по дням ---
-      .addCase(fetchAllExpensesForChartsDays.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchAllExpensesForChartsDays.fulfilled, (state, action) => {
-        state.loading = false;
-        state.allExpensesD = action.payload;
-      })
-      .addCase(fetchAllExpensesForChartsDays.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Failed to fetch expense charts (days)';
-      })
-
        //fetchAllExpensesForChartsDays
       .addCase(fetchAllExpensesForChartsDays.pending, (state) => {
         state.loading = true;
@@ -383,3 +370,5 @@ export const accountSlice = createSlice({
   },
 
 })
+
+export default accountSlice.reducer

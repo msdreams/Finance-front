@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { GetAllTargets } from "../features/targetSlice";
@@ -8,6 +8,8 @@ export const PlanPage = () => {
   const { targets } = useAppSelector((state) => state.target); // Получаем данные из Redux
   const { budgets } = useAppSelector((state) => state.budget); // Получаем данные из Redux
   const dispatch = useAppDispatch();
+
+  const [modalTargetPlus, setModalTargetPlus] = useState(false)
 
   const regTarget = async () => {
     try {
@@ -42,7 +44,7 @@ export const PlanPage = () => {
       </div>
       {targets && targets.length > 0 ? (
         targets.map((el) => (
-          <div key={el.name + el.id}>
+          <div className="el-target" key={el.name + el.id}>
             <div className="target__block">
               <div>
                 <h3 className="target__block-h">{el.name}</h3>
@@ -54,6 +56,8 @@ export const PlanPage = () => {
                 <h2 className="target__block-h">{el.currentSum}</h2>
               </div>
             </div>
+
+            <img onClick={() => setModalTargetPlus(!modalTargetPlus)} className="target__block-plus" src="./img/Group 21.svg" alt="" />
           </div>
         ))
       ) : (
@@ -83,7 +87,7 @@ export const PlanPage = () => {
           </div>
         ))
       ) : (
-        <p>No targets available.</p>
+        <p>No budgets available.</p>
       )}
     </>
   );

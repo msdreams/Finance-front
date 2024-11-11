@@ -1,5 +1,17 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { fetchAllExpenses, fetchAllIncomes } from "../features/expenseIncomeTransactionSlice";
 
 export const HistoryPage = () => {
+  // const dispatch = useAppDispatch();
+  // const { allExpenses, allIncomes } = useAppSelector(
+  //   (state) => state.expenseIncomeTransaction
+  // );
+
+  // useEffect(() => {
+  //   dispatch(fetchAllIncomes())
+  //   dispatch(fetchAllExpenses())
+  // }, []);
   return (
     <>
       <h1>HistoryPage</h1>

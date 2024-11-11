@@ -10,8 +10,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { fetchGetAllAccounts } from "../features/accountSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -141,9 +143,12 @@ export const HomePage = () => {
   const [modalData, setModalData] = useState(false);
   const [modalFirst, setModalFirst] = useState(false);
   const [modalBalance, setModalBalance] = useState(false);
+  const [modalAccount, setModalAccount] = useState(false);
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const dispatch = useAppDispatch();
+  const { allAccounts } = useAppSelector((state) => state.account);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
@@ -154,6 +159,10 @@ export const HomePage = () => {
   };
 
   const isEndDateValid = endDate === "" || endDate >= startDate;
+
+  useEffect(() => {
+    dispatch(fetchGetAllAccounts());
+  }, []);
 
   return (
     <>
@@ -258,13 +267,16 @@ export const HomePage = () => {
             marginTop: "14px",
           }}
         >
-          <p className="home__modal-balance">Balance: 100$</p>
-          <img
-            onClick={() => setModalBalance(!modalBalance)}
-            src="./img/Group 25 (1).svg"
-            className="home__modal-g"
-            alt=""
-          />
+          <p onClick={() => setModalAccount(!modalAccount)} className="home__modal-balance">
+            Balance: {allAccounts ? allAccounts[0].balance + "$" : 0} ∨
+          </p>
+          {modalAccount && (
+            <div className="home__modal-account">
+              {allAccounts?.map(account => (
+                <p>{account.name}</p>
+              ))}
+            </div>
+          )}
 
           {modalBalance && (
             <div className="home__modal-balance-r">

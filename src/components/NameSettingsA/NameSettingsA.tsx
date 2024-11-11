@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import "./NameSettings.scss";
 import { changePasswordUser, logout } from "../../features/authSlice";
 import { userChangePassword } from "../../types/userRegister";
+import { Link } from "react-router-dom";
 
 export const NameSettingsA = () => {
   const { accessToken, error } = useAppSelector((state) => state.auth);
@@ -35,6 +36,7 @@ export const NameSettingsA = () => {
         <div className="name__set-but">main currency: USD</div>
         <div className="name__set-but">check category</div>
         <div className="name__set-but">Your name: name</div>
+        <Link to='/new-account' className="name__set-but">Add Account</Link>
       </div>
 
       {accessToken && <button onClick={() => handleUnlogin()}>Unlogin</button>}
