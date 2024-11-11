@@ -6,16 +6,12 @@ type FormData = {
   email: string;
   password: string;
   repeatPassword: string;
-  firstName: string;
-  lastName: string;
 };
 
 export const RegisterEm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
 
   const dispatch = useAppDispatch();
 
@@ -35,8 +31,6 @@ export const RegisterEm = () => {
       email,
       password,
       repeatPassword,
-      firstName,
-      lastName,
     };
 
     handleRegisterUser(formData);
@@ -74,28 +68,6 @@ export const RegisterEm = () => {
           id="repeatPassword"
           value={repeatPassword}
           onChange={(e) => setRepeatPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <p>Print name</p>
-        <input
-          className="reg--email-input"
-          type="text"
-          id="firstName"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <p>Print lastname</p>
-        <input
-          className="reg--email-input"
-          type="text"
-          id="lastName"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
           required
         />
       </div>

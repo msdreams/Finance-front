@@ -66,7 +66,7 @@ export const NewTargetPage = () => {
           value={achievedBefore}
           className="new-target__input-name"
           placeholder="achievedBefore"
-          type="text"
+          type='date'
         />
         <input
           onChange={(e) => setCurrency(e.target.value)}

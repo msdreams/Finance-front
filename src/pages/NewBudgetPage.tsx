@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataAddBudget } from "../api/budget";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { AddBudget } from "../features/budgetSlice";
+import { ExpenseGetAllCategories } from "../features/expenseIncomeCategorySlice";
 
 export const NewBudgetPage = () => {
   const [name, setName] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState("");
   const [limitSum, setLimitSum] = useState("");
+
+  const { expenseCategoryAll } = useAppSelector(
+    (state) => state.expenseIncomeCategory
+  );
 
   const dispatch = useAppDispatch();
   const regBudget = (data: DataAddBudget) => {
@@ -28,7 +33,7 @@ export const NewBudgetPage = () => {
       console.error("Expected Sum is not a valid number");
       return;
     }
-  
+
     const formData = {
       name,
       fromDate,
@@ -39,6 +44,20 @@ export const NewBudgetPage = () => {
 
     regBudget(formData);
   };
+
+  const allCategoriesExpense = async () => {
+    try {
+      const response = await dispatch(ExpenseGetAllCategories());
+      setCategoryId(expenseCategoryAll && expenseCategoryAll.length > 0 ? expenseCategoryAll[0].id.toString() : "");
+      console.log(response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    allCategoriesExpense();
+  }, [dispatch]);
 
   return (
     <>
@@ -58,11 +77,11 @@ export const NewBudgetPage = () => {
           type="text"
         />
         <input
-           value={fromDate}
-           onChange={(e) => setFromDate(e.target.value)}
-           className="new-target__input-name"
-           placeholder="Start date (YYYY-MM-DD)"
-           type="date"  // Тип для даты
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+          className="new-target__input-name"
+          placeholder="Start date (YYYY-MM-DD)"
+          type="date" // Тип для даты
         />
         <input
           value={toDate}
@@ -71,13 +90,19 @@ export const NewBudgetPage = () => {
           placeholder="End date (YYYY-MM-DD)"
           type="date"
         />
-        <input
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
+        <select
           className="new-target__input-name"
-          placeholder="name"
-          type="text"
-        />
+          name="new-target__input-name"
+          id="new-target__input-name"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)} 
+        >
+          {expenseCategoryAll?.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
 
         <input
           value={limitSum}

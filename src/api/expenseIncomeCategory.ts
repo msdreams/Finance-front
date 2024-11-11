@@ -34,29 +34,17 @@ export const ExpenseAddCategory = (data: DataNewName, accessToken: string): Prom
   })
 }
 
-export const incomeGetAllCategories = (data: DataAllTarget, accessToken: string): Promise<AllCategories> => {
-  const { page, size } = data;
+export const incomeGetAllCategories = (accessToken: string): Promise<AllCategories> => {
 
-  const queryParams = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-  })
-
-  return client.get(`/income-categories/get-all-categories?${queryParams.toString()}`, {
+  return client.get(`/income-categories/get-all-categories`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })
 }
 
-export const expenseGetAllCategories = (data: DataAllTarget, accessToken: string): Promise<AllCategories> => {
-  const { page, size } = data;
+export const expenseGetAllCategories = (accessToken: string): Promise<AllCategories> => {
 
-  const queryParams = new URLSearchParams({
-    page: page.toString(),
-    size: size.toString(),
-  })
-
-  return client.get(`/expense-categories/get-all-categories?${queryParams.toString()}`, {
+  return client.get(`/expense-categories/get-all-categories`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })

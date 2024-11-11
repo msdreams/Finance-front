@@ -34,7 +34,7 @@ interface Transaction {
 
 export type GetAllTransfers = Transaction[];
 
-interface Account {
+export type Account = {
   id: number;
   name: string;
   balance: number;

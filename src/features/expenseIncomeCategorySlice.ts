@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { DataNewName, expenseDeleteCategory, expenseGetAllCategories, expenseUpdateCategory, incomeDeleteCategory, incomeGetAllCategories, incomeUpdateCategory } from "../api/expenseIncomeCategory";
-import { DataAllTarget } from "../api/target";
 import { AllCategories } from "../types/expenseIncomeCategory";
 
 type AuthState = {
@@ -53,7 +52,7 @@ export const ExpenseUpdateCategory = createAsyncThunk(
   }
 );
 
-export const IncomeGetAllCategories = createAsyncThunk('expenseIncomeCategory/IncomeGetAllCategories', async (data: DataAllTarget) => {
+export const IncomeGetAllCategories = createAsyncThunk('expenseIncomeCategory/IncomeGetAllCategories', async () => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (!accessToken) {
@@ -61,14 +60,14 @@ export const IncomeGetAllCategories = createAsyncThunk('expenseIncomeCategory/In
   }
 
   try {
-    const response = await incomeGetAllCategories(data, accessToken);
+    const response = await incomeGetAllCategories(accessToken);
     return response;
   } catch (error) {
     throw new Error('Failed to IncomeGetAllCategories');
   }
 })
 
-export const ExpenseGetAllCategories = createAsyncThunk('expenseIncomeCategory/ExpenseGetAllCategories', async (data: DataAllTarget) => {
+export const ExpenseGetAllCategories = createAsyncThunk('expenseIncomeCategory/ExpenseGetAllCategories', async () => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (!accessToken) {
@@ -76,7 +75,7 @@ export const ExpenseGetAllCategories = createAsyncThunk('expenseIncomeCategory/E
   }
 
   try {
-    const response = await expenseGetAllCategories(data, accessToken);
+    const response = await expenseGetAllCategories(accessToken);
     return response;
   } catch (error) {
     throw new Error('Failed to ExpenseGetAllCategories');
@@ -173,3 +172,4 @@ export const expenseIncomeCategorySlice = createSlice({
   }
   
 })
+export default expenseIncomeCategorySlice.reducer

@@ -41,14 +41,14 @@ export const TransactionsUpdateExpense = (id: string, data: DataUpdate, accessTo
 }
 
 export const TransactionsAddIncome = (data: DataUpdate, accessToken: string): Promise<Transaction> => {
-  return client.post(`/income-transactions/add-income/`, data, {
+  return client.post(`/income-transactions/add-income`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })
 }
 
 export const TransactionsAddExpense = (data: DataUpdate, accessToken: string): Promise<Transaction> => {
-  return client.post(`/expense-transactions/add-expense/`, data, {
+  return client.post(`/expense-transactions/add-expense`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })

@@ -1,15 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {  addAccount, addTransfer, DataAddAccount, DataAddTransfer, getAccountByDefault, getAccountById, getAllAccounts, getAllTransfers, setAccountByDefault, updateAccount } from "../api/account";
-import { AccountPut } from "../types/account";
+import { AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
 import { DataAllTarget } from "../api/target";
 
 type AuthState = {
+  allTransfers: GetAllTransfers | null;
+  allAccounts:GetAllAccounts | null;
   accountDefault: AccountPut | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
+  allTransfers:null,
+  allAccounts: null,
   accountDefault: null,
   loading: false,
   error: null,
@@ -55,7 +59,7 @@ export const AddAccount = createAsyncThunk('account/AddAccount', async (data: Da
   }
 })
 
-export const GetAllTransfers = createAsyncThunk('account/GetAllTransfers', async (data: DataAllTarget) => {
+export const fetchGetAllTransfers = createAsyncThunk('account/GetAllTransfers', async (data: DataAllTarget) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
@@ -65,7 +69,7 @@ export const GetAllTransfers = createAsyncThunk('account/GetAllTransfers', async
   }
 })
 
-export const GetAllAccounts = createAsyncThunk('account/GetAllAccounts', async () => {
+export const fetchGetAllAccounts = createAsyncThunk('account/GetAllAccounts', async () => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
@@ -102,7 +106,78 @@ export const accountSlice = createSlice({
 
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase()
+    builder
+    .addCase(UpdateAccount.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(UpdateAccount.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(UpdateAccount.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to UpdateAccount';
+    })
+
+    .addCase(SetAccountByDefault.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(SetAccountByDefault.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(SetAccountByDefault.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to SetAccountByDefault';
+    })
+
+    .addCase(AddTransfer.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(AddTransfer.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(AddTransfer.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to AddTransfer';
+    })
+
+    .addCase(AddAccount.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(AddAccount.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(AddAccount.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to AddAccount';
+    })
+
+    .addCase(fetchGetAllTransfers.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchGetAllTransfers.pending, (state, action) => {
+      state.loading = true;
+      state.allTransfers = action.payload ? action.payload : null; // Устанавливаем полученные категории расходов
+
+    })
+    .addCase(fetchGetAllTransfers.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to GetAllTransfers';
+    })
+
+    .addCase(fetchGetAllAccounts.pending, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchGetAllAccounts.fulfilled, (state, action) => {
+      console.log("Accounts loaded into state:", action.payload); // Логируем, что приходят данные
+
+      state.loading = true;
+      state.allAccounts = action.payload ? action.payload : null; // Устанавливаем полученные категории расходов
+    })
+    .addCase(fetchGetAllAccounts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to GetAllTransfers';
+    })
   },
 })
+
+export default accountSlice.reducer
