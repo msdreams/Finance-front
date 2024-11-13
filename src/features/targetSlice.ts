@@ -46,7 +46,7 @@ export const GetAllTargets = createAsyncThunk('target/GetAllTargets', async () =
   }
 })
 
-export const DeleteBudget = createAsyncThunk('target/DeleteBudget', async (data: DataDeleteTarget) => {
+export const DeleteTarget = createAsyncThunk('target/DeleteTarget', async (data: DataDeleteTarget) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
@@ -104,14 +104,14 @@ export const targetSlice = createSlice({
       })
 
       //DeleteBudget
-      .addCase(DeleteBudget.pending, (state) => {
+      .addCase(DeleteTarget.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(DeleteBudget.fulfilled, (state) => {
+      .addCase(DeleteTarget.fulfilled, (state) => {
         state.loading = false;
       })
-      .addCase(DeleteBudget.rejected, (state, action) => {
+      .addCase(DeleteTarget.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to delete target';
       })

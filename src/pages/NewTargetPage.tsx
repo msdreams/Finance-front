@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { DataAddTarget } from "../api/target";
-import { AddTarget } from "../features/targetSlice";
+import { AddTarget, GetAllTargets } from "../features/targetSlice";
 import { useAppDispatch } from "../app/hooks";
+import { useNavigate } from "react-router-dom";
 
 export const NewTargetPage = () => {
   const [name, setName] = useState("");
@@ -9,10 +10,14 @@ export const NewTargetPage = () => {
   const [achievedBefore, setAchievedBefore] = useState("");
   const [currency, setCurrency] = useState("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const regTarget = (data: DataAddTarget) => {
     try {
       const response = dispatch(AddTarget(data));
+      dispatch(GetAllTargets());
+
+      navigate("/plan");
       console.log(response);
     } catch (error) {
       console.error("Error:", error);
@@ -66,7 +71,7 @@ export const NewTargetPage = () => {
           value={achievedBefore}
           className="new-target__input-name"
           placeholder="achievedBefore"
-          type='date'
+          type="date"
         />
         <input
           onChange={(e) => setCurrency(e.target.value)}

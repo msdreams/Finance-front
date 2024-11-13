@@ -145,13 +145,13 @@ body {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-weight: bold;
+  padding-bottom: 20px;
   padding-top: 20px;
   padding-left: 10px;
   position: absolute;
 
   background-color: #cbeeb7;
   width: 100%;
-  height: 150%;
 
   display: flex;
   flex-direction: column;
@@ -359,7 +359,9 @@ p {
 }
 
 .target__block {
+  padding: 10px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   column-gap: 20px;
   background: #b2eed0;
@@ -367,6 +369,10 @@ p {
   width: 338px;
   height: 80px;
   margin-bottom: 20px;
+
+  &-h {
+    margin: 0;
+  }
 }
 
 .history {
@@ -551,7 +557,7 @@ p {
   transition: transform 0.3s;
 
   &:hover {
-  color: #ffffff;
+    color: #ffffff;
 
     background: #000000;
     transform: scale(1.1);
@@ -569,4 +575,10 @@ p {
     width: 40px;
     cursor: pointer;
   }
+}
+
+.delete-target-img {
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
 }
