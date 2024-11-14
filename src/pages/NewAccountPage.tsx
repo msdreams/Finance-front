@@ -38,7 +38,7 @@ export const NewAccountPage = () => {
 
   return (
     <>
-      <h1>New budget</h1>
+      <h1>NewAccountPage</h1>
       <div className="triangle-bg"></div>
       <div className="triangle-bg-up"></div>
 

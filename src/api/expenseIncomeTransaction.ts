@@ -54,8 +54,9 @@ export const TransactionsAddExpense = (data: DataUpdate, accessToken: string): P
   })
 }
 
-export const TransactionsAllIncome = (data: DataAllIncome, accessToken: string): Promise<Transactions> => {
-  const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
+export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
+  if (data) {
+    const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
 
   const queryParams = new URLSearchParams({
     accountId,
@@ -66,10 +67,16 @@ export const TransactionsAllIncome = (data: DataAllIncome, accessToken: string):
     size: data.size.toString()
   });
 
-  return client.get(`/income-transactions/add-all-incomes?${queryParams.toString()}`, {
+  return client.get(`/income-transactions/get-all-incomes?${queryParams.toString()}`, {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
   });
+  } else {
+    return client.get(`/income-transactions/get-all-incomes`, {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+  });
+  }
 };
 
 export const TransactionsAllIncomeForChartsMY = (data: DataAllIncomeForChartsMY, accessToken: string): Promise<SumsByDateArray> => {
@@ -98,8 +105,9 @@ export const TransactionsAllIncomeForChartsDays = (data: DataAllIncomeForChartsD
   });
 };
 
-export const TransactionsAllExpense = (data: DataAllIncome, accessToken: string): Promise<Transactions> => {
-  const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
+export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
+  if (data) {
+    const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
 
   const queryParams = new URLSearchParams({
     accountId,
@@ -110,10 +118,16 @@ export const TransactionsAllExpense = (data: DataAllIncome, accessToken: string)
     size: data.size.toString()
   });
 
-  return client.get(`/expense-transactions/add-all-expenses?${queryParams.toString()}`, {
+  return client.get(`/expense-transactions/get-all-expenses?${queryParams.toString()}`, {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
   });
+  } else {
+    return client.get(`/expense-transactions/get-all-expenses`, {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+  });
+  }
 };
 
 export const TransactionsAllExpenseForChartsMY = (data: DataAllIncomeForChartsMY, accessToken: string): Promise<SumsByDateArray> => {

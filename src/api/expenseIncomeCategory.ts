@@ -1,9 +1,11 @@
 import { AddCategory, AllCategories } from "../types/expenseIncomeCategory";
 import { client } from "../utils/fetchClient"
-import { DataAllTarget } from "./target";
 
 export type DataNewName = {
   newName: string;
+}
+export type DataName = {
+  name: string;
 }
 
 export const incomeUpdateCategory = (id: string, data: DataNewName, accessToken: string): Promise<AddCategory> => {
@@ -20,14 +22,14 @@ export const expenseUpdateCategory = (id: string, data: DataNewName, accessToken
   })
 }
 
-export const IncomeAddCategory = (data: DataNewName, accessToken: string): Promise<AddCategory> => {
+export const IncomeAddCategory = (data: DataName, accessToken: string): Promise<AddCategory> => {
   return client.post(`/income-categories/add-category`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })
 }
 
-export const ExpenseAddCategory = (data: DataNewName, accessToken: string): Promise<AddCategory> => {
+export const ExpenseAddCategory = (data: DataName, accessToken: string): Promise<AddCategory> => {
   return client.post(`/expense-categories/add-category`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`

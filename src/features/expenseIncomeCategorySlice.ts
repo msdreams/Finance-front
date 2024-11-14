@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { DataNewName, expenseDeleteCategory, expenseGetAllCategories, expenseUpdateCategory, incomeDeleteCategory, incomeGetAllCategories, incomeUpdateCategory } from "../api/expenseIncomeCategory";
+import { DataName, DataNewName, ExpenseAddCategory, expenseDeleteCategory, expenseGetAllCategories, expenseUpdateCategory, IncomeAddCategory, incomeDeleteCategory, incomeGetAllCategories, incomeUpdateCategory } from "../api/expenseIncomeCategory";
 import { AllCategories } from "../types/expenseIncomeCategory";
 
 type AuthState = {
@@ -45,6 +45,42 @@ export const ExpenseUpdateCategory = createAsyncThunk(
 
     try {
       const response = await expenseUpdateCategory(id, data, accessToken);
+      return response;
+    } catch (error) {
+      throw new Error('Failed to update expense category');
+    }
+  }
+);
+
+export const fetchIncomeAddCategory = createAsyncThunk(
+  'expenseIncomeCategory/fetchIncomeAddCategory', 
+  async (data: DataName) => {
+    const accessToken = localStorage.getItem('accessToken'); // исправили вызов localStorage
+
+    if (!accessToken) {
+      throw new Error("Access token not found");
+    }
+
+    try {
+      const response = await IncomeAddCategory(data, accessToken);
+      return response;
+    } catch (error) {
+      throw new Error('Failed to update expense category');
+    }
+  }
+);
+
+export const fetchExpenseAddCategory = createAsyncThunk(
+  'expenseIncomeCategory/fetchExpenseAddCategory', 
+  async (data: DataName) => {
+    const accessToken = localStorage.getItem('accessToken'); // исправили вызов localStorage
+
+    if (!accessToken) {
+      throw new Error("Access token not found");
+    }
+
+    try {
+      const response = await ExpenseAddCategory(data, accessToken);
       return response;
     } catch (error) {
       throw new Error('Failed to update expense category');
@@ -140,6 +176,28 @@ export const expenseIncomeCategorySlice = createSlice({
       state.loading = true;
     })
     .addCase(ExpenseUpdateCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to update expense category';
+    })
+
+    .addCase(fetchIncomeAddCategory.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchIncomeAddCategory.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchIncomeAddCategory.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to update expense category';
+    })
+
+    .addCase(fetchExpenseAddCategory.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchExpenseAddCategory.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchExpenseAddCategory.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to update expense category';
     })

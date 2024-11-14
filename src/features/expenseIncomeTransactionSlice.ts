@@ -87,12 +87,12 @@ export const fetchTransactionsAddExpense = createAsyncThunk(
 // Запрос для получения всех доходов
 export const fetchAllIncomes = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomes',
-  async (data: DataAllIncome) => {
+  async (data?: DataAllIncome) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
-      const response = await TransactionsAllIncome(data, accessToken);
+      const response = await TransactionsAllIncome(accessToken,data);
       return response;
     } catch (error) {
       throw new Error('Failed to fetch incomes');
@@ -135,12 +135,12 @@ export const fetchAllIncomesForChartsDays = createAsyncThunk(
 // Запрос для получения всех расходов
 export const fetchAllExpenses = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpenses',
-  async (data: DataAllIncome) => {
+  async (data?: DataAllIncome) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
-      const response = await TransactionsAllExpense(data, accessToken);
+      const response = await TransactionsAllExpense(accessToken, data);
       return response;
     } catch (error) {
       throw new Error('Failed to fetch expenses');

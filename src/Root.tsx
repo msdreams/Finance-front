@@ -13,6 +13,10 @@ import { NameSettingsA } from "./components/NameSettingsA";
 import ProtectedRoute from "./ProtectedRoute";
 import { AddTransaction } from "./pages/AddTransactionPage";
 import { NewAccountPage } from "./pages/NewAccountPage";
+import { AllCategories } from "./pages/AllCategories";
+import { NewIncomeCategoryPage } from "./pages/NewIncomeCategoryPage.tsx";
+import { NewExpenseCategoryPage } from "./pages/NewExpenseCategoryPage";
+import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 
 export const Root = () => {
   return (
@@ -84,6 +88,31 @@ export const Root = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="new-income-category"
+            element={
+              <ProtectedRoute>
+                <NewIncomeCategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="change-password-page"
+            element={
+              <ProtectedRoute>
+                <ChangePasswordPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="new-expense-category"
+            element={
+              <ProtectedRoute>
+                <NewExpenseCategoryPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="settings"
             element={
@@ -98,6 +127,15 @@ export const Root = () => {
             element={
               <ProtectedRoute>
                 <AddTransaction />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="all-categories"
+            element={
+              <ProtectedRoute>
+                <AllCategories />
               </ProtectedRoute>
             }
           />
