@@ -20,7 +20,14 @@ export const AllCategories = () => {
   }, [dispatch]);
 
   const deleteIncome = (id: string) => {
-    dispatch(IncomeDeleteCategory(id));
+    fetch("https://budgetapp.space/income-categories/delete-category/8", {
+      method: "DELETE",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIrMzgwNjYzMDQwOTY3IiwiaWF0IjoxNzMxNjE4MDEwLCJleHAiOjE3MzE2MTg5MTB9.CyZ9Gh2ZOUnn3_Bb3WKxLCCAu9XqqwdcMf8ntzgRCggPOMM9SG2rc8XbRv8tHSOi",
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.text);
   };
   const deleteExpense = (id: string) => {
     dispatch(ExpenseDeleteCategory(id));
