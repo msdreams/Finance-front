@@ -37,7 +37,15 @@ export const LoginPage = () => {
         )}
 
         {activeEmailModal === "LoginTg" && activeEmailModal !== null && (
-          <LoginTg />
+          <>
+            <div onClick={() => setActiveEmailModal(null)}>
+              <a href="login">
+                <p>back</p>
+              </a>
+            </div>
+            <br />
+            <LoginTg />
+          </>
         )}
       </div>
     </>

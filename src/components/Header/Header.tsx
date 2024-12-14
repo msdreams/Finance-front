@@ -13,10 +13,18 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
 
   return (
     <header className="header">
-      <div className="header__logo">
+      {accessToken ? (
+              <NavLink to='account' className="header__logo">
+              <img src="./img/Logo(Nav).svg" alt="img" />
+              <p className="header__logo--text">MONETA</p>
+            </NavLink>
+      ) : (
+        <NavLink to='/' className="header__logo">
         <img src="./img/Logo(Nav).svg" alt="img" />
         <p className="header__logo--text">MONETA</p>
-      </div>
+      </NavLink>
+      )}
+
 
       <nav className="header__nav-burger">
         <img
@@ -35,7 +43,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   "nav-item": !isActive,
                 })
               }
-              to="/plan"
+              to="account/plan"
             >
               Plan
             </NavLink>
@@ -46,7 +54,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   "nav-item": !isActive,
                 })
               }
-              to="/history"
+              to="account/history"
             >
               History
             </NavLink>
@@ -57,10 +65,11 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   "nav-item": !isActive,
                 })
               }
-              to="/home"
+              to="account/about"
             >
-              Home
+              About
             </NavLink>
+
             <NavLink
               className={({ isActive }) =>
                 classnames({
@@ -68,14 +77,10 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   "nav-item": !isActive,
                 })
               }
-              to="/about"
+              to="account/settings"
             >
-              About
+              Settings
             </NavLink>
-
-            <Link to="/settings" className="header__nav--login-or-name">
-              name
-            </Link>
           </>
         ) : (
           <>
@@ -86,7 +91,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   "nav-item": !isActive,
                 })
               }
-              to="/about"
+              to="account/about"
             >
               About
             </NavLink>

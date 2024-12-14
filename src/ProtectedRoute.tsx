@@ -1,18 +1,15 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector } from './app/hooks';
 
-interface ProtectedRouteProps {
-  children: JSX.Element;
-}
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute = () => {
   const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   if (!accessToken) {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

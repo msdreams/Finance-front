@@ -14,25 +14,21 @@ function App() {
   const [activeBurger, setActiveBurger] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+    setTimeout(() => {
       setLoading(false);
-    };
-
-    fetchData();
+    }, 2000);
 
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
-        .unwrap() // Разворачиваем результат, чтобы catch отработал
+        .unwrap()
         .catch((error) => {
           console.error("Failed to refresh token:", error);
-
-          dispatch(logout()); // Логаут, если refresh токен недействителен
+            dispatch(logout());
         });
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;

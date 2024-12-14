@@ -47,7 +47,6 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (formDat
 
 export const forgorPassword = createAsyncThunk('auth/forgotPassword', async (formData: ForgotPasswordType) => {
   const response = ForgotPassword(formData);
-
   return response;
 })
 

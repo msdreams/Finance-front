@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { loginUser } from "../../features/authSlice";
+import { useNavigate } from 'react-router-dom';
+
 
 type FormData = {
   userName: string;
@@ -11,6 +13,7 @@ export const LoginTg = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const registerUser = async (formData: FormData) => {
     try {
@@ -29,7 +32,14 @@ export const LoginTg = () => {
       password,
     };
 
-    registerUser(formData);
+    registerUser(formData)
+        .then(() => {
+            navigate('/');
+        })
+        .catch(error => {
+            console.error("Navigation error:", error);
+        });
+
   };
 
   return (
@@ -56,7 +66,12 @@ export const LoginTg = () => {
           required
         />
       </div>
-      <button className="button-s" type="submit">Login</button>
+      <button 
+        className="button-s" 
+        type="submit"
+      >
+          Login
+      </button>
       {/* <button onClick={() => setActiveEmailModal(false)}>выйти</button> */}
     </form>
   );
