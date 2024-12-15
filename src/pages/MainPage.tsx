@@ -1,5 +1,9 @@
 export const MainPage = () => {
   return (
-    <div min-h-screen bg-gray-500></div>
+    <div className="min-h-screen bg-gray-500" >
+      <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+    </div>
   )
 }
