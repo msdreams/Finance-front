@@ -1,5 +1,5 @@
 export const MainPage = () => {
   return (
-    <div></div>
+    <div min-h-screen bg-gray-500></div>
   )
 }
