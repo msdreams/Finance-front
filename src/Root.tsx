@@ -1,5 +1,5 @@
 import { NextUIProvider } from '@nextui-org/react';
-
+import "./index.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import App from "./App";
 import { LoginPage } from "./pages/LoginPage";
@@ -23,6 +23,7 @@ import { MainPage } from "./pages/MainPage";
 
 export const Root = () => {
   return (
+    <NextUIProvider>
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
@@ -48,5 +49,6 @@ export const Root = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
+    </NextUIProvider>
   );
 };
