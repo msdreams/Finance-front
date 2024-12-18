@@ -1,12 +1,13 @@
+
+@import url("./components/LoadingScreen/LoadingScreen.scss");
+@import url("./components/AboutText/AboutText.scss");
+@import url("./components/BurgerMenu/BurgerMenu.scss");
+
 :root {
-  --font-family: "Golos Text", sans-serif;
-  --second-family: "Old Standard TT", sans-serif;
-  --third-family: "DM Serif Display", sans-serif;
-  --font3: "Lexend", sans-serif;
-  --font4: "OdorMeanChey", sans-serif;
-  --font5: "Noto Sans", sans-serif;
-  --font6: "Inter", sans-serif;
-  --font7: "Oleo Script", sans-serif;
+  --first-family: "Old Standard TT", sans-serif;
+  --second-family: "DM Serif Display", sans-serif;
+  --font3: "Noto Sans", sans-serif;
+  --font4: "Inter", sans-serif;
 }
 
 * {
@@ -18,23 +19,15 @@ a {
   color: inherit;
 }
 
-body {
+html, body {
   font-family: "Old Standard TT", serif;
+  height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f1fff3;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 13px 16px;
-}
 
-@import url("./components/LoadingScreen/LoadingScreen.scss");
-@import url("./components/LoginModal/LoginModal.scss");
-@import url("./components/AboutText/AboutText.scss");
-@import url("./components/BurgerMenu/BurgerMenu.scss");
+
 .transaction__button {
   cursor: pointer;
   border-radius: 8px;
@@ -95,12 +88,12 @@ body {
   transform: translate(0, 20px);
 
   transition: all 0.5s;
-  pointer-events: none; /* Включаем взаимодействие при активности */
+  pointer-events: none; 
 
   &-is-active {
     opacity: 100%;
     transform: translate(-20px, 20px);
-    pointer-events: auto; /* Включаем взаимодействие при активности */
+    pointer-events: auto; 
   }
 }
 
@@ -276,7 +269,7 @@ body {
 
     font-family: "Noto Sans", sans-serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
 
     z-index: 3;
   }

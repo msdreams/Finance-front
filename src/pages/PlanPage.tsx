@@ -74,7 +74,7 @@ export const PlanPage = () => {
     await dispatch(GetAllBudgets());
   };
   return (
-    <>
+    <div className="h-screen mt-36">
       <h1>PlanPage</h1>
 
       <div style={{ display: "flex", alignItems: "center", columnGap: "15px" }}>
@@ -215,6 +215,6 @@ export const PlanPage = () => {
       ) : (
         <p>No budgets available.</p>
       )}
-    </>
+    </div>
   );
 };

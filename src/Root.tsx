@@ -29,13 +29,13 @@ export const Root = () => {
           <Route path="/" element={<App />}>
             <Route index element={<MainPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="about" element={<AboutPage />} />
             <Route path='account' element={<ProtectedRoute />}>
               <Route index element={<HomePage />} />
               <Route path='plan' element={<PlanPage />} />
               <Route path='history' element={<HistoryPage />} />
               <Route path='new-target' element={<NewTargetPage />} />
               <Route path='new-account' element={<NewAccountPage />} />
-              <Route path="about" element={<AboutPage />} />
               <Route path="new-budget" element={<NewBudgetPage />} />
               <Route path="new-income-category" element={<NewIncomeCategoryPage />} />
               <Route path="change-password-page" element={<ChangePasswordPage />} />

@@ -24,7 +24,7 @@ export const ChangePasswordPage = () => {
     }
   };
   return (
-    <>
+    <div className="h-screen mt-36">
       {accessToken && (
         <>
           <div>
@@ -75,6 +75,6 @@ export const ChangePasswordPage = () => {
           {error && <p style={{ color: "red" }}>{error}</p>}
         </>
       )}
-    </>
+    </div>
   );
 };

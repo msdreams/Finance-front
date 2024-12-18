@@ -1,3 +1,4 @@
+import { AiFillCloseCircle } from "react-icons/ai"; 
 import { useState } from "react";
 import { LoginModal } from "../components/LoginModal";
 import { RegisterModal } from "../components/RegisterModal";
@@ -12,8 +13,14 @@ export const LoginPage = () => {
   const [modal, setModal] = useState<"Login" | "Register">("Login");
 
   return (
-    <>
-      <div className="login__modal">
+    <div className="flex items-start justify-center min-h-screen w-full mt-32">
+      <div className="flex flex-col p-8 rounded-lg bg-primary-900 w-96 mt-10 text-white shadow-2xl relative">
+        <div className="absolute right-8">
+          <a href="#">
+            <AiFillCloseCircle className="opacity-40 hover:opacity-80" size={'28px'}/>
+          </a>
+        </div>
+        
         {modal === "Login" && activeEmailModal === null && (
           <LoginModal
             setModal={setModal}
@@ -29,25 +36,17 @@ export const LoginPage = () => {
         )}
 
         {activeEmailModal === "LoginEm" && activeEmailModal !== null && (
-          <LoginEm />
+          <LoginEm setActiveEmailModal={setActiveEmailModal } />
         )}
 
         {activeEmailModal === "RegisterEm" && activeEmailModal !== null && (
-          <RegisterEm />
+          <RegisterEm setActiveEmailModal={setActiveEmailModal} />
         )}
 
         {activeEmailModal === "LoginTg" && activeEmailModal !== null && (
-          <>
-            <div onClick={() => setActiveEmailModal(null)}>
-              <a href="login">
-                <p>back</p>
-              </a>
-            </div>
-            <br />
-            <LoginTg />
-          </>
+          <LoginTg setActiveEmailModal={setActiveEmailModal} />
         )}
       </div>
-    </>
+    </div>
   );
 };

@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { loginUser } from "../../features/authSlice";
 import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button } from "@nextui-org/react";
 
 
 type FormData = {
@@ -9,9 +9,11 @@ type FormData = {
   password: string;
 };
 
-export const LoginTg = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+type Props = {
+  setActiveEmailModal: (value:"LoginEm" | "RegisterEm" | "LoginTg" | null) => void;
+}
+
+export const LoginTg: React.FC<Props> = ({setActiveEmailModal}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -27,52 +29,49 @@ export const LoginTg = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    console.log(data)
+
+
     const formData = {
-      userName,
-      password,
+      userName: String(data.userName),
+      password: String(data.password),
     };
 
     registerUser(formData)
         .then(() => {
-            navigate('/');
+            navigate('/account');
         })
         .catch(error => {
             console.error("Navigation error:", error);
         });
-
   };
 
   return (
-    <form className="reg--email" onSubmit={handleSubmit}>
-      <div>
-        <p>Print phone</p>
-        <input
-          className="reg--email-input"
-          type="text"
-          id="email"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          required
-        />
+    <Form className="flex flex-col w-full max-w-xs gap-4 font-sans" validationBehavior="native" onSubmit={handleSubmit}>
+      <h3 className="text-lg">Log In with Telegram:</h3>
+      <Input
+        className="text-gray-500"
+        isRequired
+        errorMessage="Please enter a valid phone number"
+        name="userName"
+        placeholder="Enter your phone"
+        type="phone"
+      />
+      <Input
+        isRequired
+        className="text-gray-500"
+        errorMessage="Please enter a valid password"
+        name="password"
+        placeholder="Enter your password"
+        type="password"
+      />
+      <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
+      <Button  color="primary" size="md" type="submit" >Log In</Button>
+        <Button  color="secondary" size="md" onPress={() => setActiveEmailModal(null)}>
+          Go Back
+        </Button>
       </div>
-      <div>
-        <p>Print password</p>
-        <input
-          className="reg--email-input"
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button 
-        className="button-s" 
-        type="submit"
-      >
-          Login
-      </button>
-      {/* <button onClick={() => setActiveEmailModal(false)}>выйти</button> */}
-    </form>
+  </Form>
   );
 };

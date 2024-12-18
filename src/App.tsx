@@ -35,12 +35,10 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <div className="container">
+    <div className="relative flex flex-col h-full items-center w-full  bg-gray-400">
         <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
         <BurgerMenu activeBurger={activeBurger} />
         <Outlet />
-      </div>
     </div>
   );
 }

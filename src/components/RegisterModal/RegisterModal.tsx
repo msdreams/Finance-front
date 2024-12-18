@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -7,40 +8,48 @@ type Props = {
 }
 
 export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }) => {
-  return (
-    <>
-      <h1 className="login__modal--text">
-        Register <br /> in seconds
-      </h1>
-      <p className="login__modal--text-p">
-        Use your email <br /> or other service to continue <br /> working with
-        MONETA. It's free!
-      </p>
 
-      <div className="login__modal--buttons">
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={() => setActiveEmailModal('RegisterEm')}
-          className="login__modal--button"
-        >
-          <img src="./img/email-button.svg" alt="Email login" />
-          Register with email
+  return (
+    <div className="flex flex-col justify-center w-full space-y-4">
+        <div className="flex flex-col w-full max-w-xs gap-4">
+          <h1 className=" text-2xl font-sans font-bold">
+            Sign Up
+          </h1>
+
+          <Button
+            className="font-sans"
+            onPress={() => setActiveEmailModal("RegisterEm")}
+            color="primary"
+            size="md"
+          >
+            <img src="./img/email-button.svg" alt="Email login" />
+            Sign Up with email
+          </Button>
+
+          <Button
+            color="primary"
+            size="md"
+          >
+          <Link
+            className="font-sans flex flex-row gap-2"
+              to='https://t.me/BudgetApplicationBot'
+              style={{ cursor: "pointer" }}
+            >
+              <img src="./img/telegram.svg" alt="Email login" />
+              Sign Up with Telegram
+          </Link>
+          </Button>
         </div>
 
-        <Link
-          to='https://t.me/BudgetApplicationBot'
-          style={{ cursor: "pointer" }}
-          className="login__modal--button"
+        <div className="flex flex-col justify-center items-center h-6 pt-4">
+        <div
+          onClick={() => setModal("Login")}
+          className="flex flex-row items-center justify-center cursor-pointer hover:border-b-1"
         >
-          <img src="./img/telegram.svg" alt="Email login" />
-          Register with Telegram
-        </Link>
+          <img  className="pb-2 align-baseline" src="./img/work-email-button.svg" alt="Work email" />
+          <span className="align-baseline">Log In</span>
+        </div>
       </div>
-
-      <div onClick={() => setModal('Login')} className="login__modal--button-work-email">
-        <img src="./img/work-email-button.svg" alt="Work email" />
-        Login
-      </div>
-    </>
+    </div>
   );
 };

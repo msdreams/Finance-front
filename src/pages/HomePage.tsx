@@ -165,7 +165,7 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <>
+    <div className="h-screen mt-36">
       <div className="triangle-bg"></div>
       <div className="triangle-bg-up"></div>
       <div
@@ -345,6 +345,6 @@ export const HomePage = () => {
           Add transaction
         </div>
       </div>
-    </>
+    </div>
   );
 };

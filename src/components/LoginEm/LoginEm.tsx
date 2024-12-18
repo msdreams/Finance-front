@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { loginUser } from "../../features/authSlice";
+import { Form, Input, Button } from "@nextui-org/react";
 
 type FormData = {
   userName: string;
   password: string;
 };
 
-export const LoginEm = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+type Props = {
+  setActiveEmailModal: (value:"LoginEm" | "RegisterEm" | "LoginTg" | null) => void;
+}
+
+export const LoginEm: React.FC<Props> = ({setActiveEmailModal}) => {
   const dispatch = useAppDispatch();
 
   const registerUser = async (formData: FormData) => {
@@ -24,43 +27,43 @@ export const LoginEm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    console.log(data)
+
+
     const formData = {
-      userName,
-      password,
+      userName: String(data.email),
+      password: String(data.password),
     };
 
     registerUser(formData);
   };
 
   return (
-    <form className="reg--email" onSubmit={handleSubmit}>
-      <div>
-        <p>Print email</p>
-        <input
-          className="reg--email-input"
-          placeholder="email"
+    <Form className="flex flex-col w-full max-w-xs gap-4 font-sans" validationBehavior="native" onSubmit={handleSubmit}>
+        <h3 className="text-lg">Log In with Email:</h3>
+        <Input
+          className="text-gray-500"
+          isRequired
+          errorMessage="Please enter a valid email"
+          name="email"
+          placeholder="Enter your email"
           type="email"
-          id="email"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          required
         />
-      </div>
-      <div>
-        <p>Print password</p>
-        <input
-          className="reg--email-input"
-          placeholder="password"
-
+        <Input
+          isRequired
+          className="text-gray-500"
+          errorMessage="Please enter a valid password"
+          name="password"
+          placeholder="Enter your password"
           type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
         />
-      </div>
-      <button className="button-s" type="submit">Login</button>
-      {/* <button onClick={() => setActiveEmailModal(false)}>выйти</button> */}
-    </form>
+        <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
+        <Button  color="primary" size="md" type="submit" >Log In</Button>
+          <Button  color="secondary" size="md" onPress={() => setActiveEmailModal(null)}>
+            Go Back
+          </Button>
+        </div>
+    </Form>
   );
 };

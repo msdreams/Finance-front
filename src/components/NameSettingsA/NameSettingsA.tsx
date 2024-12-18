@@ -13,7 +13,7 @@ export const NameSettingsA = () => {
   };
 
   return (
-    <>
+    <div className="h-screen mt-36">
       <h1>NameSettings</h1>
 
       <div className="name__set">
@@ -31,6 +31,6 @@ export const NameSettingsA = () => {
       {accessToken && <button style={{marginTop: '15px', marginBottom: '15px'}} className="name__set-but" onClick={() => handleUnlogin()}>Unlogin</button>}
 
       
-    </>
+    </div>
   );
 };

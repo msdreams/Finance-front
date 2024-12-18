@@ -17,7 +17,7 @@ export const HistoryPage = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="h-screen mt-36">
       <h1>History Page</h1>
 
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -69,6 +69,6 @@ export const HistoryPage = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
