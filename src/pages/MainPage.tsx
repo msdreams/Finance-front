@@ -65,14 +65,14 @@ export const MainPage = () => {
             <div className="absolute opacity-40 left-72">
               <Background />
             </div>
-            <div className="flex flex-col gap-4 mt-6 text-gray-50 font-sans">
-              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-75 shadow-lg">
+            <div className="flex flex-col gap-4 mt-6 text-white font-sans">
+              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
               <span className="font-bold text-xl">EASILY</span> track your personal finances with detailed dashboards
               </div>
-              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-75 shadow-lg">
+              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
               <span className="font-bold text-xl">VISUALIZE</span> your income and expenses with an intuitive scale
               </div>
-              <div className=" p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-75 shadow-lg">
+              <div className=" p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
               <span className="font-bold text-xl">LINK</span> multiple bank accounts, categorize your spending, and track various income
               </div>
             </div>

@@ -92,7 +92,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                   onPress={() => navigate('about')}
                   className="font-sans bg-primary-400"
                 >
-                  Contacts
+                  Contact us
                 </Button>
             </>
           )}
