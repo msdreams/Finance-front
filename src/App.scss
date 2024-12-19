@@ -125,12 +125,12 @@ html, body {
   transform: translate(0, 20px);
 
   transition: all 0.5s;
-  pointer-events: none; /* Включаем взаимодействие при активности */
+  pointer-events: none;
 
   &-is-active {
     opacity: 100%;
     transform: translate(20px, 20px);
-    pointer-events: auto; /* Включаем взаимодействие при активности */
+    pointer-events: auto; 
   }
 }
 

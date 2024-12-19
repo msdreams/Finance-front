@@ -19,8 +19,8 @@ export const AboutPage = () => {
   };
 
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Отключаем стандартное поведение
-    e.currentTarget.reset(); // Сбрасываем все поля формы
+    e.preventDefault(); 
+    e.currentTarget.reset(); 
   };
 
   return (
@@ -29,7 +29,8 @@ export const AboutPage = () => {
         <div className="flex-1 shadow-custom-direction overflow-visible">
           <div className="flex flex-col gap-4 pt-24 lg:pt-36 p-10 xl:px-24 font-sans">
               <p className=" text-2xl mb-6">
-              MONETA is a collaborative project developed by two developers: Adam and
+              MONETA is a collaborative project developed by two developers:
+              Adam and
               Maria.
             </p>
             
