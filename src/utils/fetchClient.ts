@@ -6,13 +6,13 @@ function request<T>(
   url: string,
   method: RequestMethod = 'GET',
   data: any = null,
-  headers: Record<string, string> = {} // Headers can be passed here
+  headers: Record<string, string> = {}
 ): Promise<T> {
   const options: RequestInit = { 
     method,
     headers: {
-      ...headers, // Spread existing headers
-      'Content-Type': 'application/json; charset=UTF-8', // Set Content-Type if data is provided
+      ...headers, 
+      'Content-Type': 'application/json; charset=UTF-8',
     },
   };
 
@@ -22,8 +22,9 @@ function request<T>(
 
   return fetch(BASE_URL + url, options)
     .then(response => {
+
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        return handleError(response);
       }
       return response.json();
     });
@@ -36,3 +37,41 @@ export const client = {
   patch: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PATCH', data, headers),
   delete: (url: string, data: any, headers?: Record<string, string>) => request(url, 'DELETE', data, headers),
 };
+
+// function handleError(response: Response): Promise<never> {
+//   return response.json().then((error) => {
+//     if (error.errors) {
+//       const errorMessage = error.errors.join('\n');
+//       throw new Error(errorMessage);
+//     }
+
+//     if (error.message) {
+//       throw new Error(error.message);
+//     }
+
+//     throw new Error('Unknown error occurred');
+//   });
+// }
+
+
+function handleError(response: Response): Promise<never> {
+  return response.json().then((error) => {
+    if (Array.isArray(error.errors)) {
+      // Если `error` — массив ошибок
+      const errorMessage = error.errors.join('\n');
+      throw new Error(errorMessage);
+    }
+
+    if (typeof error.errors === 'string') {
+      // Если `error` — строка
+      throw new Error(error.errors);
+    }
+
+    if (error.message) {
+      // Если есть ключ `message`
+      throw new Error(error.message);
+    }
+
+    throw new Error('Unknown error occurred');
+  });
+}

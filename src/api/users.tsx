@@ -1,4 +1,4 @@
-import { ForgotPasswordType, userChangePassword, userLogin, userRegister } from "../types/userRegister"
+import { ForgotPasswordType, userChangePassword, userLoginType, userRegister } from "../types/userRegister"
 import { client } from "../utils/fetchClient"
 
 export type UserResponse = {
@@ -17,8 +17,12 @@ export const createUser = (data: userRegister): Promise<UserResponseR> => {
   return client.post('/auth/register', data)
 }
 
-export const LoginUser = (data: userLogin): Promise<UserResponse> => {
-  return client.post('/auth/login', data)
+export const LoginUser = (data: userLoginType): Promise<UserResponse> => {
+  if ('email' in data && 'password' in data) {
+    return client.post('/auth/login-email', data);
+  } else {
+    return client.post('/auth/login-telegram', data);
+  }
 }
 
 export const ForgotPassword = (data: ForgotPasswordType): Promise<UserResponseF> => {

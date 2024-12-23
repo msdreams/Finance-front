@@ -1,5 +1,6 @@
 import { Button, Form, Input, Link, Textarea, User } from "@nextui-org/react";
 import { Background } from "../components/Background";
+import { AdamPhoto, MariaPhoto } from "../Components";
 
 export const AboutPage = () => {
 
@@ -26,7 +27,7 @@ export const AboutPage = () => {
   return (
     <div className="flex flex-col items-center min-h-screen w-full" >
       <div className=" flex flex-col md:flex-row  w-full h-screen  max-w-screen-3xl" >
-        <div className="flex-1 shadow-custom-direction overflow-visible">
+        <div className="flex-1 shadow-custom-direction overflow-visible bg-gray-400 opacity-100 z-10">
           <div className="flex flex-col gap-4 pt-24 lg:pt-36 p-10 xl:px-24 font-sans">
               <p className=" text-2xl mb-6">
               MONETA is a collaborative project developed by two developers:
@@ -37,7 +38,7 @@ export const AboutPage = () => {
             <div className="flex flex-col items-start gap-2" >
             <User
               avatarProps={{
-                src: "https://i.pravatar.cc/150?u=a04258114e29026708c",
+                src: `${AdamPhoto}`,
                 className: "w-20 h-20"
               }}
               description={
@@ -62,7 +63,7 @@ export const AboutPage = () => {
             <div className="flex flex-col items-start gap-2" >
             <User
               avatarProps={{
-                src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                src: `${MariaPhoto}`,
                 className: "w-20 h-20"
               }}
               description={

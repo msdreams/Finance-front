@@ -6,6 +6,7 @@ import { logout, refreshAccessToken } from "./features/authSlice";
 import { useAppDispatch } from "./app/hooks";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { BurgerMenu } from "./components/BurgerMenu";
+import { backgroundImage } from "./Components";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -35,8 +36,12 @@ function App() {
   }
 
   return (
-    <div className="relative flex flex-col h-full items-center w-full  bg-gray-400">
-        <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
+    <div className="relative flex flex-col h-full items-center w-full">
+      <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
+      <div 
+          className="absolute inset-0 bg-cover bg-left-top opacity-40"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        ></div>
         <BurgerMenu activeBurger={activeBurger} />
         <Outlet />
     </div>

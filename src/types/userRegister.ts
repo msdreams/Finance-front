@@ -4,10 +4,15 @@ export type userRegister = {
   repeatPassword: string,
 };
 
-export type userLogin = {
-  userName: string,
-  password: string,
-};
+export type userLoginEmail =
+  { email: string; password: string }
+
+export type userLoginTelegramm =
+{ phoneNumber: string; password: string };
+
+export type userLoginType =
+ | userLoginEmail
+| userLoginTelegramm;
 
 export type userChangePassword = {
   currentPassword: string,

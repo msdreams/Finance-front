@@ -75,7 +75,8 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
               </NavLink>
             </>
           ) : (
-            <>
+              <>
+
               <NavLink
                 className={({ isActive }) =>
                   isActive
@@ -85,6 +86,18 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 to="login"
                 >
                   Log In
+                
+                </NavLink>
+
+                <NavLink
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-serif text-gray-900 font-bold border-b-1.5 border-gray-900" 
+                    : "text-gray-900 font-bold border-b-1.5 border-transparent hover:border-gray-900"
+                }
+                to="register"
+                >
+                  Sign Up
                 
                 </NavLink>
                 

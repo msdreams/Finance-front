@@ -1,13 +1,14 @@
 import { Button } from "@nextui-org/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
-  setActiveEmailModal: React.Dispatch<React.SetStateAction<"LoginEm" | "RegisterEm" | 'LoginTg' | null>>;
-  setModal: React.Dispatch<React.SetStateAction<"Login" | "Register">>
+  setActiveEmailModal: React.Dispatch<React.SetStateAction< "RegisterEm" | null>>;
 }
 
-export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }) => {
+export const RegisterModal: React.FC<Props> = ({ setActiveEmailModal }) => {
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col justify-center w-full space-y-4">
@@ -43,7 +44,7 @@ export const RegisterModal: React.FC<Props> = ({ setModal, setActiveEmailModal }
 
         <div className="flex flex-col justify-center items-center h-6 pt-4">
         <div
-          onClick={() => setModal("Login")}
+          onClick={() => navigate("/login")}
           className="flex flex-row items-center justify-center cursor-pointer hover:border-b-1"
         >
           <img  className="pb-2 align-baseline" src="./img/work-email-button.svg" alt="Work email" />

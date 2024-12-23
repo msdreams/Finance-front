@@ -19,6 +19,7 @@ import { NewIncomeCategoryPage } from "./pages/NewIncomeCategoryPage.tsx";
 import { NewExpenseCategoryPage } from "./pages/NewExpenseCategoryPage";
 import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 import { MainPage } from "./pages/MainPage";
+import { SignUpPage } from './pages/SignUpPage';
 
 
 export const Root = () => {
@@ -29,6 +30,7 @@ export const Root = () => {
           <Route path="/" element={<App />}>
             <Route index element={<MainPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<SignUpPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path='account' element={<ProtectedRoute />}>
               <Route index element={<HomePage />} />

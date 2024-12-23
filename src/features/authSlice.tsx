@@ -17,10 +17,9 @@ const initialState: AuthState = {
   accessToken: localStorage.getItem('accessToken'),
 }
 
-type LoginFormData = {
-  userName: string;
-  password: string;
-};
+type LoginFormData = 
+  | { email: string; password: string }
+  | { phoneNumber: string; password: string };
 
 export const loginUser = createAsyncThunk('auth/loginUser', async (formData: LoginFormData) => {
   const response = await LoginUser(formData);
@@ -40,9 +39,13 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (formData: Log
   return response;
 });
 
-export const registerUser = createAsyncThunk('auth/registerUser', async (formData: userRegister) => {
-  const response: UserResponseR = await createUser(formData);
-  return response;
+export const registerUser = createAsyncThunk('auth/registerUser', async (formData: userRegister,  { rejectWithValue }) => {
+  try {
+    const response: UserResponseR = await createUser(formData);
+    return response;
+  } catch (error: any) {
+    return rejectWithValue(error.message || 'Registration failed');
+  }
 });
 
 export const forgorPassword = createAsyncThunk('auth/forgotPassword', async (formData: ForgotPasswordType) => {
@@ -123,7 +126,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
-      console.log('Password recovery email sent:', action.payload.message); // Выводим сообщение об успешном выполнении
+      console.log('Password recovery email sent:', action.payload.message);
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;

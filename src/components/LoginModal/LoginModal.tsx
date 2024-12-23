@@ -1,28 +1,29 @@
+import { AiOutlineArrowLeft } from "react-icons/ai"; 
 import React, { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { forgorPassword } from "../../features/authSlice";
-import { Button } from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button } from "@nextui-org/react";
+
 
 type Props = {
   setActiveEmailModal: React.Dispatch<
-    React.SetStateAction<"LoginEm" | "RegisterEm" | "LoginTg" | null>
+    React.SetStateAction<"LoginEm" | "LoginTg" | null>
   >;
-  setModal: React.Dispatch<React.SetStateAction<"Login" | "Register">>;
 };
 
-export const LoginModal: React.FC<Props> = ({
-  setModal,
-  setActiveEmailModal,
-}) => {
-  const [inputFPassword, setInputFPassword] = useState("");
+export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
   const [fPassword, setFPassword] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const forgotPasswordHandle = (e: React.FormEvent) => {
+  const forgotPasswordHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.currentTarget));
 
-    dispatch(forgorPassword({ email: inputFPassword }));
+    dispatch(forgorPassword({ email: String(data.email) }));
   };
+
   return (
     <div className="flex flex-col justify-center w-full space-y-4">
       {!fPassword ? (
@@ -51,31 +52,46 @@ export const LoginModal: React.FC<Props> = ({
               Log in with Telegram
           </Button>
             <p
-              className="login__modal--forgot"
+              className="p-2 font-sans text-sm text-primary-400 hover:text-white cursor-pointer"
               onClick={() => setFPassword(true)}
             >
-              Forgot password
+              Forgot password?
             </p>
         </div>
       ) : (
-        <form className="reg--email" onSubmit={forgotPasswordHandle}>
-          <input
-            className="reg--email-input"
-            value={inputFPassword}
-            onChange={(e) => setInputFPassword(e.target.value)}
+          <Form
+            className="flex flex-col w-full max-w-xs gap-4 font-sans"
+            onSubmit={(e) => forgotPasswordHandle(e)}
+            validationBehavior="native"
+          >
+            <div
+              className="flex flex-row justify-center items-center gap-2 cursor-pointer text-primary-400 hover:text-white"
+              onClick={() => setFPassword(false)}
+            >
+              <AiOutlineArrowLeft />
+              <p>back</p>
+            </div>
+           <h3 className="text-lg">Write your email to recover your password:</h3>
+          <Input
+            className="text-gray-500"
+            isRequired
+            errorMessage="Please enter a valid email"
+            name="email"
+            placeholder="Enter your email"
             type="email"
-            placeholder="email"
-            required
-          />
-          <button className="button-s" style={{ marginBottom: "20px" }} type="submit">
-            Recover
-          </button>
-        </form>
+            />
+            <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
+            <Button color="primary" size="md" type="submit">
+              Recover
+            </Button>
+            </div>
+
+        </Form>
       )}
 
       <div className="flex flex-col justify-center items-center h-4">
         <div
-          onClick={() => setModal("Register")}
+          onClick={() => navigate("/register")}
           className="flex flex-row items-center justify-center cursor-pointer hover:border-b-1"
         >
           <img  className="pb-2 align-baseline" src="./img/work-email-button.svg" alt="Work email" />
