@@ -20,6 +20,7 @@ import { fetchGetAllAccounts } from "../features/accountSlice";
 import type {Selection} from "@nextui-org/react";
 import { RootState } from "../app/store";
 import { useSelector } from "react-redux";
+import { LoadingScreen } from "../components/LoadingScreen";
 
 ChartJS.register(
   CategoryScale,
@@ -173,89 +174,98 @@ export const HomePage = () => {
   );
 
   if (isLoading || !allAccounts) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+    return <LoadingScreen />;
   }
 
   return (
-    <div className="flex flex-col items-center w-full bg-primary-600">
-      <div className="p-10 xl:px-24 pt-24 w-full">
-        <div className="flex flex-col text-white gap-10 font-sans bg-primary-800 rounded-lg p-6 md:p-10">
-          <div className="flex flex-col gap-6 md:flex-row md:justify-between">
-            <div className="text-4xl">
-              Balance: {allAccounts[0].balance + "$"}
+    <>
+      {isLoading || !allAccounts ? (
+       <div className="flex items-center justify-center bg-primary-600 h-screen">Loading...</div>
+      ): (
+      <div className="flex flex-col items-center w-full bg-primary-600">
+
+          {/* dashboard */}
+        <div className="p-10 xl:px-24 pt-24 w-full">
+              
+          <div className="flex flex-col text-white gap-10 font-sans bg-primary-800 rounded-lg p-6 md:p-10">
+            <div className="flex flex-col gap-6 md:flex-row md:justify-between">
+              <div className="text-4xl">
+                Balance: {allAccounts[0].balance + "$"}
+              </div>
+
+          {/* accounts */}
+              <div className="flex flex-row gap-4">
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button className="capitalize text-white" variant="bordered">
+                      {selectedValue}
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    disallowEmptySelection
+                    aria-label="Single selection example"
+                    selectedKeys={selectedKeys}
+                    selectionMode="single"
+                    variant="flat"
+                    onSelectionChange={setSelectedKeys}
+                  >
+                    {allAccounts.map((account) => (
+                      <DropdownItem key={account.name}>{account.name}</DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+                <Button isLoading={isLoading} color="primary" size="md" type="submit">
+                  Add account
+                </Button>
+              </div>
             </div>
 
-        {/* accounts */}
-            <div className="flex flex-row gap-4">
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button className="capitalize text-white" variant="bordered">
-                    {selectedValue}
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  disallowEmptySelection
-                  aria-label="Single selection example"
-                  selectedKeys={selectedKeys}
-                  selectionMode="single"
-                  variant="flat"
-                  onSelectionChange={setSelectedKeys}
+            <div className="flex flex-col md:justify-between gap-6 md:flex-row items-end">
+              <div className="flex flex-col gap-6">
+                <Button
+                  onPress={() => navigate("add-transaction")}
+                  className="font-sans bg-primary-400"
                 >
-                  {allAccounts.map((account) => (
-                    <DropdownItem key={account.name}>{account.name}</DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-              <Button isLoading={isLoading} color="primary" size="md" type="submit">
-                Add account
-              </Button>
+                  Add Income
+                </Button>
+
+                <Button
+                  onPress={() => navigate("add-transaction")}
+                  className="font-sans bg-primary-400"
+                >
+                  Add Expense
+                </Button>
+              </div>
+
+              <DateRangePicker className="max-w-xs" label="Time Range" variant="faded" />
             </div>
           </div>
 
-          <div className="flex flex-col md:justify-between gap-6 md:flex-row items-end">
-            <div className="flex flex-col gap-6">
-              <Button
-                onPress={() => navigate("add-transaction")}
-                className="font-sans bg-primary-400"
-              >
-                Add Income
-              </Button>
-
-              <Button
-                onPress={() => navigate("add-transaction")}
-                className="font-sans bg-primary-400"
-              >
-                Add Expense
-              </Button>
+          {/* Charts */}
+          <div className="mt-10">
+            <div className="flex-1 flex-col">
+              <Line
+                data={lineData}
+                options={lineOptions}
+                plugins={[backgroundPlugin]}
+                className="flex"
+              />
             </div>
 
-            <DateRangePicker className="max-w-xs" label="Time Range" variant="faded" />
-          </div>
-        </div>
+            <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
+              <div className="flex-1 flex-col overflow-hidden">
+                <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
+              </div>
 
-        {/* Charts */}
-        <div className="mt-10">
-          <div className="flex-1 flex-col">
-            <Line
-              data={lineData}
-              options={lineOptions}
-              plugins={[backgroundPlugin]}
-              className="flex"
-            />
-          </div>
-
-          <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
-            <div className="flex-1 flex-col overflow-hidden">
-              <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
-            </div>
-
-            <div className="flex-1 flex-col overflow-hidden">
-              <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
+              <div className="flex-1 flex-col overflow-hidden">
+                <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      )}
+    </>
   );
 };
 
