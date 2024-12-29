@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { changePassword, createUser, ForgotPassword, LoginUser, UserResponse, UserResponseR } from "../api/users";
+import { changePassword, createUser, ForgotPassword, LoginUser, UserResponse, UserResponseCh, UserResponseR } from "../api/users";
 import Cookies from 'js-cookie'
 import { ForgotPasswordType, userChangePassword, userRegister } from "../types/userRegister";
 
@@ -8,6 +8,7 @@ type AuthState = {
   loading: boolean;
   error: string | null;
   accessToken: string | null;
+  message: string | null;
 }
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
   loading: false,
   error: null,
   accessToken: localStorage.getItem('accessToken'),
+  message: null,
 }
 
 type LoginFormData = 
@@ -22,33 +24,36 @@ type LoginFormData =
   | { phoneNumber: string; password: string };
 
 export const loginUser = createAsyncThunk('auth/loginUser', async (formData: LoginFormData) => {
-  const response = await LoginUser(formData);
-  localStorage.setItem('accessToken', response.accessToken);
+    const response = await LoginUser(formData);
 
-  const expiresDate = new Date();
-  expiresDate.setDate(expiresDate.getDate() + 7);
+    if (!response?.accessToken || !response?.refreshToken) {
+      throw new Error('Invalid response: missing tokens');
+    }
 
-  Cookies.set('refreshToken', response.refreshToken, {
-    expires: expiresDate,
-    path: '/',
-    domain: '.budgetapp.space',
-    secure: true,
-    sameSite: 'None',
-  });
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('accessToken', response.accessToken);
+    }
 
-  return response;
+    const expiresDate = new Date();
+    expiresDate.setDate(expiresDate.getDate() + 7);
+
+    Cookies.set('refreshToken', response.refreshToken, {
+      expires: expiresDate,
+      path: '/',
+      domain: '.budgetapp.space',
+      secure: true,
+      sameSite: 'None',
+    });
+
+    return response;
 });
 
-export const registerUser = createAsyncThunk('auth/registerUser', async (formData: userRegister,  { rejectWithValue }) => {
-  try {
+export const registerUser = createAsyncThunk('auth/registerUser', async (formData: userRegister, { rejectWithValue }) => {
     const response: UserResponseR = await createUser(formData);
     return response;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Registration failed');
-  }
 });
 
-export const forgorPassword = createAsyncThunk('auth/forgotPassword', async (formData: ForgotPasswordType) => {
+export const forgotPassword = createAsyncThunk('auth/forgotPassword', async (formData: ForgotPasswordType) => {
   const response = ForgotPassword(formData);
   return response;
 })
@@ -60,7 +65,7 @@ export const changePasswordUser = createAsyncThunk('auth/changePasswordUser', as
     throw new Error('Access token is missing');
   }
 
-  const response: UserResponseR = await changePassword(formData, accessToken);
+  const response: UserResponseCh = await changePassword(formData, accessToken);
 
   return response;
 });
@@ -108,11 +113,14 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.message = null;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
       state.user = action.payload;
       state.accessToken = action.payload.accessToken;
+      console.log(action.payload.accessToken)
+
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
@@ -123,28 +131,31 @@ export const authSlice = createSlice({
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.message = null;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
-      console.log('Password recovery email sent:', action.payload.message);
+      state.message = action.payload.response;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Registration failed';
+      console.log(action.error.message)
     });
 
     //forgot password
-    builder.addCase(forgorPassword.pending, (state) => {
+    builder.addCase(forgotPassword.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.message = null;
     })
 
-    builder.addCase(forgorPassword.fulfilled, (state, action) => {
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
       state.loading = false;
-      console.log(action.payload.response);
+      state.message = action.payload.response;
     })
 
-    builder.addCase(forgorPassword.rejected, (state, action) => {
+    builder.addCase(forgotPassword.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'forgorPassword failed';
     })

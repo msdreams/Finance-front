@@ -10,10 +10,16 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useEffect, useState } from "react";
+import {DateRangePicker} from "@nextui-org/date-picker";
+
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchGetAllAccounts } from "../features/accountSlice";
+import type {Selection} from "@nextui-org/react";
+import { RootState } from "../app/store";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -42,14 +48,14 @@ const lineData = {
   labels: ["January", "February", "March", "April", "May", "June"],
   datasets: [
     {
-      label: "Sales",
+      label: "Income",
       data: [30, 50, 40, 60, 70, 80],
       fill: false,
       borderColor: "rgba(75, 192, 192, 1)",
       tension: 0.1,
     },
     {
-      label: "Sales",
+      label: "Expence",
       data: [50, 30, 10, 50, 60, 60],
       fill: false,
       borderColor: "red",
@@ -66,7 +72,11 @@ const lineOptions = {
     },
     title: {
       display: true,
-      text: "Monthly Sales Data",
+      text: "Monthly Cashflow Data",
+      font: {
+        size: 24, 
+        weight: 700, 
+      },
     },
     customCanvasBackgroundColor: {
       color: "black",
@@ -128,6 +138,10 @@ const pieOptions = {
     title: {
       display: true,
       text: "Votes Distribution",
+      font: {
+        size: 24, 
+        weight: 700, 
+      },
     },
     customCanvasBackgroundColor: {
       color: "black",
@@ -137,214 +151,111 @@ const pieOptions = {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-
-  const [schedule, setSchedule] = useState<"Pie" | "Line">("Line");
-  const [modalFilter, setModalFilter] = useState(false);
-  const [modalData, setModalData] = useState(false);
-  const [modalFirst, setModalFirst] = useState(false);
-  const [modalBalance, setModalBalance] = useState(false);
-  const [modalAccount, setModalAccount] = useState(false);
-
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const dispatch = useAppDispatch();
-  const { allAccounts } = useAppSelector((state) => state.account);
+  const isLoading = useSelector((state: RootState) => state.account.loading);
+  const { allAccounts } = useAppSelector((state: RootState) => state.account);
 
-  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value);
-  };
-
-  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(e.target.value);
-  };
-
-  const isEndDateValid = endDate === "" || endDate >= startDate;
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (allAccounts && allAccounts.length > 0) {
+      setSelectedKeys(new Set([allAccounts[0].name]));
+    }
+  }, [allAccounts]);
+
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
+    [selectedKeys]
+  );
+
+  if (isLoading || !allAccounts) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
 
   return (
-    <div className="h-screen mt-36">
-      <div className="triangle-bg"></div>
-      <div className="triangle-bg-up"></div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              style={{ height: "38px" }}
-              src="./img/Logo(Nav).svg"
-              alt="img"
-            />
-            <div style={{ position: "relative" }}>
-              <button
-                onClick={() => setModalFirst(!modalFirst)}
-                style={{ height: "38px" }}
-                className="animated-button"
-              >
-                Filter
-              </button>
+    <div className="flex flex-col items-center w-full bg-primary-600">
+      <div className="p-10 xl:px-24 pt-24 w-full">
+        <div className="flex flex-col text-white gap-10 font-sans bg-primary-800 rounded-lg p-6 md:p-10">
+          <div className="flex flex-col gap-6 md:flex-row md:justify-between">
+            <div className="text-4xl">
+              Balance: {allAccounts[0].balance + "$"}
+            </div>
 
-              {modalFirst && (
-                <div className="home__modal-filter">
-                  <p>Expense</p>
-                  <p>Income</p>
-                </div>
-              )}
+        {/* accounts */}
+            <div className="flex flex-row gap-4">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button className="capitalize text-white" variant="bordered">
+                    {selectedValue}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Single selection example"
+                  selectedKeys={selectedKeys}
+                  selectionMode="single"
+                  variant="flat"
+                  onSelectionChange={setSelectedKeys}
+                >
+                  {allAccounts.map((account) => (
+                    <DropdownItem key={account.name}>{account.name}</DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Button isLoading={isLoading} color="primary" size="md" type="submit">
+                Add account
+              </Button>
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              style={{ opacity: "40%", height: "38px" }}
-              src="./img/Logo(Nav).svg"
-              alt="img"
-            />
-
-            <div style={{ position: "relative" }}>
-              <button
-                onClick={() => setModalData(!modalData)}
-                style={{ height: "38px" }}
-                className="animated-button"
+          <div className="flex flex-col md:justify-between gap-6 md:flex-row items-end">
+            <div className="flex flex-col gap-6">
+              <Button
+                onPress={() => navigate("add-transaction")}
+                className="font-sans bg-primary-400"
               >
-                Period
-              </button>
+                Add Income
+              </Button>
 
-              {modalData && (
-                <div className="home__modal-data">
-                  <div>
-                    <input
-                      type="date"
-                      id="startDate"
-                      value={startDate}
-                      onChange={handleStartDateChange}
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      type="date"
-                      id="endDate"
-                      value={endDate}
-                      onChange={handleEndDateChange}
-                      min={startDate} // Ограничение, чтобы конец диапазона не был меньше начала
-                    />
-                    {!isEndDateValid && (
-                      <p style={{ color: "red" }}>
-                        End date cannot be before start date
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <p>From: {startDate || "Not selected"} </p>
-                    <p>To: {endDate || "Not selected"}</p>
-                  </div>
-                </div>
-              )}
+              <Button
+                onPress={() => navigate("add-transaction")}
+                className="font-sans bg-primary-400"
+              >
+                Add Expense
+              </Button>
             </div>
+
+            <DateRangePicker className="max-w-xs" label="Time Range" variant="faded" />
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            columnGap: "3px",
-            position: "relative",
-            marginBottom: "14px",
-            marginTop: "14px",
-          }}
-        >
-          <p onClick={() => setModalAccount(!modalAccount)} className="home__modal-balance">
-            Balance: {allAccounts ? allAccounts[0].balance + "$" : 0} ∨
-          </p>
-          {modalAccount && (
-            <div className="home__modal-account">
-              {allAccounts?.map(account => (
-                <p>{account.name}</p>
-              ))}
+        {/* Charts */}
+        <div className="mt-10">
+          <div className="flex-1 flex-col">
+            <Line
+              data={lineData}
+              options={lineOptions}
+              plugins={[backgroundPlugin]}
+              className="flex"
+            />
+          </div>
+
+          <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
+            <div className="flex-1 flex-col overflow-hidden">
+              <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
             </div>
-          )}
 
-          {modalBalance && (
-            <div className="home__modal-balance-r">
-              <p>Expense</p>
-              <p>Income</p>
+            <div className="flex-1 flex-col overflow-hidden">
+              <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
             </div>
-          )}
-        </div>
-
-        <div style={{ position: "relative" }}>
-          <button
-            onClick={() => setModalFilter(!modalFilter)}
-            style={{ height: "38px" }}
-            className="animated-button"
-          >
-            Filter
-          </button>
-
-          {modalFilter && (
-            <div className="home__modal-filter">
-              <p>Expense</p>
-              <p>Income</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {schedule === "Line" ? (
-        <div style={{ width: "100%", margin: "0 auto", marginBottom: "30px" }}>
-          <Line
-            data={lineData}
-            options={lineOptions}
-            plugins={[backgroundPlugin]}
-          />
-        </div>
-      ) : (
-        <div style={{ width: "100%", margin: "0 auto" }}>
-          <Pie
-            data={pieData}
-            options={pieOptions}
-            plugins={[backgroundPlugin]}
-          />
-        </div>
-      )}
-
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div className="home__change">
-          <img
-            onClick={() => setSchedule("Pie")}
-            src="./img/change-pie.svg"
-            alt="img"
-            className="change-pie-img"
-          />
-          <img
-            onClick={() => setSchedule("Line")}
-            src="./img/change-line.svg"
-            alt="img"
-            className="change-line-img"
-          />
-        </div>
-
-        <div
-          onClick={() => navigate("/add-transaction")}
-          className="transaction__button"
-        >
-          Add transaction
+          </div>
         </div>
       </div>
     </div>
   );
 };
+

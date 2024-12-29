@@ -45,7 +45,6 @@ export const Root = () => {
               <Route path="settings" element={<NameSettingsA />} />
               <Route path="add-transaction" element={<AddTransaction />} />
               <Route path="all-categories" element={<AllCategories />} />
-
             </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />

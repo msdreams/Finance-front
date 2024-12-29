@@ -38,22 +38,6 @@ export const client = {
   delete: (url: string, data: any, headers?: Record<string, string>) => request(url, 'DELETE', data, headers),
 };
 
-// function handleError(response: Response): Promise<never> {
-//   return response.json().then((error) => {
-//     if (error.errors) {
-//       const errorMessage = error.errors.join('\n');
-//       throw new Error(errorMessage);
-//     }
-
-//     if (error.message) {
-//       throw new Error(error.message);
-//     }
-
-//     throw new Error('Unknown error occurred');
-//   });
-// }
-
-
 function handleError(response: Response): Promise<never> {
   return response.json().then((error) => {
     if (Array.isArray(error.errors)) {

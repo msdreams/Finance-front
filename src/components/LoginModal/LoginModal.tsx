@@ -1,9 +1,11 @@
 import { AiOutlineArrowLeft } from "react-icons/ai"; 
 import React, { useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
-import { forgorPassword } from "../../features/authSlice";
+import { forgotPassword } from "../../features/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from "@nextui-org/react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 
 type Props = {
@@ -16,14 +18,17 @@ export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
   const [fPassword, setFPassword] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const error = useSelector((state: RootState) => state.auth.error);
+  const successMessage = useSelector((state: RootState) => state.auth.message);
+  const isLoading = useSelector((state: RootState) => state.auth.loading); 
+  
   const forgotPasswordHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-
-    dispatch(forgorPassword({ email: String(data.email) }));
+    const data = Object.fromEntries(new FormData(e.currentTarget));   
+    dispatch(forgotPassword({ email: String(data.email) }));
   };
-
+  
+  
   return (
     <div className="flex flex-col justify-center w-full space-y-4">
       {!fPassword ? (
@@ -59,6 +64,7 @@ export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
             </p>
         </div>
       ) : (
+          <>
           <Form
             className="flex flex-col w-full max-w-xs gap-4 font-sans"
             onSubmit={(e) => forgotPasswordHandle(e)}
@@ -71,22 +77,32 @@ export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
               <AiOutlineArrowLeft />
               <p>back</p>
             </div>
-           <h3 className="text-lg">Write your email to recover your password:</h3>
-          <Input
-            className="text-gray-500"
-            isRequired
-            errorMessage="Please enter a valid email"
-            name="email"
-            placeholder="Enter your email"
-            type="email"
-            />
-            <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
-            <Button color="primary" size="md" type="submit">
-              Recover
-            </Button>
-            </div>
+              {successMessage ? (
+                <div>{ successMessage }</div>
+              ) : (
+              <>
+                <h3 className="text-lg">Write your email to recover your password:</h3>
+                <Input
+                  className="text-gray-500"
+                  isRequired
+                  errorMessage="Please enter a valid email"
+                  name="email"
+                  placeholder="Enter your email"
+                  type="email"
+                />
+    
+              {error && <div className="text-warning-300">{error} </div>}
+    
+                <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
+                <Button isLoading={isLoading} color="primary" size="md" type="submit">
+                  Recover
+                </Button>
+                </div>
+              </>
+              )}
 
-        </Form>
+          </Form>
+          </>
       )}
 
       <div className="flex flex-col justify-center items-center h-4">

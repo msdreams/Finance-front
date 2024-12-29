@@ -23,3 +23,9 @@ export type userChangePassword = {
 export type ForgotPasswordType = {
   email: string,
 }
+
+export type mailToSupportType = {
+  name: string,
+  email: string,
+  message: string,
+}

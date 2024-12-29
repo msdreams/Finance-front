@@ -26,8 +26,6 @@ html, body {
   padding: 0;
 }
 
-
-
 .transaction__button {
   cursor: pointer;
   border-radius: 8px;
@@ -227,32 +225,6 @@ html, body {
 
   &:hover {
     transform: scale(1.05);
-  }
-}
-
-.triangle-bg {
-  background-image: url("../public/img/triagle.svg");
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  background-size: 50%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -5;
-
-  &-up {
-    background-image: url("../public/img/triagle-up.svg");
-    background-position: right top;
-    background-repeat: no-repeat;
-    background-size: 60%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -3;
   }
 }
 

@@ -5,7 +5,7 @@ import { DataAllTarget } from "../api/target";
 
 type AuthState = {
   allTransfers: GetAllTransfers | null;
-  allAccounts:GetAllAccounts | null;
+  allAccounts: GetAllAccounts | null;
   accountDefault: AccountPut | null;
   loading: boolean;
   error: string | null;
@@ -74,7 +74,6 @@ export const fetchGetAllAccounts = createAsyncThunk('account/GetAllAccounts', as
 
   if (accessToken) {
     const response = await getAllAccounts(accessToken);
-
     return response
   }
 })
@@ -107,71 +106,69 @@ export const accountSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(UpdateAccount.fulfilled, (state) => {
-      state.loading = false;
-    })
     .addCase(UpdateAccount.pending, (state) => {
       state.loading = true;
+    })
+    .addCase(UpdateAccount.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(UpdateAccount.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to UpdateAccount';
     })
-
-    .addCase(SetAccountByDefault.fulfilled, (state) => {
-      state.loading = false;
-    })
+    
     .addCase(SetAccountByDefault.pending, (state) => {
       state.loading = true;
+    })
+    .addCase(SetAccountByDefault.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(SetAccountByDefault.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to SetAccountByDefault';
     })
-
-    .addCase(AddTransfer.fulfilled, (state) => {
-      state.loading = false;
-    })
+    
     .addCase(AddTransfer.pending, (state) => {
       state.loading = true;
+    })
+    .addCase(AddTransfer.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(AddTransfer.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to AddTransfer';
     })
-
-    .addCase(AddAccount.fulfilled, (state) => {
-      state.loading = false;
-    })
+    
     .addCase(AddAccount.pending, (state) => {
       state.loading = true;
+    })
+    .addCase(AddAccount.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(AddAccount.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to AddAccount';
     })
-
-    .addCase(fetchGetAllTransfers.fulfilled, (state) => {
-      state.loading = false;
-    })
+    
     .addCase(fetchGetAllTransfers.pending, (state, action) => {
       state.loading = true;
-      state.allTransfers = action.payload ? action.payload : null; // Устанавливаем полученные категории расходов
-
+      state.allTransfers = action.payload ? action.payload : null; 
+    })
+    .addCase(fetchGetAllTransfers.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(fetchGetAllTransfers.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to GetAllTransfers';
     })
-
+    
     .addCase(fetchGetAllAccounts.pending, (state) => {
-      state.loading = false;
+      state.loading = true;
     })
     .addCase(fetchGetAllAccounts.fulfilled, (state, action) => {
-      console.log("Accounts loaded into state:", action.payload); // Логируем, что приходят данные
-
-      state.loading = true;
-      state.allAccounts = action.payload ? action.payload : null; // Устанавливаем полученные категории расходов
+      console.log("Accounts loaded into state:", action.payload); 
+      state.loading = false;
+      state.allAccounts = action.payload ? action.payload : null;
     })
     .addCase(fetchGetAllAccounts.rejected, (state, action) => {
       state.loading = false;

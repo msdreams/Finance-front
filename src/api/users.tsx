@@ -6,9 +6,13 @@ export type UserResponse = {
   refreshToken: string,
 }
 
-export type UserResponseR = {
+export type UserResponseCh = {
   message: string;
+} 
+export type UserResponseR =  {
+  response: string;
 }
+
 export type UserResponseF = {
   response: string;
 }
@@ -29,9 +33,10 @@ export const ForgotPassword = (data: ForgotPasswordType): Promise<UserResponseF>
   return client.post('/auth/forgot-password', data)
 }
 
-export const changePassword = (data: userChangePassword, accessToken: string): Promise<UserResponseR> => {
+export const changePassword = (data: userChangePassword, accessToken: string): Promise<UserResponseCh> => {
   return client.post('/auth/change-password', data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   });
 };
+

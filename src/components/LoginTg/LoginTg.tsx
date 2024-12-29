@@ -3,15 +3,18 @@ import { loginUser } from "../../features/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from "@nextui-org/react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 type Props = {
   setActiveEmailModal: (value:"LoginEm" | "LoginTg" | null) => void;
 }
 
-export const LoginTg: React.FC<Props> = ({setActiveEmailModal}) => {
+export const LoginTg: React.FC<Props> = ({ setActiveEmailModal }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const error = useSelector((state: RootState) => state.auth.error);
+  const isLoading = useSelector((state: RootState) => state.auth.loading); 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,12 +28,11 @@ export const LoginTg: React.FC<Props> = ({setActiveEmailModal}) => {
     };
   
     dispatch(loginUser(formData))
-      .then(() => {
-        navigate('/account');
-      })
-      .catch((error: any) => {
-        console.error("Error:", error);
-      });
+    .then((response) => {
+      if (response.payload) {
+        navigate('/account')
+      }
+    });
   };
 
   return (
@@ -60,7 +62,9 @@ export const LoginTg: React.FC<Props> = ({setActiveEmailModal}) => {
         type="password"
       />
       <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
-      <Button  color="primary" size="md" type="submit" >Log In</Button>
+      {error && <div className="text-warning-300"> Log In failed: <br /> {error} </div>}
+
+      <Button isLoading={isLoading} color="primary" size="md" type="submit" >Log In</Button>
       </div>
   </Form>
   );

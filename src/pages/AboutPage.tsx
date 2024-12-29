@@ -1,8 +1,11 @@
 import { Button, Form, Input, Link, Textarea, User } from "@nextui-org/react";
 import { Background } from "../components/Background";
 import { AdamPhoto, MariaPhoto } from "../Components";
+import { mailToSupport } from "../api/support";
+import { useState } from "react";
 
 export const AboutPage = () => {
+  const [isSend, setIsSend] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,7 +19,8 @@ export const AboutPage = () => {
       message: String(data.repeatPassword),
     };
 
-    // handleSendEmail(formData);
+    mailToSupport(formData)
+      .then(() => setIsSend(true))
   };
 
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +93,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        <div className="flex-1 flex-col bg-primary h-[500px] md:h-screen flex overflow-hidden">
+        <div className="flex-1 flex-col bg-primary-600 h-[500px] md:h-screen flex overflow-hidden">
           <div className="flex flex-col px-10 pt-24 lg:pt-36 relative">
             <div className="absolute opacity-10 left-60">
             <Background />
@@ -98,7 +102,11 @@ export const AboutPage = () => {
             <span className=" text-2xl lg:text-4xl text-gray-200 font-bold mb-8">
               Contact Us
             </span>
-            <Form
+
+            {isSend ? (
+              <div className="text-2xl lg:text-xl text-gray-200 p-6 border-small rounded-lg">Your message has been sent, please wait for a response from our support team. Thank you! </div>
+            ) : (
+              <Form
               className="w-full max-w-xs flex flex-col space-y-6 font-sans"
               validationBehavior="native"
               onSubmit={(e) => handleSubmit(e)}
@@ -132,6 +140,7 @@ export const AboutPage = () => {
                 </Button>
               </div>
             </Form>
+            )}
           </div>
           </div>
       </div>

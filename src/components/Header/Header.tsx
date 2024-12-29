@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { FiSettings } from "react-icons/fi"; 
+import { NavLink, useLocation } from "react-router-dom";
 import "./Header.scss";
-import classnames from "classnames";
 import { useAppSelector } from "../../app/hooks";
 import { Button } from "@nextui-org/react";
 import { useNavigate } from 'react-router-dom';
-
 
 type Props = {
   activeBurger: boolean;
@@ -14,10 +13,12 @@ type Props = {
 export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
   const { accessToken } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname)
 
   return (
     <div className="absolute w-full flex flex-col justify-center z-50">
-      <div className="flex flex-row items-center justify-between py-2 p-10 xl:px-24 max-w-screen-2xl">
+      <div className="flex text-lg flex-row items-center justify-between py-2 p-10 xl:px-24 max-w-screen-2xl">
           {accessToken ? (
                 <NavLink to='account' className="flex flex-row items-center">
                 <img src="./img/Logo(Nav).svg" alt="img" />
@@ -36,42 +37,54 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
             alt=""
           />
         </nav>
-        <nav className="header__nav">
+
+        <nav className="font-sans text-lg border-b-1.5 border-transparent text-gray-900 flex flex-row justify-center items-center gap-10">
           {accessToken ? (
             <>
               <NavLink
+                className={
+                  location.pathname === '/account'
+                    ? " border-b-1.5 border-gray-900" 
+                    : " border-b-1.5 border-transparent hover:border-gray-900"      
+                }
+                to="account"
+              >
+                Home
+              </NavLink>
+
+              <NavLink
                 className={({ isActive }) =>
-                  classnames({
-                    "nav-item-is-active": isActive,
-                    "nav-item": !isActive,
-                  })
+                  isActive
+                    ? " border-b-1.5 border-gray-900" 
+                    : " border-b-1.5 border-transparent hover:border-gray-900"
                 }
                 to="account/plan"
               >
                 Plan
               </NavLink>
+
               <NavLink
                 className={({ isActive }) =>
-                  classnames({
-                    "nav-item-is-active": isActive,
-                    "nav-item": !isActive,
-                  })
+                  isActive
+                    ? "border-b-1.5 border-gray-900" 
+                    : "border-b-1.5 border-transparent hover:border-gray-900"
                 }
                 to="account/history"
               >
                 History
               </NavLink>
 
+              <Button
+                  onPress={() => navigate('about')}
+                  className="font-sans bg-primary-400"
+                >
+                  Contact us
+              </Button>
+              
               <NavLink
-                className={({ isActive }) =>
-                  classnames({
-                    "nav-item-is-active": isActive,
-                    "nav-item": !isActive,
-                  })
-                }
                 to="account/settings"
               >
-                Settings
+                <FiSettings size={28} color="black" />
               </NavLink>
             </>
           ) : (
@@ -80,20 +93,19 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
               <NavLink
                 className={({ isActive }) =>
                   isActive
-                    ? "font-serif text-gray-900 font-bold border-b-1.5 border-gray-900" 
-                    : "text-gray-900 font-bold border-b-1.5 border-transparent hover:border-gray-900"
+                    ? " border-b-1.5 border-gray-900" 
+                    : "border-b-1.5 border-transparent hover:border-gray-900"
                 }
                 to="login"
                 >
                   Log In
-                
                 </NavLink>
 
                 <NavLink
                 className={({ isActive }) =>
                   isActive
-                    ? "font-serif text-gray-900 font-bold border-b-1.5 border-gray-900" 
-                    : "text-gray-900 font-bold border-b-1.5 border-transparent hover:border-gray-900"
+                    ? " border-b-1.5 border-gray-900" 
+                    : "border-b-1.5 border-transparent hover:border-gray-900"
                 }
                 to="register"
                 >
