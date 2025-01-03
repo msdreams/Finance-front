@@ -19,7 +19,7 @@ const initialState: AuthState = {
 export const IncomeUpdateCategory = createAsyncThunk(
   'expenseIncomeCategory/IncomeUpdateCategory', 
   async ({ id, data }: { id: string; data: DataNewName }) => {
-    const accessToken = localStorage.getItem('accessToken'); // исправили вызов localStorage
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       throw new Error("Access token not found");
@@ -149,7 +149,6 @@ export const ExpenseDeleteCategory = createAsyncThunk('expenseIncomeCategory/Exp
   }
 })
 
-
 export const expenseIncomeCategorySlice = createSlice({
   name: 'expenseIncomeCategory',
   initialState,
@@ -158,11 +157,11 @@ export const expenseIncomeCategorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(IncomeUpdateCategory.fulfilled, (state) => {
-      state.loading = false;
-    })
     .addCase(IncomeUpdateCategory.pending, (state) => {
       state.loading = true;
+    })
+    .addCase(IncomeUpdateCategory.fulfilled, (state) => {
+      state.loading = false;
     })
     .addCase(IncomeUpdateCategory.rejected, (state, action) => {
       state.loading = false;
@@ -208,6 +207,7 @@ export const expenseIncomeCategorySlice = createSlice({
     })
     .addCase(IncomeGetAllCategories.fulfilled, (state, action) => {
       state.loading = false; // Загрузка завершена
+      console.log("Categories loaded into state:", action.payload); 
       state.incomeCategoryAll = action.payload; // Устанавливаем полученные категории доходов
     })
     .addCase(IncomeGetAllCategories.rejected, (state, action) => {
@@ -217,7 +217,7 @@ export const expenseIncomeCategorySlice = createSlice({
 
     // --- Обработка успешного ответа на запрос получения всех категорий расходов ---
     .addCase(ExpenseGetAllCategories.pending, (state) => {
-      state.loading = true; // Начинаем загрузку
+      state.loading = true; 
     })
     .addCase(ExpenseGetAllCategories.fulfilled, (state, action) => {
       state.loading = false; // Загрузка завершена

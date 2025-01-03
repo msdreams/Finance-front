@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import {DateRangePicker} from "@nextui-org/date-picker";
+import { DateRangePicker } from "@nextui-org/date-picker";
 
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
@@ -20,7 +20,10 @@ import { fetchGetAllAccounts } from "../features/accountSlice";
 import type {Selection} from "@nextui-org/react";
 import { RootState } from "../app/store";
 import { useSelector } from "react-redux";
-import { LoadingScreen } from "../components/LoadingScreen";
+import { FormMoneyTransfer } from "../components/FormMoneyTransfer";
+import {Tabs, Tab} from "@nextui-org/react";
+import { ExpenseGetAllCategories, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
+import { logout, refreshAccessToken } from "../features/authSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -52,7 +55,7 @@ const lineData = {
       label: "Income",
       data: [30, 50, 40, 60, 70, 80],
       fill: false,
-      borderColor: "rgba(75, 192, 192, 1)",
+      borderColor: "rgba(175, 222, 222, 1)",
       tension: 0.1,
     },
     {
@@ -154,12 +157,27 @@ export const HomePage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.account.loading);
-  const { allAccounts } = useAppSelector((state: RootState) => state.account);
 
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set());
+  const { allAccounts } = useAppSelector((state: RootState) => state.account);
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const { expenseCategoryAll, incomeCategoryAll } = useAppSelector(
+    (state) => state.expenseIncomeCategory
+  );
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
+    dispatch(IncomeGetAllCategories());
+
+    const interval = setInterval(() => {
+      dispatch(refreshAccessToken())
+        .unwrap()
+        .catch((error) => {
+          console.error("Failed to refresh token:", error);
+            dispatch(logout());
+        });
+    }, 15 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, [dispatch]);
 
   useEffect(() => {
@@ -173,31 +191,34 @@ export const HomePage = () => {
     [selectedKeys]
   );
 
-  if (isLoading || !allAccounts) {
-    return <LoadingScreen />;
-  }
+  const selectedIndex = useMemo(() => {
+    const key = Array.from(selectedKeys).join(", ");
+    return key.split("-")[0] || ""; // Индекс до `-`
+  }, [selectedKeys]);
+
+  console.log(selectedIndex)
 
   return (
     <>
-      {isLoading || !allAccounts ? (
-       <div className="flex items-center justify-center bg-primary-600 h-screen">Loading...</div>
-      ): (
-      <div className="flex flex-col items-center w-full bg-primary-600">
-
-          {/* dashboard */}
-        <div className="p-10 xl:px-24 pt-24 w-full">
-              
-          <div className="flex flex-col text-white gap-10 font-sans bg-primary-800 rounded-lg p-6 md:p-10">
+    {isLoading || !allAccounts ? (
+     <div className="flex items-center justify-center bg-primary-600 h-[1200px] w-full"></div>
+    ): (
+    <div className="flex flex-col items-center w-full bg-primary-600 min-h-screen">
+        {/* dashboard */}
+      <div className="flex flex-col lg:flex-row gap-6 p-10 font-sans xl:px-24 pt-24 w-full animate-fadeIn">
+        
+           {/* account data */}
+        <div className="flex-2 ">
+          <div className="flex flex-col text-white gap-6 bg-gray-700 rounded-lg p-6 md:p-10 shadow-lg">
             <div className="flex flex-col gap-6 md:flex-row md:justify-between">
-              <div className="text-4xl">
-                Balance: {allAccounts[0].balance + "$"}
+              <div className="text-3xl min-w-[240px]">
+                Balance: {allAccounts[1].balance + "$"}
               </div>
 
-          {/* accounts */}
               <div className="flex flex-row gap-4">
                 <Dropdown>
                   <DropdownTrigger>
-                    <Button className="capitalize text-white" variant="bordered">
+                    <Button className="capitalize text-white" variant="bordered" >
                       {selectedValue}
                     </Button>
                   </DropdownTrigger>
@@ -209,63 +230,72 @@ export const HomePage = () => {
                     variant="flat"
                     onSelectionChange={setSelectedKeys}
                   >
-                    {allAccounts.map((account) => (
-                      <DropdownItem key={account.name}>{account.name}</DropdownItem>
+                    {allAccounts.map((account, i) => (
+                      <DropdownItem key={`${i}-${account.name}`}>{account.name}</DropdownItem>
                     ))}
                   </DropdownMenu>
                 </Dropdown>
-                <Button isLoading={isLoading} color="primary" size="md" type="submit">
-                  Add account
-                </Button>
               </div>
             </div>
-
-            <div className="flex flex-col md:justify-between gap-6 md:flex-row items-end">
-              <div className="flex flex-col gap-6">
-                <Button
-                  onPress={() => navigate("add-transaction")}
-                  className="font-sans bg-primary-400"
-                >
-                  Add Income
-                </Button>
-
-                <Button
-                  onPress={() => navigate("add-transaction")}
-                  className="font-sans bg-primary-400"
-                >
-                  Add Expense
-                </Button>
+                  {/* transactions */}
+              <div className="flex flex-col gap-1 lg:max-w-[400px] pt-2">
+                <Tabs aria-label="Options" color="primary" radius="full" size="md">
+                  <Tab key="Add Income" title="Add Income">
+                    <FormMoneyTransfer
+                        allAccounts={allAccounts}
+                        category={incomeCategoryAll}
+                      />
+                  </Tab>
+                  <Tab key="Add Expense" title="Add Expense">
+                    <FormMoneyTransfer
+                        allAccounts={allAccounts}
+                        category={expenseCategoryAll}
+                      />
+                  </Tab>
+                </Tabs>
               </div>
-
-              <DateRangePicker className="max-w-xs" label="Time Range" variant="faded" />
-            </div>
-          </div>
-
-          {/* Charts */}
-          <div className="mt-10">
-            <div className="flex-1 flex-col">
-              <Line
-                data={lineData}
-                options={lineOptions}
-                plugins={[backgroundPlugin]}
-                className="flex"
-              />
-            </div>
-
-            <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
-              <div className="flex-1 flex-col overflow-hidden">
-                <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
-              </div>
-
-              <div className="flex-1 flex-col overflow-hidden">
-                <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
-              </div>
-            </div>
           </div>
         </div>
+
+              {/* Main Chart with filter */}
+        <div className="flex-1 flex flex-col gap-6 bg-gray-700 rounded-lg p-6 md:p-10 shadow-lg">
+          <Line
+            data={lineData}
+            options={lineOptions}
+            plugins={[backgroundPlugin]}
+            className="flex rounded-lg shadow-lg"
+         />
+           
+          <DateRangePicker className="max-w-xs" label="Time Range" variant="flat" />
+
+        </div>
+  
       </div>
-      )}
-    </>
+            
+        {/* Charts */}
+      {/* <div className="mt-10">
+        <div className="flex-1 flex-col">
+          <Line
+            data={lineData}
+            options={lineOptions}
+            plugins={[backgroundPlugin]}
+            className="flex"
+          />
+        </div>
+
+        <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
+          <div className="flex-1 flex-col overflow-hidden">
+            <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
+          </div>
+
+          <div className="flex-1 flex-col overflow-hidden">
+            <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
+          </div>
+        </div>
+      </div> */}
+    </div>
+    )}
+  </>
   );
 };
 

@@ -18,17 +18,6 @@ function App() {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-
-    const interval = setInterval(() => {
-      dispatch(refreshAccessToken())
-        .unwrap()
-        .catch((error) => {
-          console.error("Failed to refresh token:", error);
-            dispatch(logout());
-        });
-    }, 15 * 60 * 1000);
-
-    return () => clearInterval(interval);
   }, []);
 
   if (loading) {

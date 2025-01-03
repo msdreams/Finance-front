@@ -79,7 +79,7 @@ export const refreshAccessToken = createAsyncThunk(
       throw new Error('No refresh token');
     }
 
-    const response = await fetch('https://budgetapp.space/auth/refreshAccessToken', {
+    const response = await fetch('https://budgetapp.space/auth/refresh-access-token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
