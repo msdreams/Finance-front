@@ -54,7 +54,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( {allAccounts, category } ) =
         type="date"
       />
       <div className="flex flex-col md:flex-row w-full gap-2">
-        <Select name="categoryId" className="min-w-36" label="Select category">
+        <Select name="categoryId" className="min-w-36" label="Income resource"  placeholder="Select category">
           {categories.map((category) => (
             <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
           ))}

@@ -165,9 +165,6 @@ export const HomePage = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchGetAllAccounts());
-    dispatch(IncomeGetAllCategories());
-
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
         .unwrap()
@@ -178,7 +175,12 @@ export const HomePage = () => {
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchGetAllAccounts());
+    dispatch(IncomeGetAllCategories());
+  }, []);
 
   useEffect(() => {
     if (allAccounts && allAccounts.length > 0) {
@@ -298,4 +300,3 @@ export const HomePage = () => {
   </>
   );
 };
-
