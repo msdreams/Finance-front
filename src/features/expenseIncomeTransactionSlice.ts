@@ -84,7 +84,6 @@ export const fetchTransactionsAddExpense = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех доходов
 export const fetchAllIncomes = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomes',
   async (data?: DataAllIncome) => {
@@ -100,7 +99,6 @@ export const fetchAllIncomes = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех доходов для диаграмм (по месяцам и годам)
 export const fetchAllIncomesForChartsMY = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomesForChartsMY',
   async (data: DataAllIncomeForChartsMY) => {
@@ -116,7 +114,6 @@ export const fetchAllIncomesForChartsMY = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех доходов для диаграмм (по дням)
 export const fetchAllIncomesForChartsDays = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomesForChartsDays',
   async (data: DataAllIncomeForChartsDays) => {
@@ -132,7 +129,6 @@ export const fetchAllIncomesForChartsDays = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех расходов
 export const fetchAllExpenses = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpenses',
   async (data?: DataAllIncome) => {
@@ -148,7 +144,6 @@ export const fetchAllExpenses = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех расходов для диаграмм (по месяцам и годам)
 export const fetchAllExpensesForChartsMY = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpensesForChartsMY',
   async (data: DataAllIncomeForChartsMY) => {
@@ -164,7 +159,6 @@ export const fetchAllExpensesForChartsMY = createAsyncThunk(
   }
 );
 
-// Запрос для получения всех расходов для диаграмм (по дням)
 export const fetchAllExpensesForChartsDays = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpensesForChartsDays',
   async (data: DataAllIncomeForChartsDays) => {
@@ -266,7 +260,7 @@ export const accountSlice = createSlice({
       state.error = action.error.message || 'Failed to fetch fetchTransactionsAddIncome';
     })
 
-      // --- Обработка запросов для всех доходов ---
+      // --- fatch all incomes ---
       .addCase(fetchAllIncomes.pending, (state) => {
         state.loading = true;
       })

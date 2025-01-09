@@ -245,7 +245,7 @@ export const HomePage = () => {
           </div>
         </div>
         
-        <div className="flex-1 flex flex-col bg-gray-300 rounded-lg p-4 md:p-8 md:pt-6 shadow-lg">
+        <div className="flex-1 flex flex-col bg-gray-300 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">
           <TransactionHistory />
         </div>
         </div>

@@ -14,9 +14,9 @@ export type DataAllIncome = {
   size: number;
   filterTransactionsDto?: {
     accountId?: string;
-    fromDate?: string; // Дата в формате строки, например "2024-10-29"
-    toDate?: string;   // Дата в формате строки
-    categoryIds?: string[]; // Массив строковых идентификаторов категорий
+    fromDate?: string;
+    toDate?: string;
+    categoryIds?: string[];
   };
 };
 export type DataAllIncomeForChartsMY = {
@@ -107,7 +107,7 @@ export const TransactionsAllIncomeForChartsDays = (data: DataAllIncomeForChartsD
     toDate,
   })
 
-  return client.get(`/income-transactions/get-all-incomes-for-charts-months-days?${queryParams.toString()}`, {
+  return client.get(`/income-transactions/get-all-incomes-for-charts-days?${queryParams.toString()}`, {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
   });

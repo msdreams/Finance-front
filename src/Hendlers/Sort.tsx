@@ -1,6 +1,4 @@
 import { Transaction, Transactions } from "../types/expenseIncomeTransaction";
-import React, {SVGProps} from "react";
-
 
 export const sortData = <T extends keyof Transaction>(data: Transactions, key: T, direction: string, statusFilter: string) => {
   const sorteData = [...data].sort((a, b) => {
