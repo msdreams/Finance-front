@@ -16,6 +16,8 @@ export const HistoryPage = () => {
     dispatch(fetchAllExpenses());
   }, [dispatch]);
 
+  console.log(allIncomes)
+
   return (
     <div className="h-screen mt-36">
       <h1>History Page</h1>

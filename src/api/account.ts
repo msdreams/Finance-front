@@ -51,7 +51,7 @@ export const getAllTransfers = (data: DataAllTarget, accessToken: string): Promi
     size: size.toString(),
   })
 
-  return client.get(`/transfer/get-all-transfers?${queryParams.toString()}`, {
+  return client.get(`/transfers/get-all-transfers?${queryParams.toString()}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })

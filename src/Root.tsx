@@ -39,11 +39,11 @@ export const Root = () => {
               <Route path='new-target' element={<NewTargetPage />} />
               <Route path='new-account' element={<NewAccountPage />} />
               <Route path="new-budget" element={<NewBudgetPage />} />
-              <Route path="new-income-category" element={<NewIncomeCategoryPage />} />
               <Route path="change-password-page" element={<ChangePasswordPage />} />
-              <Route path="new-expense-category" element={<NewExpenseCategoryPage />} />
               <Route path="settings" element={<NameSettingsA />} />
-              <Route path="add-transaction" element={<AddTransaction />} />
+              <Route path="new-income-category" element={<NewIncomeCategoryPage />} />
+              <Route path="new-expense-category" element={<NewExpenseCategoryPage />} />
+              {/* <Route path="add-transaction" element={<AddTransaction />} /> */}
               <Route path="all-categories" element={<AllCategories />} />
             </Route>
           </Route>

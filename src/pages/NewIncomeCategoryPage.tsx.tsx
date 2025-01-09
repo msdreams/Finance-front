@@ -27,7 +27,7 @@ export const NewIncomeCategoryPage = () => {
   };
 
   return (
-    <>
+    <div className="mt-60">
       <h1>New Income Category Page</h1>
       <div className="triangle-bg"></div>
       <div className="triangle-bg-up"></div>
@@ -48,6 +48,6 @@ export const NewIncomeCategoryPage = () => {
           Save
         </button>
       </form>
-    </>
+    </div>
   );
 };

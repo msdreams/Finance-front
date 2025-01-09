@@ -19,17 +19,10 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
   return (
     <div className="absolute w-full flex flex-col justify-center z-50">
       <div className="flex text-lg flex-row items-center justify-between py-2 p-10 xl:px-24 max-w-screen-2xl">
-          {accessToken ? (
-                <NavLink to='account' className="flex flex-row items-center">
-                <img src="./img/Logo(Nav).svg" alt="img" />
-                <p className="text-2xl font-bold pt-1.5">MONETA</p>
-              </NavLink>
-        ) : (
-          <NavLink to='/' className="flex flex-row items-center">
+        <NavLink to='/' className="flex flex-row items-center">
           <img src="./img/Logo(Nav).svg" alt="img" />
           <p className="text-2xl font-bold pt-1.5">MONETA</p>
         </NavLink>
-        )}
         <nav className="header__nav-burger">
           <img
             onClick={() => setActiveBurger(!activeBurger)}

@@ -10,8 +10,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { DateRangePicker } from "@nextui-org/date-picker";
-
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +18,10 @@ import { fetchGetAllAccounts } from "../features/accountSlice";
 import type {Selection} from "@nextui-org/react";
 import { RootState } from "../app/store";
 import { useSelector } from "react-redux";
-import { FormMoneyTransfer } from "../components/FormMoneyTransfer";
-import {Tabs, Tab} from "@nextui-org/react";
-import { ExpenseGetAllCategories, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
 import { logout, refreshAccessToken } from "../features/authSlice";
+import { Account } from "../types/account";
+import { Transactions } from "../components/Transactions";
+import { TransactionHistory } from "../components/TransactionHistory";
 
 ChartJS.register(
   CategoryScale,
@@ -159,10 +157,16 @@ export const HomePage = () => {
   const isLoading = useSelector((state: RootState) => state.account.loading);
 
   const { allAccounts } = useAppSelector((state: RootState) => state.account);
+  const { allIncomesMY } = useAppSelector((state: RootState) => state.expenseIncomeTransaction);
+
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
-  const { expenseCategoryAll, incomeCategoryAll } = useAppSelector(
-    (state) => state.expenseIncomeCategory
-  );
+  const [account, setAccount] = useState<Account | null>(null);
+
+  const selectedValue = useMemo(() => {
+    if (!allAccounts || allAccounts.length === 0) return "Default account";
+    const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
+    return value.split("-")[1] || "Default account";
+  }, [selectedKeys, allAccounts]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -172,55 +176,44 @@ export const HomePage = () => {
           console.error("Failed to refresh token:", error);
             dispatch(logout());
         });
-    }, 15 * 60 * 1000);
+    }, 45 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
-    dispatch(IncomeGetAllCategories());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (allAccounts && allAccounts.length > 0) {
       setSelectedKeys(new Set([allAccounts[0].name]));
+      setAccount(allAccounts[0]);
     }
   }, [allAccounts]);
 
-  const selectedValue = useMemo(
-    () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
-    [selectedKeys]
-  );
-
-  const selectedIndex = useMemo(() => {
-    const key = Array.from(selectedKeys).join(", ");
-    return key.split("-")[0] || ""; // Индекс до `-`
-  }, [selectedKeys]);
-
-  console.log(selectedIndex)
+  useEffect(() => {
+    if (allAccounts && allAccounts.length > 0) {
+      const selectedAccountIndex = +Array.from(selectedKeys).join(", ").split("-")[0];
+      setAccount(allAccounts[selectedAccountIndex] || allAccounts[0]);
+    }
+  }, [selectedKeys, allAccounts]);
 
   return (
     <>
-    {isLoading || !allAccounts ? (
-     <div className="flex items-center justify-center bg-primary-600 h-[1200px] w-full"></div>
+    {isLoading || !allAccounts || !account ? (
+     <div className="flex items-center justify-center  bg-gray-200 h-[1200px] w-full"></div>
     ): (
-    <div className="flex flex-col items-center w-full bg-primary-600 min-h-screen">
+    <div className="flex flex-col items-center w-full bg-gray-200 min-h-screen">
         {/* dashboard */}
-      <div className="flex flex-col lg:flex-row gap-6 p-10 font-sans xl:px-24 pt-24 w-full animate-fadeIn">
-        
-           {/* account data */}
-        <div className="flex-2 ">
-          <div className="flex flex-col text-white gap-6 bg-gray-700 rounded-lg p-6 md:p-10 shadow-lg">
-            <div className="flex flex-col gap-6 md:flex-row md:justify-between">
-              <div className="text-3xl min-w-[240px]">
-                Balance: {allAccounts[1].balance + "$"}
-              </div>
-
+      <div className="flex flex-col lg:flex-row gap-6 mt-10 p-4 md:p-10 font-sans xl:px-24 pt-24 w-full animate-fadeIn">
+        <div className="flex-2 md:min-w-[450px]">
+          <div className="flex flex-col text-white gap-6 bg-gray-600 rounded-lg p-4 md:p-8 shadow-lg">
+            <div className="flex gap-4 flex-row flex-wrap justify-between ">
               <div className="flex flex-row gap-4">
                 <Dropdown>
                   <DropdownTrigger>
-                    <Button className="capitalize text-white" variant="bordered" >
+                    <Button className="capitalize text-white min-w-[140px]" variant="bordered" >
                       {selectedValue}
                     </Button>
                   </DropdownTrigger>
@@ -238,63 +231,24 @@ export const HomePage = () => {
                   </DropdownMenu>
                 </Dropdown>
               </div>
-            </div>
-                  {/* transactions */}
-              <div className="flex flex-col gap-1 lg:max-w-[400px] pt-2">
-                <Tabs aria-label="Options" color="primary" radius="full" size="md">
-                  <Tab key="Add Income" title="Add Income">
-                    <FormMoneyTransfer
-                        allAccounts={allAccounts}
-                        category={incomeCategoryAll}
-                      />
-                  </Tab>
-                  <Tab key="Add Expense" title="Add Expense">
-                    <FormMoneyTransfer
-                        allAccounts={allAccounts}
-                        category={expenseCategoryAll}
-                      />
-                  </Tab>
-                </Tabs>
+              
+              <div className="text-2xl min-w-[210px]">
+                Balance: {account.balance + "$"}
               </div>
+            </div>
+            <div className="flex flex-col gap-1 lg:max-w-[400px] pt-2">
+                  <Transactions
+                    selectedAccount={account}
+                    setAccount={setAccount}
+                  />
+            </div>
           </div>
         </div>
-
-              {/* Main Chart with filter */}
-        <div className="flex-1 flex flex-col gap-6 bg-gray-700 rounded-lg p-6 md:p-10 shadow-lg">
-          <Line
-            data={lineData}
-            options={lineOptions}
-            plugins={[backgroundPlugin]}
-            className="flex rounded-lg shadow-lg"
-         />
-           
-          <DateRangePicker className="max-w-xs" label="Time Range" variant="flat" />
-
+        
+        <div className="flex-1 flex flex-col bg-gray-300 rounded-lg p-4 md:p-8 md:pt-6 shadow-lg">
+          <TransactionHistory />
         </div>
-  
-      </div>
-            
-        {/* Charts */}
-      {/* <div className="mt-10">
-        <div className="flex-1 flex-col">
-          <Line
-            data={lineData}
-            options={lineOptions}
-            plugins={[backgroundPlugin]}
-            className="flex"
-          />
         </div>
-
-        <div className="flex flex-col bg-primary-700 pt-10 w-full lg:flex-row gap-10">
-          <div className="flex-1 flex-col overflow-hidden">
-            <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
-          </div>
-
-          <div className="flex-1 flex-col overflow-hidden">
-            <Pie data={pieData} options={pieOptions} plugins={[backgroundPlugin]} />
-          </div>
-        </div>
-      </div> */}
     </div>
     )}
   </>

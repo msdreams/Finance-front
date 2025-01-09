@@ -1,4 +1,5 @@
-import { SumsByDateArray, Transaction, Transactions } from "../types/expenseIncomeTransaction";
+import { SumsByDateArray, Transaction, Transactions }
+  from "../types/expenseIncomeTransaction";
 import { client } from "../utils/fetchClient"
 
 export type DataUpdate = {
@@ -19,6 +20,8 @@ export type DataAllIncome = {
   };
 };
 export type DataAllIncomeForChartsMY = {
+  accountId: number,
+  categoryIds: number[],
   filterType: string;
 };
 export type DataAllIncomeForChartsDays = {
@@ -26,7 +29,9 @@ export type DataAllIncomeForChartsDays = {
   toDate: string;
 };
 
-export const TransactionsUpdateIncome = (id: string, data: DataUpdate, accessToken: string): Promise<Transaction> => {
+export const TransactionsUpdateIncome = (id: string,
+  data: DataUpdate, accessToken: string
+): Promise<Transaction> => {
   return client.put(`/income-transactions/update-income/${id}`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
@@ -80,8 +85,11 @@ export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncome)
 };
 
 export const TransactionsAllIncomeForChartsMY = (data: DataAllIncomeForChartsMY, accessToken: string): Promise<SumsByDateArray> => {
-  const { filterType } = data;
+  const { accountId, categoryIds, filterType } = data;
+  
   const queryParams = new URLSearchParams({
+    accountId: accountId.toString(),
+    categoryIds: categoryIds.length ? categoryIds.join(',') : '',
     filterType,
   })
 

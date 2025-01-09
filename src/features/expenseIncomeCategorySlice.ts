@@ -3,15 +3,15 @@ import { DataName, DataNewName, ExpenseAddCategory, expenseDeleteCategory, expen
 import { AllCategories } from "../types/expenseIncomeCategory";
 
 type AuthState = {
-  expenseCategoryAll: AllCategories | null;
-  incomeCategoryAll: AllCategories | null;
+  expenseCategoryAll: AllCategories | [];
+  incomeCategoryAll: AllCategories | [];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
-  expenseCategoryAll: null,
-  incomeCategoryAll: null,
+  expenseCategoryAll: [],
+  incomeCategoryAll: [],
   loading: false,
   error: null,
 }
