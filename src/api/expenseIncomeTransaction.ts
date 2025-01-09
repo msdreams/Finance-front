@@ -19,6 +19,7 @@ export type DataAllIncome = {
     categoryIds?: string[];
   };
 };
+
 export type DataAllIncomeForChartsMY = {
   accountId: number,
   categoryIds: number[],
@@ -59,17 +60,13 @@ export const TransactionsAddExpense = (data: DataUpdate, accessToken: string): P
   })
 }
 
-export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
+export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncomeForChartsDays): Promise<Transactions> => {
   if (data) {
-    const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
+    const { fromDate = '', toDate = '' } = data;
 
   const queryParams = new URLSearchParams({
-    accountId,
     fromDate,
     toDate,
-    categoryIds: categoryIds.length ? categoryIds.join(',') : '', // Пустая строка, если массив пуст
-    page: data.page.toString(),
-    size: data.size.toString()
   });
 
   return client.get(`/income-transactions/get-all-incomes?${queryParams.toString()}`, {
@@ -113,17 +110,13 @@ export const TransactionsAllIncomeForChartsDays = (data: DataAllIncomeForChartsD
   });
 };
 
-export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
+export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncomeForChartsDays): Promise<Transactions> => {
   if (data) {
-    const { accountId = '', fromDate = '', toDate = '', categoryIds = [] } = data.filterTransactionsDto || {};
+    const { fromDate = '', toDate = '' } = data;
 
   const queryParams = new URLSearchParams({
-    accountId,
     fromDate,
     toDate,
-    categoryIds: categoryIds.length ? categoryIds.join(',') : '',
-    page: data.page.toString(),
-    size: data.size.toString()
   });
 
   return client.get(`/expense-transactions/get-all-expenses?${queryParams.toString()}`, {

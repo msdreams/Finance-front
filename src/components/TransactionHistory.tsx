@@ -11,7 +11,6 @@ import { parseDate } from "@internationalized/date";
 import type {RangeValue} from "@react-types/shared";
 import type {DateValue} from "@react-types/datepicker";
 
-
 export const TransactionHistory = () => {
   const dispatch = useAppDispatch();
   const { allExpenses, allIncomes, allIncomesD } = useAppSelector((state) => state.expenseIncomeTransaction);
@@ -26,16 +25,21 @@ export const TransactionHistory = () => {
     end: parseDate(new Date().toISOString().split("T")[0]),
   });
 
+  console.log(value)
+
   useEffect(() => {
-    dispatch(fetchAllIncomes());
-    dispatch(fetchAllExpenses());
     dispatch(IncomeGetAllCategories());
     dispatch(ExpenseGetAllCategories());
     if (value) {
-      dispatch(fetchAllIncomesForChartsDays({
+      dispatch(fetchAllExpenses({
+          fromDate: value.start.toString(),
+          toDate: value.end.toString(),
+      }));
+
+      dispatch(fetchAllIncomes({
         fromDate: value.start.toString(),
         toDate: value.end.toString(),
-      }));
+    }));
     }
   }, [dispatch]);
 

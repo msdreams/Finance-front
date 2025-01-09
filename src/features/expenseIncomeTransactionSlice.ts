@@ -86,7 +86,7 @@ export const fetchTransactionsAddExpense = createAsyncThunk(
 
 export const fetchAllIncomes = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomes',
-  async (data?: DataAllIncome) => {
+  async (data?: DataAllIncomeForChartsDays) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
@@ -131,7 +131,7 @@ export const fetchAllIncomesForChartsDays = createAsyncThunk(
 
 export const fetchAllExpenses = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpenses',
-  async (data?: DataAllIncome) => {
+  async (data?: DataAllIncomeForChartsDays) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
