@@ -18,8 +18,14 @@ export const HistoryTable: React.FC<Props> = ({topContent, sortedData, setSortDe
       sortable: true,
     },
     {
-      key: "categoryId",
+      key: "categoryName",
       label: "CATEGORY",
+      sortable: true,
+    },
+    {
+      key: "accountName",
+      label: "ACCOUNT",
+      sortable: true,
     },
     {
       key: "amount",
@@ -29,6 +35,7 @@ export const HistoryTable: React.FC<Props> = ({topContent, sortedData, setSortDe
     {
       key: "currency",
       label: "CUR",
+      sortable: true,
     },
   ];
 
@@ -91,13 +98,12 @@ export const HistoryTable: React.FC<Props> = ({topContent, sortedData, setSortDe
   return (
     <Table
       isStriped
-      isCompact
       aria-label="table with dynamic content"
       selectionMode="single"
       color="secondary"
       classNames={{
-        base: "max-h-[400px] overflow-y-scroll ",
-        table: "min-h-[420px] ",
+        base: "max-h-[720px] overflow-y-scroll ",
+        table: "min-h-[600px] ",
         wrapper: "bg-gray-200"
       }}
       sortDescriptor={sortDescriptor}
@@ -117,7 +123,7 @@ export const HistoryTable: React.FC<Props> = ({topContent, sortedData, setSortDe
       <TableBody>
         {sortedData.map((row) =>
           <TableRow key={row.id}>
-            {(columnKey) => <TableCell>{getKeyValue(row, columnKey)}</TableCell>}
+            {(columnKey) => <TableCell className="capitalize">{getKeyValue(row, columnKey)}</TableCell>}
           </TableRow>
         )}
       </TableBody>

@@ -83,7 +83,6 @@ export const GetAccountById = createAsyncThunk('account/GetAccountById', async (
 
   if (accessToken) {
     const response = await getAccountById(id, accessToken);
-
     return response
   }
 })

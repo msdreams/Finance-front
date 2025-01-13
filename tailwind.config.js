@@ -23,6 +23,7 @@ module.exports = {
         wave: 'wave 6s ease-in-out infinite',
         fadeIn: 'fadeIn 0.3s ease-out',
         fadeInSlow: 'fadeIn 0.6s ease-out',
+        fadeInSlowDelayed: 'fadeIn 0.6s ease-out 0.3s'
 
       },
       fontFamily: {

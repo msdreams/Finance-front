@@ -6,6 +6,7 @@ import { Account } from "../types/account";
 import { AddCategory, AllCategories } from "../types/expenseIncomeCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
+import { fetchGetAllAccounts } from "../features/accountSlice";
 
 type Props = {
   selectedAccount: Account,
@@ -21,8 +22,6 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
   const handleSubmitAddIncome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    const newBalanceAccount = {...selectedAccount, balance:(selectedAccount.balance + (+data.amount))}
-
     const formDataIncome: DataUpdate = {
       comment: String(data.comment),
       amount: +data.amount,
@@ -32,16 +31,12 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
     };
   
     dispatch(fetchTransactionsAddIncome(formDataIncome))
-      .finally(() => setAccount(newBalanceAccount));
+      .finally(() => dispatch(fetchGetAllAccounts()));
   };
   
   const handleSubmitAddExpence = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-
-    const newBalanceAccount = {...selectedAccount, balance:(selectedAccount.balance - (+data.amount))}
-  
-    console.log(data)
+    const data = Object.fromEntries(new FormData(e.currentTarget));  
     const formDataIncome: DataUpdate = {
       comment: String(data.comment),
       amount: +data.amount,
@@ -51,8 +46,8 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
     };
   
     dispatch(fetchTransactionsAddExpense(formDataIncome))
-      .finally(() => setAccount(newBalanceAccount));
-  };
+      .finally(() => dispatch(fetchGetAllAccounts()));
+    };
 
   return (
     <Form
@@ -100,7 +95,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
 
       <Textarea placeholder="Enter your message" type="comment" name="comment" />
       <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
-        <Button isLoading={isLoading} className="bg-primary-400 " type="submit">
+        <Button isLoading={isLoading} className="bg-primary-400" type="submit">
             Submit
         </Button>
       </div>

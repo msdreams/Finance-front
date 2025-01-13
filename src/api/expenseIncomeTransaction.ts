@@ -9,9 +9,11 @@ export type DataUpdate = {
   accountId: number;
   categoryId: number;
 }
+
 export type DataAllIncome = {
   page: number;
   size: number;
+  sort: string;
   filterTransactionsDto?: {
     accountId?: string;
     fromDate?: string;
@@ -60,14 +62,20 @@ export const TransactionsAddExpense = (data: DataUpdate, accessToken: string): P
   })
 }
 
-export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncomeForChartsDays): Promise<Transactions> => {
+export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
   if (data) {
-    const { fromDate = '', toDate = '' } = data;
-
   const queryParams = new URLSearchParams({
-    fromDate,
-    toDate,
+    page: data.page.toString(),
+    size: data.size.toString(),
+    sort: data.sort
   });
+  if (data.filterTransactionsDto) {
+    const { accountId, fromDate, toDate, categoryIds } = data.filterTransactionsDto;
+      if (accountId) queryParams.append('accountId', accountId);
+      if (fromDate) queryParams.append('fromDate', fromDate);
+      if (toDate) queryParams.append('toDate', toDate);
+      if (categoryIds && categoryIds.length > 0) queryParams.append('categoryIds', categoryIds.join(','));
+  }
 
   return client.get(`/income-transactions/get-all-incomes?${queryParams.toString()}`, {
       'Content-Type': 'application/json',
@@ -104,20 +112,26 @@ export const TransactionsAllIncomeForChartsDays = (data: DataAllIncomeForChartsD
     toDate,
   })
 
-  return client.get(`/income-transactions/get-all-incomes-for-charts-days?${queryParams.toString()}`, {
+  return client.get(`/income-transactions/get-all-incomes-for-charts-months-days?${queryParams.toString()}`, {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`
   });
 };
 
-export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncomeForChartsDays): Promise<Transactions> => {
+export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncome): Promise<Transactions> => {
   if (data) {
-    const { fromDate = '', toDate = '' } = data;
-
-  const queryParams = new URLSearchParams({
-    fromDate,
-    toDate,
-  });
+    const queryParams = new URLSearchParams({
+      page: data.page.toString(),
+      size: data.size.toString(),
+      sort: data.sort
+    });
+    if (data.filterTransactionsDto) {
+      const { accountId, fromDate, toDate, categoryIds } = data.filterTransactionsDto;
+        if (accountId) queryParams.append('accountId', accountId);
+        if (fromDate) queryParams.append('fromDate', fromDate);
+        if (toDate) queryParams.append('toDate', toDate);
+        if (categoryIds && categoryIds.length > 0) queryParams.append('categoryIds', categoryIds.join(','));
+    }
 
   return client.get(`/expense-transactions/get-all-expenses?${queryParams.toString()}`, {
       'Content-Type': 'application/json',

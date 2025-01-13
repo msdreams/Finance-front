@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { SumsByDateArray, Transactions } from "../types/expenseIncomeTransaction";
 import { DataAllIncome, DataAllIncomeForChartsDays, DataAllIncomeForChartsMY, DataUpdate, TransactionsAddExpense, TransactionsAddIncome, TransactionsAllExpense, TransactionsAllExpenseForChartsDays, TransactionsAllExpenseForChartsMY, TransactionsAllIncome, TransactionsAllIncomeForChartsDays, TransactionsAllIncomeForChartsMY, TransactionsDeleteExpense, TransactionsDeleteIncome, TransactionsUpdateExpense, TransactionsUpdateIncome } from "../api/expenseIncomeTransaction";
+import { dataForTable } from "../Components";
 
 type AuthState = {
   allIncomes: Transactions | null;
@@ -56,27 +57,35 @@ export const fetchTransactionsUpdateExpense = createAsyncThunk(
 
 export const fetchTransactionsAddIncome = createAsyncThunk(
   'expenseIncomeCategory/fetchTransactionsAddIncome',
-  async (data: DataUpdate) => {
+  async (data: DataUpdate, { dispatch, rejectWithValue }) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsAddIncome(data, accessToken);
+
+      dispatch(fetchAllIncomes(dataForTable));
+
       return response;
+
     } catch (error) {
-      throw new Error('Failed to fetch TransactionsAddIncome');
+      return rejectWithValue('Failed to fetch TransactionsAddIncome');
     }
   }
 );
 
+
 export const fetchTransactionsAddExpense = createAsyncThunk(
   'expenseIncomeCategory/fetchTransactionsAddExpense',
-  async (data: DataUpdate) => {
+  async (data: DataUpdate, {dispatch}) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsAddExpense(data, accessToken);
+      dispatch(fetchAllExpenses(dataForTable));
+
+
       return response;
     } catch (error) {
       throw new Error('Failed to fetch TransactionsAddExpense');
@@ -86,7 +95,7 @@ export const fetchTransactionsAddExpense = createAsyncThunk(
 
 export const fetchAllIncomes = createAsyncThunk(
   'expenseIncomeCategory/fetchAllIncomes',
-  async (data?: DataAllIncomeForChartsDays) => {
+  async (data?: DataAllIncome) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
@@ -131,7 +140,7 @@ export const fetchAllIncomesForChartsDays = createAsyncThunk(
 
 export const fetchAllExpenses = createAsyncThunk(
   'expenseIncomeCategory/fetchAllExpenses',
-  async (data?: DataAllIncomeForChartsDays) => {
+  async (data?: DataAllIncome) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
@@ -240,8 +249,14 @@ export const accountSlice = createSlice({
     .addCase(fetchTransactionsAddExpense.pending, (state) => {
       state.loading = true;
     })
-    .addCase(fetchTransactionsAddExpense.fulfilled, (state) => {
+    .addCase(fetchTransactionsAddExpense.fulfilled, (state, action) => {
       state.loading = false;
+
+      if (state.allExpenses) {
+        state.allExpenses = [...state.allExpenses, action.payload];
+      } else {
+        state.allExpenses = [action.payload];
+      }
     })
     .addCase(fetchTransactionsAddExpense.rejected, (state, action) => {
       state.loading = false;
@@ -252,7 +267,7 @@ export const accountSlice = createSlice({
     .addCase(fetchTransactionsAddIncome.pending, (state) => {
       state.loading = true;
     })
-    .addCase(fetchTransactionsAddIncome.fulfilled, (state) => {
+    .addCase(fetchTransactionsAddIncome.fulfilled, (state, action) => {
       state.loading = false;
     })
     .addCase(fetchTransactionsAddIncome.rejected, (state, action) => {
@@ -260,7 +275,7 @@ export const accountSlice = createSlice({
       state.error = action.error.message || 'Failed to fetch fetchTransactionsAddIncome';
     })
 
-      // --- fatch all incomes ---
+      // --- fetch all income ---
       .addCase(fetchAllIncomes.pending, (state) => {
         state.loading = true;
       })
@@ -360,7 +375,8 @@ export const accountSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch fetchTransactionsDeleteExpense';
       })
-
+    
+    //update all data on TransactionAction
   },
 
 })

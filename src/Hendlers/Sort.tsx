@@ -26,6 +26,7 @@ export const sortData = <T extends keyof Transaction>(data: Transactions, key: T
   if (statusFilter === "all") {
     return sorteData;
   } else {
-    return sorteData.filter(data => Array.from(statusFilter).includes(data.categoryId.toString()))
-    }
+    return sorteData.filter(data => Array.from(statusFilter).includes(data.categoryId.toString()));
+
+  }
 };

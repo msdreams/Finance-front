@@ -5,6 +5,9 @@ export type Transaction = {
   transactionDate: string; 
   accountId: number;
   categoryId: number;
+  accountName: number;
+  categoryName: number;
+  currency: string;
 };
 
 export type SumByCategory = {
