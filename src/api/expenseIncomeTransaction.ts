@@ -172,16 +172,15 @@ export const TransactionsAllExpenseForChartsDays = (data: DataAllIncomeForCharts
 
 export const TransactionsDeleteIncome = (id: string, accessToken: string) => {
 
-  return client.delete(`/income-transactions/delete-income/${id}`, {
+  return client.deleteById(`/income-transactions/delete-income/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   });
 };
 
-
 export const TransactionsDeleteExpense = (id: string, accessToken: string) => {
 
-  return client.delete(`/expense-transactions/delete-expense/${id}`, {
+  return client.deleteById(`/expense-transactions/delete-expense/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   });

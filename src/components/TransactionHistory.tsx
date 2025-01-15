@@ -1,31 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Tabs, Tab, Selection } from "@nextui-org/react";
 import { DateRangePicker } from "@nextui-org/date-picker";
 import { SortDescriptor, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem} from "@nextui-org/react";
-import { fetchAllExpenses, fetchAllIncomes} from "../features/expenseIncomeTransactionSlice";
+import { fetchAllExpenses, fetchAllIncomes, fetchTransactionsDeleteExpense, fetchTransactionsDeleteIncome} from "../features/expenseIncomeTransactionSlice";
 import { sortData } from "../Hendlers/Sort";
 import { ExpenseGetAllCategories, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
 import { HistoryTable } from "./HistoryTable";
 import { parseDate } from "@internationalized/date";
 import type {RangeValue} from "@react-types/shared";
 import type { DateValue } from "@react-types/datepicker";
-import { Account } from "../types/account";
 import { FilterBalance } from "../Hendlers/FilterBalance";
 import { RootState } from "../app/store";
-import { useSelector } from "react-redux";
 import { dataForTable } from "../Components";
+import { DataAllIncome } from "../api/expenseIncomeTransaction";
 
 
 export const TransactionHistory = () => {
   const dispatch = useAppDispatch();
   const { allAccounts } = useAppSelector((state: RootState) => state.account);
-  const isAccountLoading = useSelector((state: RootState) => state.account.loading);
   const { allExpenses, allIncomes, loading } = useAppSelector((state) => state.expenseIncomeTransaction);
   const { expenseCategoryAll, incomeCategoryAll } = useAppSelector((state) => state.expenseIncomeCategory);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "transactionDate", direction: "descending",});
   const [sorterFilter, setSorterFilter] = useState<Selection>("all");
-  const [sorterFilter2, setSorterFilter2] = useState<Selection>("all");
+  const [sorterFilter2, setSorterFilter2] = useState<Selection>(new Set(['0-All Accounts']));
   const [selectedTab, setSelectedTab] = useState<string>("Income"); 
   const [value, setValue] = React.useState<RangeValue<DateValue> | null>({
     start: parseDate(
@@ -33,14 +31,53 @@ export const TransactionHistory = () => {
     ),
     end: parseDate(new Date().toISOString().split("T")[0]),
   });
+  const extendedAccount = () => {
+    if (allAccounts) {
+      return     [...allAccounts,
+        {
+          id: 0,
+          name: 'All Accounts',
+          balance: 0,
+          currency: 'USD',
+          byDefault: false,
+        }];
+    }
+    return  [
+      {
+        id: 0,
+        name: 'all',
+        balance: 0,
+        currency: 'USD',
+        byDefault: false,
+      }];
+  }
+  const [page, setPage] = useState(1);
+
+  const selectedValue = useMemo(() => {
+    if (!allAccounts || allAccounts.length === 0) return "0-All Accounts";
+    const value = Array.from(sorterFilter2).join(", ").replace(/_/g, "");
+    return value ;
+  }, [sorterFilter2, allAccounts]);
 
   useEffect(() => {
     dispatch(IncomeGetAllCategories());
     dispatch(ExpenseGetAllCategories());
-    dispatch(fetchAllExpenses(dataForTable))
-    dispatch(fetchAllIncomes(dataForTable))
-  }, [dispatch, selectedTab]);
+    const selectedIds = selectedValue.split("-")[0];
+    if (selectedIds !== "0") {
+      const filteredData: DataAllIncome = { ...dataForTable, page: page - 1 };
+      filteredData.filterTransactionsDto = {
+        ...filteredData.filterTransactionsDto,
+        accountId: selectedIds.toString(),
+      }
+      dispatch(fetchAllExpenses(filteredData))
+      dispatch(fetchAllIncomes(filteredData))
+    }  else if (selectedIds === "0") {
 
+      dispatch(fetchAllExpenses({ ...dataForTable, page: page - 1 }))
+      dispatch(fetchAllIncomes({ ...dataForTable, page: page - 1 }))
+    }
+
+  }, [dispatch, selectedTab, selectedValue, page]);
 
   const categories = useCallback(() => {
     if (selectedTab === "Income") {
@@ -49,10 +86,11 @@ export const TransactionHistory = () => {
     return expenseCategoryAll;
   }, [selectedTab, incomeCategoryAll, expenseCategoryAll]);
 
+
 // @ts-ignore
-  const sortedIncomes = sortData(allIncomes || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter, sorterFilter2);
+  const sortedIncomes = sortData(allIncomes || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
   // @ts-ignore
-  const sortedExpenses = sortData(allExpenses || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter, sorterFilter2);
+  const sortedExpenses = sortData(allExpenses || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
 
   const transactions = useCallback(() => {
     if (selectedTab === "Income") {
@@ -101,8 +139,9 @@ export const TransactionHistory = () => {
                   size="sm"
                   variant="solid"
                   color="warning"
+                  isLoading={loading}
                 >
-                  ACCOUNTS
+                  {selectedValue.split("-")[1].toUpperCase()}
                 </Button>
               </DropdownTrigger>
                 <DropdownMenu
@@ -112,19 +151,14 @@ export const TransactionHistory = () => {
                   selectedKeys={sorterFilter2}
                   selectionMode="single"
                   onSelectionChange={setSorterFilter2}
+                  defaultSelectedKeys={new Set(['0-All Accounts'])}
 
               >
-                
-                    {isAccountLoading || !allAccounts ? (
-                      <div className="capitalize font-sans" >
-                        Loading...
-                      </div>
-                ) : (
-                    allAccounts.map((account) => (
-                        <DropdownItem key={account.id} className="capitalize font-sans">
-                          {account.name}
-                        </DropdownItem>
-                      ))
+                 {extendedAccount().map((account) => (
+                  <DropdownItem key={`${account.id}-${account.name}`} className="capitalize font-sans">
+                    {account.name}
+                  </DropdownItem>
+                )
                 )}
                 
                 </DropdownMenu>
@@ -132,7 +166,7 @@ export const TransactionHistory = () => {
 
           </div>
         </div>
-        <DateRangePicker
+        {/* <DateRangePicker
           value={value}
           onChange={setValue}
           className="max-w-xs"
@@ -143,18 +177,17 @@ export const TransactionHistory = () => {
             start: parseDate("2024-04-01"),
             end: parseDate("2024-04-08"),
           }}
-        />
+        /> */}
       </div>
     )
   }, [sorterFilter, 
       categories, 
-      value, 
-      setValue, 
       sorterFilter2, 
       transactions, 
-    allAccounts,
-    isAccountLoading
-    ])
+      extendedAccount,
+      selectedValue,
+      loading
+      ])
 
   return (
     <div className="font-sans">
@@ -171,6 +204,9 @@ export const TransactionHistory = () => {
             sortedData={ sortedIncomes} 
             sortDescriptor={sortDescriptor}
             setSortDescriptor={setSortDescriptor}
+            setPage={setPage}
+            page={page}
+            selectedTab={selectedTab}
           />
         </Tab>
         <Tab key="Expence" title="Expence">
@@ -179,6 +215,9 @@ export const TransactionHistory = () => {
             sortedData={sortedExpenses} 
             sortDescriptor={sortDescriptor}
             setSortDescriptor={setSortDescriptor}
+            setPage={setPage}
+            page={page}
+            selectedTab={selectedTab}
           />
         </Tab>
       </Tabs>

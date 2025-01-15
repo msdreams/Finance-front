@@ -25,6 +25,13 @@ export const TransactionBlock = () => {
       const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
       return value.split("-")[1] || "Default account";
     }, [selectedKeys, allAccounts]);
+
+    // useEffect(() => {
+    //   if (allAccounts && allAccounts.length > 0) {
+    //     setSelectedKeys(new Set([allAccounts[0].name]));
+    //     setAccount(allAccounts[0]);
+    //   }
+    // }, [allAccounts]);
   
     useEffect(() => {
       if (allAccounts && allAccounts.length > 0) {

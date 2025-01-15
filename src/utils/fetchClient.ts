@@ -35,7 +35,9 @@ export const client = {
   post: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'POST', data, headers),
   put: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PUT', data, headers),
   patch: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PATCH', data, headers),
+  deleteById: (url: string, headers: Record<string, string>) => request(url, 'DELETE', null, headers),
   delete: (url: string, data: any, headers?: Record<string, string>) => request(url, 'DELETE', data, headers),
+
 };
 
 function handleError(response: Response): Promise<never> {

@@ -83,9 +83,6 @@ export const fetchTransactionsAddExpense = createAsyncThunk(
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsAddExpense(data, accessToken);
-      dispatch(fetchAllExpenses(dataForTable));
-
-
       return response;
     } catch (error) {
       throw new Error('Failed to fetch TransactionsAddExpense');
@@ -185,7 +182,7 @@ export const fetchAllExpensesForChartsDays = createAsyncThunk(
 
 export const fetchTransactionsDeleteIncome = createAsyncThunk(
   'expenseIncomeCategory/fetchTransactionsDeleteIncome',
-  async (id: string) => {
+  async (id: string, {dispatch}) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
@@ -200,12 +197,13 @@ export const fetchTransactionsDeleteIncome = createAsyncThunk(
 
 export const fetchTransactionsDeleteExpense = createAsyncThunk(
   'expenseIncomeCategory/TransactionsDeleteExpense',
-  async (id: string) => {
+  async (id: string, {dispatch}) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsDeleteExpense(id, accessToken);
+      dispatch(fetchAllExpenses(dataForTable));
       return response;
     } catch (error) {
       throw new Error('Failed to fetch TransactionsDeleteExpense');
@@ -356,8 +354,9 @@ export const accountSlice = createSlice({
       .addCase(fetchTransactionsDeleteIncome.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchTransactionsDeleteIncome.fulfilled, (state) => {
+      .addCase(fetchTransactionsDeleteIncome.fulfilled, (state, action) => {
         state.loading = false;
+        // state.allIncomes = state.allIncomes?.filter((transaction) => transaction.id !== action.payload) || null;
       })
       .addCase(fetchTransactionsDeleteIncome.rejected, (state, action) => {
         state.loading = false;

@@ -165,7 +165,6 @@ export const accountSlice = createSlice({
       state.loading = true;
     })
     .addCase(fetchGetAllAccounts.fulfilled, (state, action) => {
-      console.log("Accounts loaded into state:", action.payload); 
       state.loading = false;
       state.allAccounts = action.payload ? action.payload : null;
     })
