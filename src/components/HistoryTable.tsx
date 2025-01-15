@@ -110,14 +110,14 @@ export const HistoryTable: React.FC<Props> = ({selectedTab, topContent, sortedDa
                 <EyeIcon />
               </span>
             </Tooltip>
-            <Tooltip content="Edit user">
+            <Tooltip content="Edit transaction">
               <span
                 className="text-lg text-default-400 cursor-pointer active:opacity-50"
               >
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Delete transaction">
               <span
                 className="text-lg text-danger cursor-pointer active:opacity-50"
                 onClick={() => {
