@@ -1,28 +1,30 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { RootState } from "../app/store";
+import { useAppDispatch } from "../app/hooks";
 import { logout, refreshAccessToken } from "../features/authSlice";
 import { TransactionHistory } from "../components/TransactionHistory";
 import { MainChart } from "../components/MainLineChart";
 import { TransactionBlock } from "../components/TransactionBlock";
-
-
+import { ModalWindow } from "../components/ModalWindow";
+import { useDisclosure } from "@nextui-org/react";
+import { SettingsBlock } from "../components/SettingsBlock";
 
 export const HomePage = () => {
   const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
-        .unwrap()
+        // .unwrap()
         .catch((error) => {
           console.error("Failed to refresh token:", error);
-            dispatch(logout());
+          // dispatch(logout());
+          onOpen();
         });
-    }, 45 * 60 * 1000);
+    }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, [dispatch, onOpen]);
 
   return (
     <div className="flex flex-col items-center w-full bg-gray-400 min-h-screen">
@@ -36,10 +38,23 @@ export const HomePage = () => {
             <MainChart />
           </div>
         </div>
-        <div className=" flex flex-col bg-gray-600 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">
+        <div className="flex flex-col lg:flex-row gap-6 font-sans pt-16 animate-fadeIn">
+          <div className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg">
+              <SettingsBlock />
+            </div>
+          <div className=" flex flex-1 flex-col bg-gray-600 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">
             <TransactionHistory />
+          </div>
+          </div>
         </div>
-      </div>
+
+
+      <ModalWindow
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        header="Failed to refresh token"
+        body="Please log in agan"
+      />
     </div>
   );
 };

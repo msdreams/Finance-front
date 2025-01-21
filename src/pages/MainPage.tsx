@@ -11,9 +11,9 @@ export const MainPage = () => {
       <div className=" flex flex-col md:flex-row  w-full h-screen  max-w-screen-3xl" >
       <div className="flex-1 relative shadow-custom-direction overflow-visible">
         <div className="relative z-10 pt-24 lg:pt-36 p-10 xl:px-24">
-          <span className="text-6xl lg:text-8xl text-primary font-bold">MONETA</span>
-          <p className="text-2xl font-sans mb-6 text-gray-700">
-            Take control of your budgeting and make informed financial decisions
+          <span className="text-6xl lg:text-8xl text-primary-800 font-bold">MONETA</span>
+          <p className="text-2xl font-sans mb-6 text-gray-900">
+            Take control of your budgeting <br /> and make informed financial decisions
           </p>
           <p className="font-sans mb-2 font-bold">
             Sign Up for Free!
@@ -31,19 +31,19 @@ export const MainPage = () => {
         </div>
       </div>
 
-        <div className=" flex-1 bg-primary h-[500px] md:h-screen overflow-hidden opacity-90">
+        <div className=" flex-1 bg-primary h-[500px] md:h-screen overflow-hidden">
           <div className="flex flex-col px-10 pt-24 lg:pt-36 relative">
-            <div className="absolute opacity-40 left-72">
+            <div className=" left-72">
               <Background />
             </div>
-            <div className="flex flex-col gap-4 mt-6 text-white font-sans">
-              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
+            <div className="flex absolute flex-col gap-4 mt-6 text-white font-sans">
+              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg shadow-lg">
               <span className="font-bold text-xl">EASILY</span> track your personal finances with detailed dashboards
               </div>
-              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
+              <div className="p-6 bg-gray-500 w-96 h-24 rounded-lg shadow-lg">
               <span className="font-bold text-xl">VISUALIZE</span> your income and expenses with an intuitive scale
               </div>
-              <div className=" p-6 bg-gray-500 w-96 h-24 rounded-lg opacity-90 shadow-lg">
+              <div className=" p-6 bg-gray-500 w-96 h-24 rounded-lg shadow-lg">
               <span className="font-bold text-xl">LINK</span> multiple bank accounts, categorize your spending, and track various income
               </div>
             </div>

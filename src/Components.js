@@ -1,7 +1,6 @@
 import bg from "./assets/Capitoliy.jpg";
 import Adam from "./assets/Adam.jpg"
 import Maria from "./assets/Maria.jpg"
-import { ChipProps} from "@nextui-org/react";
 
 
 export const backgroundImage = bg;
@@ -14,3 +13,9 @@ export const dataForTable = {
       sort: "transactionDate,DESC",
       filterTransactionsDto: {}
 }
+
+export const currensySet = [
+  {key: "USD", label: "USD"},
+  {key: "EUR", label: "EUR"},
+  { key: "UAN", label: "UAN" }
+]

@@ -20,6 +20,13 @@ export type SumsByDate = {
   sumsByCategory: SumByCategory[];
 };
 
-export type Transactions = Transaction[];
+export type Transactions = {
+  "pageNumber": number,
+  "pageSize": number,
+  "elementsPresentOnPage": number,
+  "totalElements": number,
+  "totalPages": number,
+  "transactionsPageDtoList": Transaction[] | [],
+};
 
 export type SumsByDateArray = SumsByDate[];

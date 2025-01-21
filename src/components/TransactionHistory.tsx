@@ -1,193 +1,50 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Tabs, Tab, Selection } from "@nextui-org/react";
-import { DateRangePicker } from "@nextui-org/date-picker";
-import { SortDescriptor, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem} from "@nextui-org/react";
-import { fetchAllExpenses, fetchAllIncomes, fetchTransactionsDeleteExpense, fetchTransactionsDeleteIncome} from "../features/expenseIncomeTransactionSlice";
+import { SortDescriptor} from "@nextui-org/react";
+import { fetchAllExpenses, fetchAllIncomes} from "../features/expenseIncomeTransactionSlice";
 import { sortData } from "../Hendlers/Sort";
 import { ExpenseGetAllCategories, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
 import { HistoryTable } from "./HistoryTable";
-import { parseDate } from "@internationalized/date";
-import type {RangeValue} from "@react-types/shared";
-import type { DateValue } from "@react-types/datepicker";
-import { FilterBalance } from "../Hendlers/FilterBalance";
-import { RootState } from "../app/store";
 import { dataForTable } from "../Components";
 import { DataAllIncome } from "../api/expenseIncomeTransaction";
+import { TopContent } from "./TableTopContent";
 
 
 export const TransactionHistory = () => {
   const dispatch = useAppDispatch();
-  const { allAccounts } = useAppSelector((state: RootState) => state.account);
-  const { allExpenses, allIncomes, loading } = useAppSelector((state) => state.expenseIncomeTransaction);
-  const { expenseCategoryAll, incomeCategoryAll } = useAppSelector((state) => state.expenseIncomeCategory);
+  const { allExpenses, allIncomes } = useAppSelector((state) => state.expenseIncomeTransaction);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "transactionDate", direction: "descending",});
   const [sorterFilter, setSorterFilter] = useState<Selection>("all");
-  const [sorterFilter2, setSorterFilter2] = useState<Selection>(new Set(['0-All Accounts']));
   const [selectedTab, setSelectedTab] = useState<string>("Income"); 
-  const [value, setValue] = React.useState<RangeValue<DateValue> | null>({
-    start: parseDate(
-      new Date(new Date().setDate(new Date().getDate() - 92)).toISOString().split("T")[0]
-    ),
-    end: parseDate(new Date().toISOString().split("T")[0]),
-  });
-  const extendedAccount = () => {
-    if (allAccounts) {
-      return     [...allAccounts,
-        {
-          id: 0,
-          name: 'All Accounts',
-          balance: 0,
-          currency: 'USD',
-          byDefault: false,
-        }];
-    }
-    return  [
-      {
-        id: 0,
-        name: 'all',
-        balance: 0,
-        currency: 'USD',
-        byDefault: false,
-      }];
-  }
-  const [page, setPage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState("0")
 
-  const selectedValue = useMemo(() => {
-    if (!allAccounts || allAccounts.length === 0) return "0-All Accounts";
-    const value = Array.from(sorterFilter2).join(", ").replace(/_/g, "");
-    return value ;
-  }, [sorterFilter2, allAccounts]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(IncomeGetAllCategories());
     dispatch(ExpenseGetAllCategories());
-    const selectedIds = selectedValue.split("-")[0];
+
     if (selectedIds !== "0") {
       const filteredData: DataAllIncome = { ...dataForTable, page: page - 1 };
       filteredData.filterTransactionsDto = {
         ...filteredData.filterTransactionsDto,
         accountId: selectedIds.toString(),
       }
-      dispatch(fetchAllExpenses(filteredData))
       dispatch(fetchAllIncomes(filteredData))
+      dispatch(fetchAllExpenses(filteredData))
     }  else if (selectedIds === "0") {
 
       dispatch(fetchAllExpenses({ ...dataForTable, page: page - 1 }))
       dispatch(fetchAllIncomes({ ...dataForTable, page: page - 1 }))
     }
 
-  }, [dispatch, selectedTab, selectedValue, page]);
+  }, [dispatch, selectedTab, selectedIds, page]);
 
-  const categories = useCallback(() => {
-    if (selectedTab === "Income") {
-      return incomeCategoryAll;
-    }
-    return expenseCategoryAll;
-  }, [selectedTab, incomeCategoryAll, expenseCategoryAll]);
-
-
-// @ts-ignore
-  const sortedIncomes = sortData(allIncomes || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
   // @ts-ignore
-  const sortedExpenses = sortData(allExpenses || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
-
-  const transactions = useCallback(() => {
-    if (selectedTab === "Income") {
-      return FilterBalance(sortedIncomes, "Income:");
-    }
-    return FilterBalance(sortedExpenses, "Expence:")
-  }, [selectedTab, sortedExpenses, sortedIncomes]);  
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className="flex flex-col md:flex-row gap-4 md:justify-between">
-        <div>
-          <div className="text-default-600 text-base pr-4">{
-            transactions()}</div>
-          <div className="flex flex-row gap-4 items-center">
-            <Dropdown>
-              <DropdownTrigger className=" sm:flex">
-                <Button
-                  size="sm"
-                  variant="solid"
-                  className="bg-primary-400 "
-                >
-                  CATEGORIES
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={sorterFilter}
-                selectionMode="multiple"
-                onSelectionChange={setSorterFilter}
-
-              >
-                {categories().map((status) => (
-                  <DropdownItem key={status.id} className="capitalize font-sans">
-                    {status.name}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-            <Dropdown>
-              <DropdownTrigger className="sm:flex">
-                <Button
-                  size="sm"
-                  variant="solid"
-                  color="warning"
-                  isLoading={loading}
-                >
-                  {selectedValue.split("-")[1].toUpperCase()}
-                </Button>
-              </DropdownTrigger>
-                <DropdownMenu
-                  disallowEmptySelection
-                  aria-label="Table Columns"
-                  closeOnSelect={false}
-                  selectedKeys={sorterFilter2}
-                  selectionMode="single"
-                  onSelectionChange={setSorterFilter2}
-                  defaultSelectedKeys={new Set(['0-All Accounts'])}
-
-              >
-                 {extendedAccount().map((account) => (
-                  <DropdownItem key={`${account.id}-${account.name}`} className="capitalize font-sans">
-                    {account.name}
-                  </DropdownItem>
-                )
-                )}
-                
-                </DropdownMenu>
-            </Dropdown>
-
-          </div>
-        </div>
-        {/* <DateRangePicker
-          value={value}
-          onChange={setValue}
-          className="max-w-xs"
-          label="Time Range"
-          variant="flat"
-          selectorButtonPlacement="start"
-          defaultValue={{
-            start: parseDate("2024-04-01"),
-            end: parseDate("2024-04-08"),
-          }}
-        /> */}
-      </div>
-    )
-  }, [sorterFilter, 
-      categories, 
-      sorterFilter2, 
-      transactions, 
-      extendedAccount,
-      selectedValue,
-      loading
-      ])
+  const sortedIncomes = sortData(allIncomes?.transactionsPageDtoList || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
+  // @ts-ignore
+  const sortedExpenses = sortData(allExpenses?.transactionsPageDtoList || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
 
   return (
     <div className="font-sans">
@@ -200,8 +57,13 @@ export const TransactionHistory = () => {
       >
         <Tab key="Income" title="Income">
           <HistoryTable 
-            topContent={topContent} 
-            sortedData={ sortedIncomes} 
+            topContent={<TopContent
+                          selectedTab={selectedTab}
+                          sorterFilter={sorterFilter}
+                          setSorterFilter={setSorterFilter}
+                          setSelectedIds={setSelectedIds}
+            />}
+            sortedData={ sortedIncomes}
             sortDescriptor={sortDescriptor}
             setSortDescriptor={setSortDescriptor}
             setPage={setPage}
@@ -211,7 +73,12 @@ export const TransactionHistory = () => {
         </Tab>
         <Tab key="Expence" title="Expence">
           <HistoryTable 
-            topContent={topContent} 
+            topContent={<TopContent
+                          selectedTab={selectedTab}
+                          sorterFilter={sorterFilter}
+                          setSorterFilter={setSorterFilter}
+                          setSelectedIds={setSelectedIds}
+                        />} 
             sortedData={sortedExpenses} 
             sortDescriptor={sortDescriptor}
             setSortDescriptor={setSortDescriptor}

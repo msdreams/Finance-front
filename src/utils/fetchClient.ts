@@ -26,7 +26,7 @@ function request<T>(
       if (!response.ok) {
         return handleError(response);
       }
-      return response.json();
+      return response.status === 204 ? null : response.json();
     });
 }
 
@@ -42,19 +42,20 @@ export const client = {
 
 function handleError(response: Response): Promise<never> {
   return response.json().then((error) => {
+    if (response.status === 409) {
+      const errorMessage = error.errors || 'Conflict error occurred';
+      throw new Error(errorMessage);
+    }
     if (Array.isArray(error.errors)) {
-      // Если `error` — массив ошибок
       const errorMessage = error.errors.join('\n');
       throw new Error(errorMessage);
     }
 
     if (typeof error.errors === 'string') {
-      // Если `error` — строка
       throw new Error(error.errors);
     }
 
     if (error.message) {
-      // Если есть ключ `message`
       throw new Error(error.message);
     }
 

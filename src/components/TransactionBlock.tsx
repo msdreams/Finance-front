@@ -25,13 +25,6 @@ export const TransactionBlock = () => {
       const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
       return value.split("-")[1] || "Default account";
     }, [selectedKeys, allAccounts]);
-
-    // useEffect(() => {
-    //   if (allAccounts && allAccounts.length > 0) {
-    //     setSelectedKeys(new Set([allAccounts[0].name]));
-    //     setAccount(allAccounts[0]);
-    //   }
-    // }, [allAccounts]);
   
     useEffect(() => {
       if (allAccounts && allAccounts.length > 0) {
@@ -42,7 +35,7 @@ export const TransactionBlock = () => {
   
   
   return (
-    <div className="flex flex-col text-white gap-6 p-4 md:p-8">
+    <div className="flex flex-col text-white gap-6 p-4 md:p-8 ">
     <div className="flex gap-4 flex-row flex-wrap justify-between ">
       {isLoading || !allAccounts || !account ? (
         <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg">
@@ -51,7 +44,7 @@ export const TransactionBlock = () => {
       <div className="flex flex-row gap-4 animate-fadeIn">
         <Dropdown>
           <DropdownTrigger>
-            <Button className="capitalize text-white min-w-[140px]" variant="bordered" >
+            <Button className="capitalize text-md text-white min-w-[140px]" variant="bordered" >
               {selectedValue}
             </Button>
           </DropdownTrigger>
@@ -64,20 +57,20 @@ export const TransactionBlock = () => {
             onSelectionChange={setSelectedKeys}
           >
             {allAccounts.map((account, i) => (
-              <DropdownItem key={`${i}-${account.name}`}>{account.name}</DropdownItem>
+              <DropdownItem key={`${i}-${account.name}`}>{account.name.replace(/\b\w/g, char => char.toUpperCase())}</DropdownItem>
             ))}
           </DropdownMenu>
         </Dropdown>
       </div>
     )}
         {account && (
-      <div className="text-2xl min-w-[210px] animate-fadeInSlow">
+      <div className=" text-lg md:text-2xl text-end  animate-fadeInSlow">
         Balance: {account?.balance + "$"}
       </div>
           
       )}
     </div>
-    <div className="flex flex-col gap-1 lg:max-w-[400px] pt-2 ">
+    <div className="flex flex-col gap-1 lg:max-w-[420px] pt-2 ">
         <TransactionAction
           selectedAccount={account}
           setAccount={setAccount}

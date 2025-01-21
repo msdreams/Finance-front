@@ -3,7 +3,7 @@ export type TargetAdd = {
   name: string;
   expectedSum: number;
   currentSum: number;
-  monthlyDownPayment: number;
+  downPayment: number;
   achievedBefore: string;
   periodLeft: string;
   currency: string;

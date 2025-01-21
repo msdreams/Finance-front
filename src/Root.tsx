@@ -4,7 +4,6 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import App from "./App";
 import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { HistoryPage } from "./pages/HistoryPage";
 import { AboutPage } from "./pages/AboutPage";
 import { PlanPage } from "./pages/PlanPage";
 import { HomePage } from "./pages/HomePage";
@@ -35,7 +34,6 @@ export const Root = () => {
             <Route path='account' element={<ProtectedRoute />}>
               <Route index element={<HomePage />} />
               <Route path='plan' element={<PlanPage />} />
-              <Route path='history' element={<HistoryPage />} />
               <Route path='new-target' element={<NewTargetPage />} />
               <Route path='new-account' element={<NewAccountPage />} />
               <Route path="new-budget" element={<NewBudgetPage />} />

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { SumsByDateArray, Transactions } from "../types/expenseIncomeTransaction";
 import { DataAllIncome, DataAllIncomeForChartsDays, DataAllIncomeForChartsMY, DataUpdate, TransactionsAddExpense, TransactionsAddIncome, TransactionsAllExpense, TransactionsAllExpenseForChartsDays, TransactionsAllExpenseForChartsMY, TransactionsAllIncome, TransactionsAllIncomeForChartsDays, TransactionsAllIncomeForChartsMY, TransactionsDeleteExpense, TransactionsDeleteIncome, TransactionsUpdateExpense, TransactionsUpdateIncome } from "../api/expenseIncomeTransaction";
 import { dataForTable } from "../Components";
+import { fetchGetAllAccounts } from "./accountSlice";
 
 type AuthState = {
   allIncomes: Transactions | null;
@@ -77,15 +78,16 @@ export const fetchTransactionsAddIncome = createAsyncThunk(
 
 export const fetchTransactionsAddExpense = createAsyncThunk(
   'expenseIncomeCategory/fetchTransactionsAddExpense',
-  async (data: DataUpdate, {dispatch}) => {
+  async (data: DataUpdate, {dispatch, rejectWithValue}) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsAddExpense(data, accessToken);
       return response;
-    } catch (error) {
-      throw new Error('Failed to fetch TransactionsAddExpense');
+    } catch (error: any) {
+      const errorMessage = error?.message
+      throw new Error(errorMessage || 'Failed to fetch incomes');
     }
   }
 );
@@ -182,15 +184,18 @@ export const fetchAllExpensesForChartsDays = createAsyncThunk(
 
 export const fetchTransactionsDeleteIncome = createAsyncThunk(
   'expenseIncomeCategory/fetchTransactionsDeleteIncome',
-  async (id: string, {dispatch}) => {
+  async (id: string, { dispatch, rejectWithValue }) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsDeleteIncome(id, accessToken);
+      dispatch(fetchAllIncomes())
+      dispatch(fetchGetAllAccounts());
+    
       return response;
-    } catch (error) {
-      throw new Error('Failed to fetch TransactionsDeleteIncome');
+    } catch (error: any) {
+      throw new Error(error.message || 'Failed to fetch TransactionsDeleteExpense');
     }
   }
 )
@@ -203,10 +208,14 @@ export const fetchTransactionsDeleteExpense = createAsyncThunk(
       if (!accessToken) throw new Error("Access token not found");
 
       const response = await TransactionsDeleteExpense(id, accessToken);
-      dispatch(fetchAllExpenses(dataForTable));
+      dispatch(fetchAllExpenses())
+          dispatch(fetchGetAllAccounts());
+    
       return response;
-    } catch (error) {
-      throw new Error('Failed to fetch TransactionsDeleteExpense');
+    } catch (error: any) {
+      console.log("no DeleteExpense")
+
+      throw new Error(error.message ||'Failed to fetch TransactionsDeleteExpense');
     }
   }
 )
@@ -251,9 +260,16 @@ export const accountSlice = createSlice({
       state.loading = false;
 
       if (state.allExpenses) {
-        state.allExpenses = [...state.allExpenses, action.payload];
+        state.allExpenses.transactionsPageDtoList = [...state.allExpenses.transactionsPageDtoList, action.payload];
       } else {
-        state.allExpenses = [action.payload];
+        state.allExpenses = {
+          "pageNumber": 0,
+          "pageSize": 10,
+          "elementsPresentOnPage": 10,
+          "totalElements": 1,
+          "totalPages": 1,
+          "transactionsPageDtoList": [action.payload]
+        };
       }
     })
     .addCase(fetchTransactionsAddExpense.rejected, (state, action) => {

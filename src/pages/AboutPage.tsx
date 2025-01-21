@@ -93,7 +93,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        <div className="flex-1 flex-col bg-primary-600 h-[500px] md:h-screen flex overflow-hidden">
+        <div className="flex-1 flex-col bg-primary h-[500px] md:h-screen flex overflow-hidden">
           <div className="flex flex-col px-10 pt-24 lg:pt-36 relative">
             <div className="absolute opacity-10 left-60">
             <Background />

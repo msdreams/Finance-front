@@ -207,7 +207,6 @@ export const expenseIncomeCategorySlice = createSlice({
     })
     .addCase(IncomeGetAllCategories.fulfilled, (state, action) => {
       state.loading = false; // Загрузка завершена
-      console.log("Categories loaded into state:", action.payload); 
       state.incomeCategoryAll = action.payload; // Устанавливаем полученные категории доходов
     })
     .addCase(IncomeGetAllCategories.rejected, (state, action) => {

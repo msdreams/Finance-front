@@ -1,6 +1,6 @@
 import { Transaction, Transactions } from "../types/expenseIncomeTransaction";
 
-export const sortData = <T extends keyof Transaction>(data: Transactions, key: T, direction: string, statusFilter: string) => {
+export const sortData = <T extends keyof Transaction>(data: Transaction[], key: T, direction: string, statusFilter: string) => {
   const sorteData = [...data].sort((a, b) => {
     if (key === "transactionDate") {
       const dateA = new Date(a[key]);

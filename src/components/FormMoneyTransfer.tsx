@@ -1,5 +1,5 @@
-import { Form, Input, Button, Textarea, Select, SelectItem } from "@nextui-org/react";
-import { useAppDispatch } from "../app/hooks";
+import { Form, Input, Button, Textarea, Select, SelectItem, useDisclosure, DatePicker } from "@nextui-org/react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { fetchTransactionsAddExpense, fetchTransactionsAddIncome } from "../features/expenseIncomeTransactionSlice";
 import { DataUpdate } from "../api/expenseIncomeTransaction";
 import { Account } from "../types/account";
@@ -7,18 +7,21 @@ import { AddCategory, AllCategories } from "../types/expenseIncomeCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { fetchGetAllAccounts } from "../features/accountSlice";
+import { ModalWindow } from "./ModalWindow";
+import { getLocalTimeZone, today} from "@internationalized/date";
 
 type Props = {
   selectedAccount: Account,
   category: AddCategory[] | null | AllCategories,
-  setAccount: (value: Account) => void;
 }
 
-export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category, setAccount } ) => {
+export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category } ) => {
   const dispatch = useAppDispatch();
+  const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const categories = category || [{ id: 1, name: "Other" }];
   const isLoading = useSelector((state: RootState) => state.expenseIncomeTransaction.loading);
-
   const handleSubmitAddIncome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -33,7 +36,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
     dispatch(fetchTransactionsAddIncome(formDataIncome))
       .finally(() => dispatch(fetchGetAllAccounts()));
   };
-  
+
   const handleSubmitAddExpence = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));  
@@ -46,6 +49,8 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
     };
   
     dispatch(fetchTransactionsAddExpense(formDataIncome))
+      .unwrap()
+      .catch(() => onOpen())
       .finally(() => dispatch(fetchGetAllAccounts()));
     };
 
@@ -72,25 +77,32 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
       />
 
       <div className="flex flex-col md:flex-row md:items-start w-full gap-2">
-      <label htmlFor="categoryId" className="sr-only">Category</label>
-        <Select
+        {categories.length > 0 && (
+          <>
+            <label htmlFor="categoryId" className="sr-only">Category</label>
+              <Select
+              isRequired
+              name="categoryId"
+              className="min-w-36 md:align-top"
+              placeholder="Select category"
+              aria-label="Select category"
+              selectedKeys={categories[0]?.id.toString()}
+            >
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+              ))}
+            </Select>
+          </>
+        )}
+
+        <DatePicker
           isRequired
-          name="categoryId"
-          className="min-w-36 md:align-top"
-          placeholder="Select category"
-          aria-label="Select category"
-        >
-          {categories.map((category) => (
-            <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
-          ))}
-        </Select>
-        <Input
-        isRequired
-        className="text-gray-500"
-        errorMessage="Please enter a valid date"
-        name="date"
-        type="date"
-      />
+          className="text-gray-500 pb-0 !p-0"
+          errorMessage="Please enter a valid date"
+          defaultValue={today(getLocalTimeZone())}
+          name="date"
+          aria-label="date"
+        />
       </div>
 
       <Textarea placeholder="Enter your message" type="comment" name="comment" />
@@ -99,6 +111,13 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
             Submit
         </Button>
       </div>
+
+        <ModalWindow
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          header={"Rejected"}
+          body={error ?? "Errow"}
+        />
     </Form>
   )
 }

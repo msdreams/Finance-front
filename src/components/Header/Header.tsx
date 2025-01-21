@@ -31,7 +31,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
           />
         </nav>
 
-        <nav className="font-sans text-lg border-b-1.5 border-transparent text-gray-900 flex flex-row justify-center items-center gap-10">
+        <nav className="font-sans text-base border-b-1.5 border-transparent text-gray-900 flex flex-row justify-center items-center gap-10">
           {accessToken ? (
             <>
               <NavLink
@@ -42,21 +42,10 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 }
                 to="account"
               >
-                Home
+                Dushboard
               </NavLink>
 
-              <NavLink
-                className={({ isActive }) =>
-                  isActive
-                    ? " border-b-1.5 border-gray-900" 
-                    : " border-b-1.5 border-transparent hover:border-gray-900"
-                }
-                to="account/plan"
-              >
-                Plan
-              </NavLink>
-
-              <NavLink
+              {/* <NavLink
                 className={({ isActive }) =>
                   isActive
                     ? "border-b-1.5 border-gray-900" 
@@ -65,7 +54,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 to="account/history"
               >
                 History
-              </NavLink>
+              </NavLink> */}
 
               <Button
                   onPress={() => navigate('about')}
