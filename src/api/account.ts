@@ -31,7 +31,7 @@ export const setAccountByDefault = (id: string, accessToken: string): Promise<Ac
 }
 
 export const addTransfer = (data: DataAddTransfer, accessToken: string): Promise<AccountAddTransfer> => {
-  return client.post('/transfer/add-transfer', data, {
+  return client.post('/transfers/add-transfer', data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })

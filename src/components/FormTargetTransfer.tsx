@@ -23,7 +23,6 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
   const isLoading = useSelector((state: RootState) => state.expenseIncomeTransaction.loading);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const[errowMessage, setErrowMessage] = useState<string | null>(null)
-  const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
 
   const CurrentTarget = useMemo(() => {
     const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
@@ -35,7 +34,6 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
     const data = Object.fromEntries(new FormData(e.currentTarget));  
     const formDataIncome: DataReplenishTarget = {
       sumOfReplenishment: +data.amount,
-      // transactionDate: String(data.date),
       fromAccountId:+String(selectedAccount.id),
       toTargetId:+String(CurrentTarget.split("-")[2]),
     };
@@ -80,7 +78,7 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
      <>
     {targets.length > 0 &&(
       <Form
-        className="relative flex flex-col  text-gray-900 md:p-6 pb-6 rounded-lg bg-gray-600 md:border-1"
+        className="relative flex flex-col  text-gray-900 pt-2 pb-4 bg-gray-600 "
         validationBehavior="native"
         onSubmit={(e) => handleReplenishTarget(e)}
       >
@@ -106,10 +104,6 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
                   +
               </Button>
             </Tooltip>
-            {/* <div className="text-white flex items-center text-md pl-1 min-w-[60px]">
-              {selectedAccount?.name}
-            </div> */}
-            {/* <div><BsArrowRight size={24} color="white"/></div> */}
             <Dropdown>
               <DropdownTrigger>
                 <Button

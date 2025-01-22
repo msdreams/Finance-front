@@ -29,7 +29,7 @@ export const HomePage = () => {
   return (
     <div className="flex flex-col items-center w-full bg-gray-400 min-h-screen">
       {/* dashboard */}
-      <div className="flex flex-col w-[100%] p-4 md:p-10 gap-6 ">
+      <div className="flex flex-col w-[100%] p-2 md:p-10 gap-6 ">
         <div className="flex flex-col lg:flex-row gap-6 font-sans pt-16 animate-fadeIn">
           <div className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg">
             <TransactionBlock />

@@ -1,80 +1,62 @@
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import { CiMoneyCheck1 } from "react-icons/ci"; 
 import { TransactionAction } from "../components/TransactionAction";
 import { Account } from "../types/account";
 import { useSelector } from "react-redux";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchGetAllAccounts } from "../features/accountSlice";
-import type {Selection} from "@nextui-org/react";
 import { RootState } from "../app/store";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-
+import { Accounts } from "./Accounts";
+import {Tooltip} from "@heroui/react";
+import { useDisclosure } from "@nextui-org/react";
+import { ModalAccountTransfer } from "./ModalAccountTransfer";
 
 export const TransactionBlock = () => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.account.loading);
   const { allAccounts } = useAppSelector((state: RootState) => state.account);
   const [account, setAccount] = useState<Account | null>(null);
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
   
-    const selectedValue = useMemo(() => {
-      if (!allAccounts || allAccounts.length === 0) return "Default account";
-      const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
-      return value.split("-")[1] || "Default account";
-    }, [selectedKeys, allAccounts]);
-  
-    useEffect(() => {
-      if (allAccounts && allAccounts.length > 0) {
-        const selectedAccountIndex = +Array.from(selectedKeys).join(", ").split("-")[0];
-        setAccount(allAccounts[selectedAccountIndex] || allAccounts[0]);
-      }
-    }, [selectedKeys, allAccounts]);
-  
-  
   return (
-    <div className="flex flex-col text-white gap-6 p-4 md:p-8 ">
-    <div className="flex gap-4 flex-row flex-wrap justify-between ">
-      {isLoading || !allAccounts || !account ? (
+    <div className="flex flex-col text-white gap-8 p-4 pt-6 md:p-8 ">
+    <div className="flex gap-4 flex-row items-center flex-wrap justify-between ">
+      {isLoading || !allAccounts ? (
         <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg">
         </div>
-      ): (
-      <div className="flex flex-row gap-4 animate-fadeIn">
-        <Dropdown>
-          <DropdownTrigger>
-            <Button className="capitalize text-md text-white min-w-[140px]" variant="bordered" >
-              {selectedValue}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            disallowEmptySelection
-            aria-label="Single selection example"
-            selectedKeys={selectedKeys}
-            selectionMode="single"
-            variant="flat"
-            onSelectionChange={setSelectedKeys}
-          >
-            {allAccounts.map((account, i) => (
-              <DropdownItem key={`${i}-${account.name}`}>{account.name.replace(/\b\w/g, char => char.toUpperCase())}</DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-    )}
-        {account && (
-      <div className=" text-lg md:text-2xl text-end  animate-fadeInSlow">
-        Balance: {account?.balance + "$"}
-      </div>
-          
+        ) : (
+        <Accounts allAccounts={allAccounts} setAccount={setAccount} />
       )}
-    </div>
-    <div className="flex flex-col gap-1 lg:max-w-[420px] pt-2 ">
-        <TransactionAction
-          selectedAccount={account}
-          setAccount={setAccount}
+      {account && allAccounts && (
+    <div className=" flex flex-row gap-2 items-center text-lg md:text-2xl text-end  animate-fadeInSlow">
+        {account?.balance + "$"}
+        <Tooltip className="font-sans" content="Transfer to another account">
+          <div>
+            <CiMoneyCheck1
+              className="cursor-pointer hover:scale-95"
+              size={38}
+              onClick={onOpen}
+            />
+          </div>
+        </Tooltip>
+        <ModalAccountTransfer
+          AllAccounts={allAccounts}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          currentAccountId={account.id}
         />
+      </div>
+       )}
+    </div>
+    <div className="flex flex-col gap-1 lg:max-w-[420px]">
+      <TransactionAction
+        selectedAccount={account}
+        setAccount={setAccount}
+      />
     </div>
   </div>
   )
