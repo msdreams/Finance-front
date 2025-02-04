@@ -13,9 +13,11 @@ import { getLocalTimeZone, today} from "@internationalized/date";
 type Props = {
   selectedAccount: Account,
   category: AddCategory[] | null | AllCategories,
+  selectedTab: string;
+  setAccount: (value: Account) => void;
 }
 
-export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category } ) => {
+export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category, selectedTab, setAccount } ) => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -34,7 +36,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category 
     };
   
     dispatch(fetchTransactionsAddIncome(formDataIncome))
-      .finally(() => dispatch(fetchGetAllAccounts()));
+      .finally(() => {dispatch(fetchGetAllAccounts()); setAccount(selectedAccount)});
   };
 
   const handleSubmitAddExpence = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +49,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category 
       accountId:+String(selectedAccount.id),
       categoryId:+String(data.categoryId),
     };
-  
+
     dispatch(fetchTransactionsAddExpense(formDataIncome))
       .unwrap()
       .catch(() => onOpen())
@@ -59,7 +61,7 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category 
       className=" flex flex-col text-gray-900"
       validationBehavior="native"
       onSubmit={(e) => {
-        if (categories[0].name === "Salary") {
+        if (selectedTab === "Add Income") {
           handleSubmitAddIncome(e)
         } else {
           handleSubmitAddExpence(e)
@@ -86,7 +88,6 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category 
               className="min-w-36 md:align-top"
               placeholder="Select category"
               aria-label="Select category"
-              selectedKeys={categories[0]?.id.toString()}
             >
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>

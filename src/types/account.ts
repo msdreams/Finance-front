@@ -6,6 +6,15 @@ export type AccountPut = {
   byDefault: boolean;
 }
 
+export type AccountApdadte = {
+  newName: string;
+}
+
+export type AccountApdadteData = {
+  id: string;
+  data: AccountApdadte;
+}
+
 export type AccountAddTransfer = {
   id: number;
   comment: string;
@@ -23,7 +32,7 @@ export type AccountAddAccount = {
   byDefault: boolean;
 }
 
-interface Transaction {
+export interface Transfer {
   id: number;
   comment: string;
   amount: number;
@@ -32,7 +41,14 @@ interface Transaction {
   toAccountId: number;
 }
 
-export type GetAllTransfers = Transaction[];
+export type GetAllTransfers = {
+  "pageNumber": number,
+  "pageSize": number,
+  "elementsPresentOnPage": number,
+  "totalElements": number,
+  "totalPages": number,
+  "transactionsPageDtoList": Transfer[] | []
+}
 
 export type Account = {
   id: number;

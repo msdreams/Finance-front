@@ -1,4 +1,5 @@
-import { AccountAddAccount, AccountAddTransfer, AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
+import { Account, AccountAddAccount, AccountAddTransfer, AccountApdadte, AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
+import { Transaction } from "../types/expenseIncomeTransaction";
 import { client } from "../utils/fetchClient";
 import { DataAllTarget } from "./target";
 
@@ -16,8 +17,8 @@ export type DataAddTransfer = {
   toAccountId: number,
 }
 
-export const updateAccount = (id: string, accessToken: string): Promise<AccountPut> => {
-  return client.put(`/account/update-account/${id}`, {
+export const updateAccount = (id: string, data: AccountApdadte, accessToken: string): Promise<AccountPut> => {
+  return client.put(`/account/update-account/${id}`, data, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,
   })
@@ -57,7 +58,7 @@ export const getAllTransfers = (data: DataAllTarget, accessToken: string): Promi
   })
 }
 
-export const getAllAccounts = (accessToken: string): Promise<GetAllAccounts> => {
+export const getAllAccounts = (accessToken: string): Promise<Account[]> => {
   return client.get('/account/get-all-accounts', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`,

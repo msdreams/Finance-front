@@ -46,12 +46,13 @@ export const GetAllTargets = createAsyncThunk('target/GetAllTargets', async () =
   }
 })
 
-export const DeleteTarget = createAsyncThunk('target/DeleteTarget', async (data: DataDeleteTarget) => {
+export const DeleteTarget = createAsyncThunk('target/DeleteTarget',
+  async (data: DataDeleteTarget, { dispatch }) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
     const response = await deleteTarget(data, accessToken)
-
+    dispatch(GetAllTargets())
     return response;
   }
 })

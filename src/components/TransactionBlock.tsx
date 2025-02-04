@@ -14,26 +14,34 @@ import { ModalAccountTransfer } from "./ModalAccountTransfer";
 export const TransactionBlock = () => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.account.loading);
-  const { allAccounts } = useAppSelector((state: RootState) => state.account);
+  const allAccounts = useAppSelector((state: RootState) => state.account.allAccounts);
   const [account, setAccount] = useState<Account | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  console.log(account)
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
-  
+
+  useEffect(() => {
+    if (allAccounts && allAccounts.length > 0 && !account) {
+      setAccount(allAccounts[0]);
+    }
+  }, [allAccounts]);
+
   return (
     <div className="flex flex-col text-white gap-8 p-4 pt-6 md:p-8 ">
     <div className="flex gap-4 flex-row items-center flex-wrap justify-between ">
-      {isLoading || !allAccounts ? (
+      {isLoading || !allAccounts || !account ? (
         <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg">
         </div>
         ) : (
-        <Accounts allAccounts={allAccounts} setAccount={setAccount} />
+            <Accounts allAccounts={allAccounts} setAccount={setAccount} account={ account } />
       )}
       {account && allAccounts && (
-    <div className=" flex flex-row gap-2 items-center text-lg md:text-2xl text-end  animate-fadeInSlow">
-        {account?.balance + "$"}
+    <div className=" flex flex-row gap-2 items-center text-lg md:text-xl text-end animate-fadeInSlow">
+        {account.balance} {account.currency}
         <Tooltip className="font-sans" content="Transfer to another account">
           <div>
             <CiMoneyCheck1

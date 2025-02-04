@@ -9,10 +9,11 @@ import {Tooltip} from "@heroui/react";
 type Props = {
   allAccounts: Account[];
   setAccount: (value: Account) => void;
+  account: Account;
 }
 
-export const Accounts: React.FC<Props> = ({ allAccounts, setAccount }) => {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+export const Accounts: React.FC<Props> = ({ allAccounts, setAccount, account }) => {
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([`${account.id}-${account.name}`]));
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const selectedValue = useMemo(() => {
@@ -21,8 +22,8 @@ export const Accounts: React.FC<Props> = ({ allAccounts, setAccount }) => {
     }, [selectedKeys]);
   
   useEffect(() => {
-    setAccount(allAccounts[+selectedValue.split("-")[0]] || allAccounts[0]);
-  }, [selectedValue, allAccounts, setAccount]);
+    setAccount(allAccounts[+selectedValue.split("-")[0] - 1]);
+  }, [selectedValue, allAccounts, setAccount, account]);
 
   return (
     <div className="flex flex-row gap-2 items-center animate-fadeIn">
@@ -39,7 +40,7 @@ export const Accounts: React.FC<Props> = ({ allAccounts, setAccount }) => {
       <Dropdown>
         <DropdownTrigger>
           <Button className="capitalize text-md text-white " variant="bordered" size="md">
-            {allAccounts[+selectedValue.split("-")[0]].name || allAccounts[0].name }
+            {account.name }
           </Button>
         </DropdownTrigger>
         <DropdownMenu
@@ -50,9 +51,9 @@ export const Accounts: React.FC<Props> = ({ allAccounts, setAccount }) => {
           variant="flat"
           onSelectionChange={setSelectedKeys}
         >
-          {allAccounts.map((account, i) => (
+          {allAccounts.map((account) => (
             <DropdownItem
-              key={`${i}-${account.name}`}
+              key={`${account.id}-${account.name}`}
             >
               {account.name.replace(/\b\w/g, char => char.toUpperCase())}
             </DropdownItem>

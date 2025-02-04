@@ -1,47 +1,39 @@
-import { Modal, Textarea, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, DatePicker, Select, SelectItem, useDraggable} from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, DatePicker, Select, SelectItem, useDraggable} from "@nextui-org/react";
+import { DataAddTarget } from "../api/target";
+import { AddTarget, GetAllTargets } from "../features/targetSlice";
 import { useAppDispatch } from "../app/hooks";
 import { getLocalTimeZone, today} from "@internationalized/date";
+import { currensySet } from "../Components";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import { useRef, useState } from "react";
-import { DataAddTransfer } from "../api/account";
-import { AddTransfer, fetchGetAllAccounts } from "../features/accountSlice";
-import { Account } from "../types/account";
+import { useRef } from "react";
 
 type Props = {
   isOpen: boolean;
-  AllAccounts: Account[];
   onOpenChange: () => void;
-  currentAccountId: number;
 }
 
-export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, currentAccountId, onOpenChange }) => {
+export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.target.loading);
   const targetRef = useRef(null);
-  const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
-  const[errowMessage, setErrowMessage] = useState<string | null>(null)
-  
-  
-  const handleSubmitAddTransfer = (e: React.FormEvent<HTMLFormElement>) => {
+  const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
+
+
+  const handleSubmitAddTarget = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    const formDataTransfer: DataAddTransfer = {
-      comment: String(data.comment),
-      amount: +data.amount,
-      transactionDate: String(data.date),
-      fromAccountId: currentAccountId,
-      toAccountId: +data.accountId,
+    const formDataIncome: DataAddTarget = {
+      name: String(data.name),
+      expectedSum: +data.amount,
+      achievedBefore: String(data.date),
+      currency: String(data.currency),
     };
   
-    dispatch(AddTransfer(formDataTransfer))
-    .unwrap()
-      .then(() => {
-        onOpenChange()
-        setErrowMessage(null)
-      })
-    .catch((er) => setErrowMessage(er.message))
-      .finally(() => dispatch(fetchGetAllAccounts()));
+  
+    dispatch(AddTarget(formDataIncome))
+      .finally(() => dispatch(GetAllTargets()));
+    onOpenChange();
   };
 
   return (
@@ -56,38 +48,44 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
-              New Transaction
+              New Target
             </ModalHeader>
             <ModalBody>
               <Form
                 id="create-target-form"
                 className=" flex flex-col text-gray-900"
                 validationBehavior="native"
-                onSubmit={(e) => handleSubmitAddTransfer(e)}
+                onSubmit={(e) => handleSubmitAddTarget(e)}
               >
                 <Input
+                  isRequired
+                  className="text-gray-500"
+                  errorMessage="Please enter target name"
+                  name="name"
+                  placeholder="Enter target name"
+                  type="string"
                   autoFocus
+                />
+                <Input
                   isRequired
                   className="text-gray-500"
                   errorMessage="Please enter a valid amount"
                   name="amount"
-                  placeholder="Enter transaction amount"
+                  placeholder="Enter target amount"
                   type="number"
                   min="1"
               />
 
                 <Select 
                   isRequired
-                  name="accountId" 
-                  label="Transfer to" 
-                  placeholder="Select an account"
-                  aria-label="Transfer to"
+                  name="currency" 
+                  label="Currency" 
+                  placeholder="Select currency type"
                 >
-                  {AllAccounts.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
+                  {currensySet.map((c) => (
+                    <SelectItem key={c.key}>{c.label}</SelectItem>
                   ))}
                 </Select>
-
                 <DatePicker
                   isRequired
                   className="text-gray-500 pb-0 !p-0"
@@ -96,10 +94,8 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
                   name="date"
                   aria-label="date"
                 />
-                <Textarea placeholder="Enter your message" type="comment" name="comment" />
 
               </Form>
-              {errowMessage && <div className="text-danger">{errowMessage}</div> }
             </ModalBody>
             <ModalFooter>
             <Button 
@@ -109,7 +105,7 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
               form="create-target-form"
               >
                     Submit
-              </Button>
+                </Button>
               <Button color="danger" variant="light" onPress={onClose} type="submit">
                 Close
               </Button>

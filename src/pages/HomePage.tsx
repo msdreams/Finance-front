@@ -39,7 +39,7 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="flex flex-col lg:flex-row gap-6 font-sans pt-16 animate-fadeIn">
-          <div className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg">
+          <div aria-label="SettingsBlock" className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg">
               <SettingsBlock />
             </div>
           <div className=" flex flex-1 flex-col bg-gray-600 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">

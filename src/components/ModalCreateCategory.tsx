@@ -1,36 +1,39 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, Select, SelectItem, useDraggable} from "@nextui-org/react";
 import { useAppDispatch } from "../app/hooks";
-import { currensySet } from "../Components";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { useRef } from "react";
-import { DataAddAccount } from "../api/account";
-import { AddAccount, fetchGetAllAccounts } from "../features/accountSlice";
+import { DataName } from "../api/expenseIncomeCategory";
+import { ExpenseGetAllCategories, fetchExpenseAddCategory, fetchIncomeAddCategory, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
+  categoryType: string;
 }
 
-export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+export const ModalCreateCategory: React.FC<Props> = ({ isOpen, onOpenChange, categoryType }) => {
   const dispatch = useAppDispatch();
-  const isLoading = useSelector((state: RootState) => state.target.loading);
+  const isLoading = useSelector((state: RootState) => state.expenseIncomeCategory.loading);
   const targetRef = useRef(null);
   const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
   
-  const handleSubmitAddAccount = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitAddCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    const formDataIncome: DataAddAccount = {
-      name: String(data.name),
-      balance: +data.amount,
-      currency: String(data.currency),
+    const formData: DataName = {
+      name: String(data.name)
     };
   
-  
-    dispatch(AddAccount(formDataIncome))
-      .finally(() => dispatch(fetchGetAllAccounts()));
-    onOpenChange();
+    if (categoryType === "Income") {
+      dispatch(fetchIncomeAddCategory(formData))
+      .finally(() => dispatch(IncomeGetAllCategories()));
+      onOpenChange();
+    } else if (categoryType === "Expense") {
+      dispatch(fetchExpenseAddCategory(formData))
+      .finally(() => dispatch(ExpenseGetAllCategories()));
+      onOpenChange();
+    }
   };
 
   return (
@@ -45,45 +48,25 @@ export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) =>
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
-              New Account
+              New {categoryType} Category
             </ModalHeader>
             <ModalBody>
               <Form
                 id="create-target-form"
                 className=" flex flex-col text-gray-900"
                 validationBehavior="native"
-                onSubmit={(e) => handleSubmitAddAccount(e)}
+                onSubmit={(e) => handleSubmitAddCategory(e)}
               >
                 <Input
                   isRequired
                   className="text-gray-500"
-                  errorMessage="Please enter account name"
+                  errorMessage="Please enter category name"
                   name="name"
-                  maxLength={15}
-                  placeholder="Enter account name"
+                  placeholder="Enter category name"
                   type="string"
+                  maxLength={15}
                   autoFocus
                 />
-                <Input
-                  isRequired
-                  className="text-gray-500"
-                  errorMessage="Please enter a valid amount"
-                  name="amount"
-                  placeholder="Enter account balance"
-                  type="number"
-                  min="1"
-              />
-
-                <Select 
-                  isRequired
-                  name="currency" 
-                  label="Currency" 
-                  placeholder="Select currency type"
-                >
-                  {currensySet.map((c) => (
-                    <SelectItem key={c.key}>{c.label}</SelectItem>
-                  ))}
-                </Select>
               </Form>
             </ModalBody>
             <ModalFooter>

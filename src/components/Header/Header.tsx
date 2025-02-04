@@ -42,7 +42,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 }
                 to="account"
               >
-                Dushboard
+                Dashboard
               </NavLink>
 
               {/* <NavLink

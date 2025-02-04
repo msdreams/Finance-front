@@ -53,14 +53,14 @@ export const expenseGetAllCategories = (accessToken: string): Promise<AllCategor
 }
 
 export const incomeDeleteCategory = (id: string, accessToken: string) => {
-  return client.delete(`/income-categories/delete-category/${id}`, {
+  return client.deleteById(`/income-categories/delete-category/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })
 }
 
 export const expenseDeleteCategory = (id: string, accessToken: string) => {
-  return client.delete(`/expense-categories/delete-category/${id}`, {
+  return client.deleteById(`/expense-categories/delete-category/${id}`, {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })

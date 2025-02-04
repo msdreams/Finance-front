@@ -38,7 +38,7 @@ export const addTarget = (data: DataAddTarget, accessToken: string): Promise<Tar
   })
 }
 
-export const getAllTargets = (accessToken: string): Promise<TargetAdd> => {
+export const getAllTargets = (accessToken: string): Promise<TargetAdd[]> => {
 
   return client.get(`/targets/get-all-targets`, {
     'Content-Type': 'application/json',

@@ -1,14 +1,12 @@
-import { MdSavings } from "react-icons/md"; 
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { GetAllTargets } from "../features/targetSlice";
 import { ModalCreateTarget } from "./ModalCreateTarget";
 import { Button, useDisclosure } from "@nextui-org/react";
-import { Listbox, ListboxItem, cn } from "@heroui/react";
-import {Progress} from "@heroui/react";
+import { TargetItems } from "./TargetItems";
 
 export const EditTarget = () => {
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { targets } = useAppSelector((state) => state.target) || [];
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   
@@ -37,46 +35,21 @@ export const EditTarget = () => {
     }
   
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col gap-4 w-full">
       {targets.length > 0 && (
-        <Listbox aria-label="Dynamic Actions" items={targets} variant="bordered">
-          {(item) => (
-            <ListboxItem
-              key={item.id}
-              color="default"
-            >
-              <div className="flex flex-row gap-2 items-center text-lg pb-4 pt-4">
-                <MdSavings className="min-w-[24px]"/>
-                <span className="pr-6 font-semibold">{item.name}</span>
-                <Progress
-                  className="max-w-md"
-                  color="warning"
-                  formatOptions={{style: "currency", currency: item.currency}}
-                  label="progress"
-                  maxValue={item.expectedSum}
-                  showValueLabel={true}
-                  size="md"
-                  value={item.currentSum}
-    />
-              </div>
-
-
-            </ListboxItem>
-          )}
-        </Listbox>
+        <TargetItems targets={targets} />
       )}
-              <Button
-          className="w-full md:w-auto"
-          color="primary"
-          onPress={onOpen}
-        >
-          Create New Target
-        </Button>
+      <Button
+        className="w-full md:w-auto bg-gray-500 text-gray-100"
+        onPress={onOpen}
+      >
+        Create New Target
+      </Button>
 
-        <ModalCreateTarget
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
+      <ModalCreateTarget
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
     </div>
   )
 }

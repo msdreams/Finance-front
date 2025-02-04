@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Selection, TableHeader, TableColumn, TableBody, Tooltip, TableRow, TableCell, ChipProps, Chip, Pagination, useDisclosure,
 } from "@nextui-org/react";
 import { Transaction } from "../types/expenseIncomeTransaction";
-import { DeleteIcon, EditIcon, EyeIcon } from "../assets/SVG/svg";
+import { DeleteIcon, EyeIcon } from "../assets/SVG/svg";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   fetchTransactionsDeleteExpense,
@@ -18,6 +18,7 @@ type Props = {
   setPage: (value: number) => void;
   page: number;
   selectedTab: string;
+  totalPages: number;
 };
 
 export const HistoryTable: React.FC<Props> = ({
@@ -28,8 +29,8 @@ export const HistoryTable: React.FC<Props> = ({
   sortDescriptor,
   setPage,
   page,
+  totalPages,
 }) => {
-  const totalPages = 10;
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

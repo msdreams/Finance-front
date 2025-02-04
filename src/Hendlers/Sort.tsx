@@ -1,4 +1,4 @@
-import { Transaction, Transactions } from "../types/expenseIncomeTransaction";
+import { Transaction } from "../types/expenseIncomeTransaction";
 
 export const sortData = <T extends keyof Transaction>(data: Transaction[], key: T, direction: string, statusFilter: string) => {
   const sorteData = [...data].sort((a, b) => {
@@ -26,7 +26,7 @@ export const sortData = <T extends keyof Transaction>(data: Transaction[], key: 
   if (statusFilter === "all") {
     return sorteData;
   } else {
-    return sorteData.filter(data => Array.from(statusFilter).includes(data.categoryId.toString()));
+    return sorteData.filter(data => Array.from(statusFilter).includes(data.categoryId.toString().slice(0,5)));
 
   }
 };

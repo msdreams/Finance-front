@@ -9,11 +9,14 @@ import { HistoryTable } from "./HistoryTable";
 import { dataForTable } from "../Components";
 import { DataAllIncome } from "../api/expenseIncomeTransaction";
 import { TopContent } from "./TableTopContent";
+import { fetchGetAllTransfers } from "../features/accountSlice";
+import { HistoryTransfersTable } from "./HistoryTransfersTable";
 
 
 export const TransactionHistory = () => {
   const dispatch = useAppDispatch();
   const { allExpenses, allIncomes } = useAppSelector((state) => state.expenseIncomeTransaction);
+  const { allTransfers } = useAppSelector((state) => state.account)
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({ column: "transactionDate", direction: "descending",});
   const [sorterFilter, setSorterFilter] = useState<Selection>("all");
   const [selectedTab, setSelectedTab] = useState<string>("Income"); 
@@ -37,14 +40,27 @@ export const TransactionHistory = () => {
 
       dispatch(fetchAllExpenses({ ...dataForTable, page: page - 1 }))
       dispatch(fetchAllIncomes({ ...dataForTable, page: page - 1 }))
+      dispatch(fetchGetAllTransfers({ ...dataForTable, page: page - 1 }));
     }
 
   }, [dispatch, selectedTab, selectedIds, page]);
 
+  const filteredCategoryExpense = React.useCallback(() => {
+    if (allExpenses) {
+      return allExpenses.transactionsPageDtoList.map(t => 
+        t.categoryName === "Target Replenishment" 
+        ? { ...t, categoryName: `Target ${t.comment}` } 
+        : t
+       )
+    } return [];
+  }, [allExpenses])
+
   // @ts-ignore
   const sortedIncomes = sortData(allIncomes?.transactionsPageDtoList || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
   // @ts-ignore
-  const sortedExpenses = sortData(allExpenses?.transactionsPageDtoList || [], sortDescriptor.column, sortDescriptor.direction, sorterFilter);
+  const sortedExpenses = sortData(filteredCategoryExpense(), sortDescriptor.column, sortDescriptor.direction, sorterFilter);
+  
+  const sortedTransfers = allTransfers?.transactionsPageDtoList  || [];
 
   return (
     <div className="font-sans">
@@ -69,9 +85,10 @@ export const TransactionHistory = () => {
             setPage={setPage}
             page={page}
             selectedTab={selectedTab}
+            totalPages={allIncomes?.totalPages || 2}
           />
         </Tab>
-        <Tab key="Expence" title="Expence">
+        <Tab key="Expense" title="Expense">
           <HistoryTable 
             topContent={<TopContent
                           selectedTab={selectedTab}
@@ -85,7 +102,22 @@ export const TransactionHistory = () => {
             setPage={setPage}
             page={page}
             selectedTab={selectedTab}
+            totalPages={allExpenses?.totalPages || 1}
           />
+        </Tab>
+        <Tab key="Transfers" title="Transfers">
+          {allTransfers && sortedTransfers.length > 0 && (
+            <HistoryTransfersTable 
+              topContent={<div className="h-[40px]" />} 
+              sortedData={sortedTransfers} 
+              sortDescriptor={sortDescriptor}
+              setSortDescriptor={setSortDescriptor}
+              setPage={setPage}
+              page={page}
+              selectedTab={selectedTab}
+              totalPages={allTransfers.totalPages}
+            />
+          )}
         </Tab>
       </Tabs>
     </div>

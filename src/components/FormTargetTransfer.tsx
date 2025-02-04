@@ -1,4 +1,5 @@
-import { Form, Input, Button, Selection, useDisclosure, divider } from "@nextui-org/react";
+import { Form, Input, Button, Selection, useDisclosure } from "@nextui-org/react";
+import { MdSavings } from "react-icons/md"; 
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Account } from "../types/account";
@@ -35,7 +36,7 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
     const formDataIncome: DataReplenishTarget = {
       sumOfReplenishment: +data.amount,
       fromAccountId:+String(selectedAccount.id),
-      toTargetId:+String(CurrentTarget.split("-")[2]),
+      toTargetId:+String(CurrentTarget.split("-")[2] ),
     };
   
     dispatch(ReplenishTarget(formDataIncome))
@@ -51,7 +52,9 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
   useEffect(() => {
     setErrowMessage(null)
 
-      dispatch(GetAllTargets());
+    dispatch(GetAllTargets())
+    .unwrap()
+    .then((r) => {if (r && r.length > 0) setSelectedKeys(new Set ([`0-${r[0].name}-${r[0].id}`]));})
     }, [dispatch]);
   
   if (!targets || targets.length === 0) {
@@ -81,21 +84,49 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
         className="relative flex flex-col  text-gray-900 pt-2 pb-4 bg-gray-600 "
         validationBehavior="native"
         onSubmit={(e) => handleReplenishTarget(e)}
-      >
-        <div className="flex flex-row justify-between items-center w-full gap-3 pb-4">
-            <div className="text-white text-md">
-                {`${targets[+CurrentTarget.split("-")[0]].name}: ` || ""}
-                {`${targets[+CurrentTarget.split("-")[0]].currentSum} ` || ""}
+          >
+            <div className="flex flex-row justify-between items-center w-full gap-3 pb-4">
+              <div className="text-white text-md text-end">
+
+              {`${targets[+CurrentTarget.split("-")[0]].name}: ` || ""}
+            </div>
+            <div className="flex gap-1 items-center text-white text-md">
+                 <MdSavings className="min-w-[24px]"/>
+                {`${targets[+CurrentTarget.split("-")[0]].currentSum} ` || ""} / {`${targets[+CurrentTarget.split("-")[0]].expectedSum} ` || ""}
                 {targets[+CurrentTarget.split("-")[0]].currency}
             </div>
-            <div className="text-white text-md text-end">
-                Target: {`${targets[+CurrentTarget.split("-")[0]].expectedSum} ` || ""}
-                {targets[+CurrentTarget.split("-")[0]].currency}
-            </div>
-          
         </div>
-            <div className="flex flex-row justify-between items-center w-full gap-3 mb-2">
-            <Tooltip className="font-sans" content="Create New Target">
+        <div className="flex flex-row justify-between items-center w-full gap-3 mb-2">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                className=" w-full capitalize text-white min-w-[100px] text:sm md:text-md" 
+                variant="bordered"
+              >
+              {CurrentTarget.split("-")[1] || targets[0].name}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              disallowEmptySelection
+              aria-label="Single selection example"
+              selectedKeys={selectedKeys}
+              selectionMode="single"
+              variant="flat"
+              onSelectionChange={setSelectedKeys}
+              
+            >
+              {targets.map((t, i) => (
+                <DropdownItem
+                  key={`${i}-${t.name}-${t.id}`}
+                  value={t.id.toString()}
+                  className="font-sans"
+                >
+                  {t.name.replace(/\b\w/g, char => char.toUpperCase())}
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+          <Tooltip className="font-sans" content="Create New Target">
               <Button 
                 className=" text-gray-300 flex text-xl h-10 min-w-10 bg-gray-500" 
                 isLoading={isLoading} 
@@ -104,36 +135,9 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
                   +
               </Button>
             </Tooltip>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  className=" w-full capitalize text-white min-w-[100px] text:sm md:text-md" 
-                  variant="bordered"
-                >
-                {CurrentTarget.split("-")[1] || targets[0].name}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Single selection example"
-                selectedKeys={selectedKeys}
-                selectionMode="single"
-                variant="flat"
-                onSelectionChange={setSelectedKeys}
-                
-              >
-                {targets.map((t, i) => (
-                  <DropdownItem
-                    key={`${i}-${t.name}-${t.id}`}
-                    value={t.id.toString()}
-                    className="font-sans"
-                  >
-                    {t.name.replace(/\b\w/g, char => char.toUpperCase())}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+        </div>
+
+
           {errowMessage && <div className="text-warning-300">{errowMessage}</div> }
 
         <div className="flex flex-col md:flex-row md:items-baseline w-full gap-2">
@@ -148,11 +152,11 @@ export const FormTargetTransfer: React.FC<Props> = ( { selectedAccount } ) => {
             />
         </div>
   
-        <div className="flex  flex-col space-y-4 w-full font-sans pt-2 pb-2">
+        <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
           <Button isLoading={isLoading} className="bg-primary-400" type="submit">
               Submit
           </Button>
-          </div>
+        </div>
       </Form>
     )}
 

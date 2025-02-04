@@ -5,8 +5,8 @@ export type Transaction = {
   transactionDate: string; 
   accountId: number;
   categoryId: number;
-  accountName: number;
-  categoryName: number;
+  accountName: string;
+  categoryName: string;
   currency: string;
 };
 

@@ -20,7 +20,6 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
   const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
 
 
-  
   const handleSubmitAddTarget = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -63,6 +62,7 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
                   className="text-gray-500"
                   errorMessage="Please enter target name"
                   name="name"
+                  maxLength={12}
                   placeholder="Enter target name"
                   type="string"
                   autoFocus

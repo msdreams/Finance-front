@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {  addAccount, addTransfer, DataAddAccount, DataAddTransfer, getAccountByDefault, getAccountById, getAllAccounts, getAllTransfers, setAccountByDefault, updateAccount } from "../api/account";
-import { AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
+import { Account, AccountApdadte, AccountApdadteData, AccountPut, GetAllTransfers } from "../types/account";
 import { DataAllTarget } from "../api/target";
 
 type AuthState = {
   allTransfers: GetAllTransfers | null;
-  allAccounts: GetAllAccounts | null;
+  allAccounts: Account[] | null;
   accountDefault: AccountPut | null;
   loading: boolean;
   error: string | null;
@@ -19,11 +19,12 @@ const initialState: AuthState = {
   error: null,
 }
 
-export const UpdateAccount = createAsyncThunk('account/UpdateAccount', async (id: string) => {
+export const UpdateAccount = createAsyncThunk('account/UpdateAccount',
+  async (data: AccountApdadteData) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
-    const response = await updateAccount(id, accessToken);
+    const response = await updateAccount(data.id, data.data, accessToken);
 
     return response
   }
@@ -149,12 +150,12 @@ export const accountSlice = createSlice({
       state.error = action.error.message || 'Failed to AddAccount';
     })
     
-    .addCase(fetchGetAllTransfers.pending, (state, action) => {
+    .addCase(fetchGetAllTransfers.pending, (state) => {
       state.loading = true;
-      state.allTransfers = action.payload ? action.payload : null; 
     })
-    .addCase(fetchGetAllTransfers.fulfilled, (state) => {
+    .addCase(fetchGetAllTransfers.fulfilled, (state,action) => {
       state.loading = false;
+      state.allTransfers = action.payload ? action.payload : null; 
     })
     .addCase(fetchGetAllTransfers.rejected, (state, action) => {
       state.loading = false;
