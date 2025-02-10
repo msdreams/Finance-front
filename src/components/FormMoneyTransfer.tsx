@@ -1,29 +1,48 @@
-import { Form, Input, Button, Textarea, Select, SelectItem, useDisclosure, DatePicker } from "@nextui-org/react";
+import {
+  Form,
+  Input,
+  Button,
+  Textarea,
+  Select,
+  SelectItem,
+  useDisclosure,
+  DatePicker,
+} from "@nextui-org/react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { fetchTransactionsAddExpense, fetchTransactionsAddIncome } from "../features/expenseIncomeTransactionSlice";
+import {
+  fetchTransactionsAddExpense,
+  fetchTransactionsAddIncome,
+} from "../features/expenseIncomeTransactionSlice";
 import { DataUpdate } from "../api/expenseIncomeTransaction";
 import { Account } from "../types/account";
 import { AddCategory, AllCategories } from "../types/expenseIncomeCategory";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { fetchGetAllAccounts } from "../features/accountSlice";
-import { ModalWindow } from "./ModalWindow";
-import { getLocalTimeZone, today} from "@internationalized/date";
+import { ModalWindow } from "./Modals/ModalWindow";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 type Props = {
-  selectedAccount: Account,
-  category: AddCategory[] | null | AllCategories,
+  selectedAccount: Account;
+  category: AddCategory[] | null | AllCategories;
   selectedTab: string;
   setAccount: (value: Account) => void;
-}
+};
 
-export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category, selectedTab, setAccount } ) => {
+export const FormMoneyTransfer: React.FC<Props> = ({
+  selectedAccount,
+  category,
+  selectedTab,
+  setAccount,
+}) => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const categories = category || [{ id: 1, name: "Other" }];
-  const isLoading = useSelector((state: RootState) => state.expenseIncomeTransaction.loading);
+  const isLoading = useSelector(
+    (state: RootState) => state.expenseIncomeTransaction.loading
+  );
   const handleSubmitAddIncome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -31,30 +50,32 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
       comment: String(data.comment),
       amount: +data.amount,
       transactionDate: String(data.date),
-      accountId:+String(selectedAccount.id),
-      categoryId:+String(data.categoryId),
+      accountId: +String(selectedAccount.id),
+      categoryId: +String(data.categoryId),
     };
-  
-    dispatch(fetchTransactionsAddIncome(formDataIncome))
-      .finally(() => {dispatch(fetchGetAllAccounts()); setAccount(selectedAccount)});
+
+    dispatch(fetchTransactionsAddIncome(formDataIncome)).finally(() => {
+      dispatch(fetchGetAllAccounts());
+      setAccount(selectedAccount);
+    });
   };
 
   const handleSubmitAddExpence = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));  
+    const data = Object.fromEntries(new FormData(e.currentTarget));
     const formDataIncome: DataUpdate = {
       comment: String(data.comment),
       amount: +data.amount,
       transactionDate: String(data.date),
-      accountId:+String(selectedAccount.id),
-      categoryId:+String(data.categoryId),
+      accountId: +String(selectedAccount.id),
+      categoryId: +String(data.categoryId),
     };
 
     dispatch(fetchTransactionsAddExpense(formDataIncome))
       .unwrap()
       .catch(() => onOpen())
       .finally(() => dispatch(fetchGetAllAccounts()));
-    };
+  };
 
   return (
     <Form
@@ -62,9 +83,9 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
       validationBehavior="native"
       onSubmit={(e) => {
         if (selectedTab === "Add Income") {
-          handleSubmitAddIncome(e)
+          handleSubmitAddIncome(e);
         } else {
-          handleSubmitAddExpence(e)
+          handleSubmitAddExpence(e);
         }
       }}
     >
@@ -81,8 +102,10 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
       <div className="flex flex-col md:flex-row md:items-start w-full gap-2">
         {categories.length > 0 && (
           <>
-            <label htmlFor="categoryId" className="sr-only">Category</label>
-              <Select
+            <label htmlFor="categoryId" className="sr-only">
+              Category
+            </label>
+            <Select
               isRequired
               name="categoryId"
               className="min-w-36 md:align-top"
@@ -90,7 +113,9 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
               aria-label="Select category"
             >
               {categories.map((category) => (
-                <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+                <SelectItem key={category.id} value={category.id.toString()}>
+                  {category.name}
+                </SelectItem>
               ))}
             </Select>
           </>
@@ -106,19 +131,23 @@ export const FormMoneyTransfer: React.FC<Props> = ( { selectedAccount, category,
         />
       </div>
 
-      <Textarea placeholder="Enter your message" type="comment" name="comment" />
+      <Textarea
+        placeholder="Enter your message"
+        type="comment"
+        name="comment"
+      />
       <div className="flex flex-col space-y-4 w-full font-sans pt-2 pb-2">
         <Button isLoading={isLoading} className="bg-primary-400" type="submit">
-            Submit
+          Submit
         </Button>
       </div>
 
-        <ModalWindow
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          header={"Rejected"}
-          body={error ?? "Errow"}
-        />
+      <ModalWindow
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        header={"Rejected"}
+        body={error ?? "Errow"}
+      />
     </Form>
-  )
-}
+  );
+};

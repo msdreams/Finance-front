@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Selection} from "@nextui-org/react";
-import { Transaction } from "../types/expenseIncomeTransaction";
 import { useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 
@@ -66,7 +65,7 @@ export const TopContent: React.FC<Props> = ({ selectedTab, sorterFilter, setSort
               <Button
                 size="sm"
                 variant="solid"
-                className="bg-primary-400 "
+                className="bg-primary-300 "
               >
                 CATEGORIES
               </Button>

@@ -23,6 +23,9 @@ export const HistoryTransfersTable: React.FC<Props> = ({
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );
+
+  console.log(sortedData)
+
   const columns = [
     {
       key: "transactionDate",

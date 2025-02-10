@@ -30,9 +30,59 @@ export const AboutPage = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen w-full" >
-      <div className=" flex flex-col md:flex-row  w-full h-screen  max-w-screen-3xl" >
-        <div className="flex-1 shadow-custom-direction overflow-visible bg-gray-400 opacity-100 z-10">
-          <div className="flex flex-col gap-4 pt-24 lg:pt-36 p-10 xl:px-24 font-sans">
+      <div className=" flex flex-col md:flex-row w-full max-w-screen-3xl" >
+        <div className="flex-1 flex flex-col bg-primary h-[500px] md:h-screen  ">
+          <div className="flex flex-col px-8 md:px-10 xl:px-24 py-24 lg:pt-36 relative">
+            <div className="relative opacity-10 left-60 overflow-hidden">
+            <Background />
+            </div>
+
+            <span className=" text-2xl lg:text-4xl text-gray-200 font-bold mb-8">
+              Contact Us
+            </span>
+
+            {isSend ? (
+              <div className="text-2xl lg:text-xl text-gray-200 p-6 border-small rounded-lg">Your message has been sent, please wait for a response from our support team. Thank you! </div>
+            ) : (
+              <Form
+              className="w-full max-w-sm flex flex-col space-y-6 font-sans"
+              validationBehavior="native"
+              onSubmit={(e) => handleSubmit(e)}
+              onReset={handleReset}
+            >
+              <Input
+                className="font-sans"
+                isRequired
+                errorMessage="Please enter your name"
+                name="Name"
+                placeholder="Enter your name"
+                type="text"
+              />
+
+              <Input
+                isRequired
+                errorMessage="Please enter a valid email"
+                name="email"
+                placeholder="Enter your email"
+                type="email"
+              />
+
+              <Textarea className=" max-w-lg" placeholder="Enter your message" />
+
+              <div className="flex w-full flex-col md:flex-row gap-2 ">
+                <Button className="border-gray-300 text-gray-300" type="reset" variant="bordered">
+                  Reset
+                </Button>
+                <Button className="bg-primary-400" type="submit">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+            )}
+          </div>
+        </div>
+        <div className="flex-1 shadow-custom-direction overflow-visible bg-background">
+          <div className="flex flex-col gap-4 md:pt-24 lg:pt-36 p-8 font-sans max-w-[600px]">
               <p className=" text-2xl mb-6">
               MONETA is a collaborative project developed by two developers:
               Adam and
@@ -92,57 +142,6 @@ export const AboutPage = () => {
             </div>
           </div>
         </div>
-
-        <div className="flex-1 flex-col bg-primary h-[500px] md:h-screen flex overflow-hidden">
-          <div className="flex flex-col px-10 pt-24 lg:pt-36 relative">
-            <div className="absolute opacity-10 left-60">
-            <Background />
-            </div>
-
-            <span className=" text-2xl lg:text-4xl text-gray-200 font-bold mb-8">
-              Contact Us
-            </span>
-
-            {isSend ? (
-              <div className="text-2xl lg:text-xl text-gray-200 p-6 border-small rounded-lg">Your message has been sent, please wait for a response from our support team. Thank you! </div>
-            ) : (
-              <Form
-              className="w-full max-w-xs flex flex-col space-y-6 font-sans"
-              validationBehavior="native"
-              onSubmit={(e) => handleSubmit(e)}
-              onReset={handleReset}
-            >
-              <Input
-                className="font-sans"
-                isRequired
-                errorMessage="Please enter your name"
-                name="Name"
-                placeholder="Enter your name"
-                type="text"
-              />
-
-              <Input
-                isRequired
-                errorMessage="Please enter a valid email"
-                name="email"
-                placeholder="Enter your email"
-                type="email"
-              />
-
-              <Textarea className=" max-w-lg" placeholder="Enter your message" />
-
-              <div className="flex gap-2">
-                <Button className="border-gray-300 text-gray-300" type="reset" variant="bordered">
-                  Reset
-                </Button>
-                <Button className="bg-primary-400" type="submit">
-                  Submit
-                </Button>
-              </div>
-            </Form>
-            )}
-          </div>
-          </div>
       </div>
     </div>
   );

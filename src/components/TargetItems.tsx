@@ -1,82 +1,96 @@
 import { Progress } from "@heroui/react";
-import {Tooltip} from "@heroui/react";
+import { Tooltip } from "@heroui/react";
 import { DeleteIcon } from "../assets/SVG/svg";
 import { TargetAdd } from "../types/target";
 import { useDisclosure } from "@nextui-org/react";
-import { ModalDeleteTarget } from "./ModalDeleteTarget";
+import { ModalDeleteTarget } from "./Modals/ModalDeleteTarget";
 import { RootState } from "../app/store";
 import { useAppSelector } from "../app/hooks";
 import { useState } from "react";
 
 type Props = {
   targets: TargetAdd[];
-}
+};
 
 export const TargetItems: React.FC<Props> = ({ targets }) => {
-  const { isOpen: isDeleteOpen, onOpen: onOpenDelete, onOpenChange: onOpenDeleteChange } = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onOpenDelete,
+    onOpenChange: onOpenDeleteChange,
+  } = useDisclosure();
   const { allAccounts } = useAppSelector((state: RootState) => state.account);
-  const [targetItem, setTargetItem] = useState<null | TargetAdd>(null)
+  const [targetItem, setTargetItem] = useState<null | TargetAdd>(null);
 
   return (
     <div className="flex flex-col gap-4">
-      {targets.map(item => (
+      {targets.map((item) => (
         <div
           key={item.id}
           className={`flex flex-col gap-4 p-3 pb-6 pt-6 border rounded-md
             ${targetItem === item ? " border-gray-500 " : "border-gray-600"}
             hover:border-gray-500 cursor-pointer`}
-          onClick={() => { setTargetItem(targetItem === item ? null : item); }}
+          onClick={() => {
+            setTargetItem(targetItem === item ? null : item);
+          }}
         >
           <div
             id={`${item.id}`}
             className={`relative flex flex-row gap-2 items-top text-lg`}
           >
             <div className="flex flex-row gap-4 items-center">
-            <div className="flex flex-col">
-              <span className="pr-6 font-semibold min-w-[120px]">{item.name}</span>
-              <span className="text-base">
-              {item.currency}
-              </span>
+              <div className="flex flex-col">
+                <span className="pr-6 font-semibold min-w-[120px]">
+                  {item.name}
+                </span>
+                <span className="text-base">{item.currency}</span>
+              </div>
             </div>
+
+            <Progress
+              className="max-w-md"
+              color="warning"
+              formatOptions={{
+                style: "percent",
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }}
+              maxValue={item.expectedSum}
+              showValueLabel={true}
+              size="md"
+              value={item.currentSum}
+            />
+            <span className="absolute  right-4 text-base">
+              {item.currentSum} / {item.expectedSum}
+            </span>
           </div>
 
-          <Progress
-            className="max-w-md"
-            color="warning"
-            formatOptions={{style: "percent", minimumFractionDigits: 1,
-              maximumFractionDigits: 1,}}
-            maxValue={item.expectedSum}
-            showValueLabel={true}
-            size="md"
-            value={item.currentSum}
-          />
-          <span className="absolute  right-4 text-base">
-          {item.currentSum} / {item.expectedSum} 
-          </span>
-          </div>
-         
-          <div className={`flex flex-row justify-between items-end transition-all duration-300 ease-out
-              ${targetItem === item ? "opacity-100 max-h-screen" : "opacity-0 max-h-0 overflow-hidden"}`}
+          <div
+            className={`flex flex-row justify-between items-end transition-all duration-300 ease-out
+              ${
+                targetItem === item
+                  ? "opacity-100 max-h-screen"
+                  : "opacity-0 max-h-0 overflow-hidden"
+              }`}
           >
             <div className="text-base flex flex-col gap-1">
               <div className="flex">
                 <div className="w-[125px]">Period left:</div>
-                <span>  {item.periodLeft.slice(14)}</span>
+                <span> {item.periodLeft.slice(14)}</span>
               </div>
               <div className="flex">
                 <div className="w-[125px]">Monthly dues:</div>
-                <span>  {item.downPayment} { item.currency}</span>
+                <span>
+                  {" "}
+                  {item.downPayment} {item.currency}
+                </span>
               </div>
               <div className="flex">
                 <div className="w-[125px]">Deadline:</div>
-                  <span>  {item.achievedBefore}</span>
+                <span> {item.achievedBefore}</span>
               </div>
             </div>
             <div className="flex flex-row gap-2 transition-all duration-300">
-              <Tooltip 
-                color="danger" 
-                content="Delete target"
-              >
+              <Tooltip color="danger" content="Delete target">
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -99,8 +113,7 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
           onOpenChange={onOpenDeleteChange}
           allAccounts={allAccounts ?? []}
         />
-
       )}
     </div>
-  )
-}
+  );
+};

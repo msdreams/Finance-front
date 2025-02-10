@@ -12,6 +12,7 @@ type Props = {
   onOpenChange: () => void;
   header: string;
   body: string;
+  error?: string | null;
 }
 
 export const ModalApruve:React.FC<Props> = ({ isOpen, onOpenChange, header, body }) => {

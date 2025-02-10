@@ -1,28 +1,46 @@
-import { Modal, Textarea, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, DatePicker, Select, SelectItem, useDraggable} from "@nextui-org/react";
-import { useAppDispatch } from "../app/hooks";
-import { getLocalTimeZone, today} from "@internationalized/date";
+import {
+  Modal,
+  Textarea,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  SelectItem,
+  useDraggable,
+} from "@nextui-org/react";
+import { useAppDispatch } from "../../app/hooks";
+import { getLocalTimeZone, today } from "@internationalized/date";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "../../app/store";
 import { useRef, useState } from "react";
-import { DataAddTransfer } from "../api/account";
-import { AddTransfer, fetchGetAllAccounts } from "../features/accountSlice";
-import { Account } from "../types/account";
+import { DataAddTransfer } from "../../api/account";
+import { AddTransfer, fetchGetAllAccounts } from "../../features/accountSlice";
+import { Account } from "../../types/account";
 
 type Props = {
   isOpen: boolean;
   AllAccounts: Account[];
   onOpenChange: () => void;
   currentAccountId: number;
-}
+};
 
-export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, currentAccountId, onOpenChange }) => {
+export const ModalAccountTransfer: React.FC<Props> = ({
+  AllAccounts,
+  isOpen,
+  currentAccountId,
+  onOpenChange,
+}) => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.target.loading);
   const targetRef = useRef(null);
   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
-  const[errowMessage, setErrowMessage] = useState<string | null>(null)
-  
-  
+  const [errowMessage, setErrowMessage] = useState<string | null>(null);
+
   const handleSubmitAddTransfer = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -33,26 +51,26 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
       fromAccountId: currentAccountId,
       toAccountId: +data.accountId,
     };
-  
+
     dispatch(AddTransfer(formDataTransfer))
-    .unwrap()
+      .unwrap()
       .then(() => {
-        onOpenChange()
-        setErrowMessage(null)
+        onOpenChange();
+        setErrowMessage(null);
       })
-    .catch((er) => setErrowMessage(er.message))
+      .catch((er) => setErrowMessage(er.message))
       .finally(() => dispatch(fetchGetAllAccounts()));
   };
 
   return (
     <Modal
       isDismissable={false}
-      className="font-sans w-full bg-gray-300 text-gray-800" 
+      className="font-sans w-full bg-gray-300 text-gray-800"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       ref={targetRef}
     >
-      <ModalContent >
+      <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
@@ -74,17 +92,19 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
                   placeholder="Enter transaction amount"
                   type="number"
                   min="1"
-              />
+                />
 
-                <Select 
+                <Select
                   isRequired
-                  name="accountId" 
-                  label="Transfer to" 
+                  name="accountId"
+                  label="Transfer to"
                   placeholder="Select an account"
                   aria-label="Transfer to"
                 >
                   {AllAccounts.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
+                    <SelectItem key={a.id} value={a.id}>
+                      {a.name}
+                    </SelectItem>
                   ))}
                 </Select>
 
@@ -96,21 +116,31 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
                   name="date"
                   aria-label="date"
                 />
-                <Textarea placeholder="Enter your message" type="comment" name="comment" />
-
+                <Textarea
+                  placeholder="Enter your message"
+                  type="comment"
+                  name="comment"
+                />
               </Form>
-              {errowMessage && <div className="text-danger">{errowMessage}</div> }
+              {errowMessage && (
+                <div className="text-danger">{errowMessage}</div>
+              )}
             </ModalBody>
             <ModalFooter>
-            <Button 
-              isLoading={isLoading} 
-              className="bg-primary-400" 
-              type="submit"
-              form="create-target-form"
+              <Button
+                isLoading={isLoading}
+                className="bg-primary-400"
+                type="submit"
+                form="create-target-form"
               >
-                    Submit
+                Submit
               </Button>
-              <Button color="danger" variant="light" onPress={onClose} type="submit">
+              <Button
+                color="danger"
+                variant="light"
+                onPress={onClose}
+                type="submit"
+              >
                 Close
               </Button>
             </ModalFooter>
@@ -118,5 +148,5 @@ export const ModalAccountTransfer: React.FC<Props> = ({ AllAccounts, isOpen, cur
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

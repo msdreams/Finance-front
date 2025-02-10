@@ -20,12 +20,12 @@ const initialState: AuthState = {
 }
 
 export const UpdateAccount = createAsyncThunk('account/UpdateAccount',
-  async (data: AccountApdadteData) => {
+  async (data: AccountApdadteData, {dispatch}) => {
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
     const response = await updateAccount(data.id, data.data, accessToken);
-
+    dispatch(fetchGetAllAccounts);
     return response
   }
 })

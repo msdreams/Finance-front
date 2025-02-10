@@ -1,11 +1,11 @@
 import { AiOutlineArrowLeft } from "react-icons/ai"; 
 import React, { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { forgotPassword } from "../../features/authSlice";
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from "@nextui-org/react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { useAppDispatch } from "../app/hooks";
+import { RootState } from "../app/store";
+import { forgotPassword } from "../features/authSlice";
 
 
 type Props = {

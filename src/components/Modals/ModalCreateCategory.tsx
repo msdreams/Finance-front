@@ -1,37 +1,62 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, Select, SelectItem, useDraggable} from "@nextui-org/react";
-import { useAppDispatch } from "../app/hooks";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  Input,
+  Select,
+  SelectItem,
+  useDraggable,
+} from "@nextui-org/react";
+import { useAppDispatch } from "../../app/hooks";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "../../app/store";
 import { useRef } from "react";
-import { DataName } from "../api/expenseIncomeCategory";
-import { ExpenseGetAllCategories, fetchExpenseAddCategory, fetchIncomeAddCategory, IncomeGetAllCategories } from "../features/expenseIncomeCategorySlice";
+import { DataName } from "../../api/expenseIncomeCategory";
+import {
+  ExpenseGetAllCategories,
+  fetchExpenseAddCategory,
+  fetchIncomeAddCategory,
+  IncomeGetAllCategories,
+} from "../../features/expenseIncomeCategorySlice";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   categoryType: string;
-}
+};
 
-export const ModalCreateCategory: React.FC<Props> = ({ isOpen, onOpenChange, categoryType }) => {
+export const ModalCreateCategory: React.FC<Props> = ({
+  isOpen,
+  onOpenChange,
+  categoryType,
+}) => {
   const dispatch = useAppDispatch();
-  const isLoading = useSelector((state: RootState) => state.expenseIncomeCategory.loading);
+  const isLoading = useSelector(
+    (state: RootState) => state.expenseIncomeCategory.loading
+  );
   const targetRef = useRef(null);
-  const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
-  
+  const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+
   const handleSubmitAddCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
     const formData: DataName = {
-      name: String(data.name)
+      name: String(data.name),
     };
-  
+
     if (categoryType === "Income") {
-      dispatch(fetchIncomeAddCategory(formData))
-      .finally(() => dispatch(IncomeGetAllCategories()));
+      dispatch(fetchIncomeAddCategory(formData)).finally(() =>
+        dispatch(IncomeGetAllCategories())
+      );
       onOpenChange();
     } else if (categoryType === "Expense") {
-      dispatch(fetchExpenseAddCategory(formData))
-      .finally(() => dispatch(ExpenseGetAllCategories()));
+      dispatch(fetchExpenseAddCategory(formData)).finally(() =>
+        dispatch(ExpenseGetAllCategories())
+      );
       onOpenChange();
     }
   };
@@ -39,12 +64,12 @@ export const ModalCreateCategory: React.FC<Props> = ({ isOpen, onOpenChange, cat
   return (
     <Modal
       isDismissable={false}
-      className="font-sans w-full bg-gray-300 text-gray-800" 
+      className="font-sans w-full bg-gray-300 text-gray-800"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       ref={targetRef}
     >
-      <ModalContent >
+      <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
@@ -70,15 +95,20 @@ export const ModalCreateCategory: React.FC<Props> = ({ isOpen, onOpenChange, cat
               </Form>
             </ModalBody>
             <ModalFooter>
-            <Button 
-              isLoading={isLoading} 
-              className="bg-primary-400" 
-              type="submit"
-              form="create-target-form"
+              <Button
+                isLoading={isLoading}
+                className="bg-primary-400"
+                type="submit"
+                form="create-target-form"
               >
                 Submit
-                </Button>
-              <Button color="danger" variant="light" onPress={onClose} type="submit">
+              </Button>
+              <Button
+                color="danger"
+                variant="light"
+                onPress={onClose}
+                type="submit"
+              >
                 Close
               </Button>
             </ModalFooter>
@@ -86,5 +116,5 @@ export const ModalCreateCategory: React.FC<Props> = ({ isOpen, onOpenChange, cat
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

@@ -1,5 +1,17 @@
 import React from "react";
-import { Table, Selection, TableHeader, TableColumn, TableBody, Tooltip, TableRow, TableCell, ChipProps, Chip, Pagination, useDisclosure,
+import {
+  Table,
+  Selection,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  Tooltip,
+  TableRow,
+  TableCell,
+  ChipProps,
+  Chip,
+  Pagination,
+  useDisclosure,
 } from "@nextui-org/react";
 import { Transaction } from "../types/expenseIncomeTransaction";
 import { DeleteIcon, EyeIcon } from "../assets/SVG/svg";
@@ -8,7 +20,7 @@ import {
   fetchTransactionsDeleteExpense,
   fetchTransactionsDeleteIncome,
 } from "../features/expenseIncomeTransactionSlice";
-import { ModalWindow } from "./ModalWindow";
+import { ModalWindow } from "./Modals/ModalWindow";
 
 type Props = {
   topContent: any;

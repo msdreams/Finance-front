@@ -1,24 +1,39 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, DatePicker, Select, SelectItem, useDraggable} from "@nextui-org/react";
-import { DataAddTarget } from "../api/target";
-import { AddTarget, GetAllTargets } from "../features/targetSlice";
-import { useAppDispatch } from "../app/hooks";
-import { getLocalTimeZone, today} from "@internationalized/date";
-import { currensySet } from "../Components";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  SelectItem,
+  useDraggable,
+} from "@nextui-org/react";
+import { DataAddTarget } from "../../api/target";
+import { AddTarget, GetAllTargets } from "../../features/targetSlice";
+import { useAppDispatch } from "../../app/hooks";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { currensySet } from "../../Components";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "../../app/store";
 import { useRef } from "react";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-}
+};
 
-export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+export const ModalCreateTarget: React.FC<Props> = ({
+  isOpen,
+  onOpenChange,
+}) => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.target.loading);
   const targetRef = useRef(null);
-  const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
-
+  const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
 
   const handleSubmitAddTarget = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,22 +44,22 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
       achievedBefore: String(data.date),
       currency: String(data.currency),
     };
-  
-  
-    dispatch(AddTarget(formDataIncome))
-      .finally(() => dispatch(GetAllTargets()));
+
+    dispatch(AddTarget(formDataIncome)).finally(() =>
+      dispatch(GetAllTargets())
+    );
     onOpenChange();
   };
 
   return (
     <Modal
       isDismissable={false}
-      className="font-sans w-full bg-gray-300 text-gray-800" 
+      className="font-sans w-full bg-gray-300 text-gray-800"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       ref={targetRef}
     >
-      <ModalContent >
+      <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
@@ -75,12 +90,12 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
                   placeholder="Enter target amount"
                   type="number"
                   min="1"
-              />
+                />
 
-                <Select 
+                <Select
                   isRequired
-                  name="currency" 
-                  label="Currency" 
+                  name="currency"
+                  label="Currency"
                   placeholder="Select currency type"
                 >
                   {currensySet.map((c) => (
@@ -95,19 +110,23 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
                   name="date"
                   aria-label="date"
                 />
-
               </Form>
             </ModalBody>
             <ModalFooter>
-            <Button 
-              isLoading={isLoading} 
-              className="bg-primary-400" 
-              type="submit"
-              form="create-target-form"
+              <Button
+                isLoading={isLoading}
+                className="bg-primary-400"
+                type="submit"
+                form="create-target-form"
               >
-                    Submit
-                </Button>
-              <Button color="danger" variant="light" onPress={onClose} type="submit">
+                Submit
+              </Button>
+              <Button
+                color="danger"
+                variant="light"
+                onPress={onClose}
+                type="submit"
+              >
                 Close
               </Button>
             </ModalFooter>
@@ -115,5 +134,5 @@ export const ModalCreateTarget: React.FC<Props> = ({ isOpen, onOpenChange }) => 
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

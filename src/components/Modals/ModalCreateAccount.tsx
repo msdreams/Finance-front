@@ -1,23 +1,38 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Form, Input, Select, SelectItem, useDraggable} from "@nextui-org/react";
-import { useAppDispatch } from "../app/hooks";
-import { currensySet } from "../Components";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Form,
+  Input,
+  Select,
+  SelectItem,
+  useDraggable,
+} from "@nextui-org/react";
+import { useAppDispatch } from "../../app/hooks";
+import { currensySet } from "../../Components";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "../../app/store";
 import { useRef } from "react";
-import { DataAddAccount } from "../api/account";
-import { AddAccount, fetchGetAllAccounts } from "../features/accountSlice";
+import { DataAddAccount } from "../../api/account";
+import { AddAccount, fetchGetAllAccounts } from "../../features/accountSlice";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
-}
+};
 
-export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) => {
+export const ModalCreateAccount: React.FC<Props> = ({
+  isOpen,
+  onOpenChange,
+}) => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.target.loading);
   const targetRef = useRef(null);
-  const {moveProps} = useDraggable({targetRef, isDisabled: !isOpen});
-  
+  const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+
   const handleSubmitAddAccount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
@@ -26,22 +41,22 @@ export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) =>
       balance: +data.amount,
       currency: String(data.currency),
     };
-  
-  
-    dispatch(AddAccount(formDataIncome))
-      .finally(() => dispatch(fetchGetAllAccounts()));
+
+    dispatch(AddAccount(formDataIncome)).finally(() =>
+      dispatch(fetchGetAllAccounts())
+    );
     onOpenChange();
   };
 
   return (
     <Modal
       isDismissable={false}
-      className="font-sans w-full bg-gray-300 text-gray-800" 
+      className="font-sans w-full bg-gray-300 text-gray-800"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       ref={targetRef}
     >
-      <ModalContent >
+      <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
@@ -72,12 +87,12 @@ export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) =>
                   placeholder="Enter account balance"
                   type="number"
                   min="1"
-              />
+                />
 
-                <Select 
+                <Select
                   isRequired
-                  name="currency" 
-                  label="Currency" 
+                  name="currency"
+                  label="Currency"
                   placeholder="Select currency type"
                 >
                   {currensySet.map((c) => (
@@ -87,15 +102,20 @@ export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) =>
               </Form>
             </ModalBody>
             <ModalFooter>
-            <Button 
-              isLoading={isLoading} 
-              className="bg-primary-400" 
-              type="submit"
-              form="create-target-form"
+              <Button
+                isLoading={isLoading}
+                className="bg-primary-400"
+                type="submit"
+                form="create-target-form"
               >
                 Submit
-                </Button>
-              <Button color="danger" variant="light" onPress={onClose} type="submit">
+              </Button>
+              <Button
+                color="danger"
+                variant="light"
+                onPress={onClose}
+                type="submit"
+              >
                 Close
               </Button>
             </ModalFooter>
@@ -103,5 +123,5 @@ export const ModalCreateAccount: React.FC<Props> = ({ isOpen, onOpenChange }) =>
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};

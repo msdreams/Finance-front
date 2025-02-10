@@ -5,20 +5,11 @@ import App from "./App";
 import { LoginPage } from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { AboutPage } from "./pages/AboutPage";
-import { PlanPage } from "./pages/PlanPage";
-import { HomePage } from "./pages/HomePage";
-import { NewTargetPage } from "./pages/NewTargetPage";
-import { NewBudgetPage } from "./pages/NewBudgetPage";
-import { NameSettingsA } from "./components/NameSettingsA";
+import { Dashboard } from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
-import { AddTransaction } from "./pages/AddTransactionPage";
-import { NewAccountPage } from "./pages/NewAccountPage";
-import { AllCategories } from "./pages/AllCategories";
-import { NewIncomeCategoryPage } from "./pages/NewIncomeCategoryPage.tsx";
-import { NewExpenseCategoryPage } from "./pages/NewExpenseCategoryPage";
-import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 import { MainPage } from "./pages/MainPage";
 import { SignUpPage } from './pages/SignUpPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 
 export const Root = () => {
@@ -31,18 +22,9 @@ export const Root = () => {
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<SignUpPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path='account' element={<ProtectedRoute />}>
-              <Route index element={<HomePage />} />
-              <Route path='plan' element={<PlanPage />} />
-              <Route path='new-target' element={<NewTargetPage />} />
-              <Route path='new-account' element={<NewAccountPage />} />
-              <Route path="new-budget" element={<NewBudgetPage />} />
-              <Route path="change-password-page" element={<ChangePasswordPage />} />
-              <Route path="settings" element={<NameSettingsA />} />
-              <Route path="new-income-category" element={<NewIncomeCategoryPage />} />
-              <Route path="new-expense-category" element={<NewExpenseCategoryPage />} />
-              {/* <Route path="add-transaction" element={<AddTransaction />} /> */}
-              <Route path="all-categories" element={<AllCategories />} />
+            <Route path='dashboard' element={<ProtectedRoute />}>
+              <Route index element={<Dashboard />} />
+              <Route path="settings" element={<SettingsPage />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
