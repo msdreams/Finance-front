@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {  addAccount, addTransfer, DataAddAccount, DataAddTransfer, getAccountByDefault, getAccountById, getAllAccounts, getAllTransfers, setAccountByDefault, updateAccount } from "../api/account";
-import { Account, AccountApdadte, AccountApdadteData, AccountPut, GetAllTransfers } from "../types/account";
+import { Account, AccountApdadteData, AccountPut, GetAllTransfers } from "../types/account";
 import { DataAllTarget } from "../api/target";
 
 type AuthState = {
@@ -120,8 +120,9 @@ export const accountSlice = createSlice({
     .addCase(SetAccountByDefault.pending, (state) => {
       state.loading = true;
     })
-    .addCase(SetAccountByDefault.fulfilled, (state) => {
+    .addCase(SetAccountByDefault.fulfilled, (state, action) => {
       state.loading = false;
+      state.accountDefault = action.payload || null
     })
     .addCase(SetAccountByDefault.rejected, (state, action) => {
       state.loading = false;

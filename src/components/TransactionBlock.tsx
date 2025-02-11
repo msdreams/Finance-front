@@ -14,9 +14,7 @@ import { ModalAccountTransfer } from "./Modals/ModalAccountTransfer";
 export const TransactionBlock = () => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.account.loading);
-  const allAccounts = useAppSelector(
-    (state: RootState) => state.account.allAccounts
-  );
+  const allAccounts = useAppSelector((state: RootState) => state.account.allAccounts);
   const [account, setAccount] = useState<Account | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 

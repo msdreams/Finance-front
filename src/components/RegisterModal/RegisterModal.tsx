@@ -48,7 +48,7 @@ export const RegisterModal: React.FC<Props> = ({ setActiveEmailModal }) => {
           className="flex flex-row items-center justify-center cursor-pointer hover:border-b-1"
         >
           <img  className="pb-2 align-baseline" src="./img/work-email-button.svg" alt="Work email" />
-          <span className="align-baseline">Log In</span>
+          <span className="align-baseline font-sans pl-2">Log In</span>
         </div>
       </div>
     </div>

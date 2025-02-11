@@ -34,7 +34,7 @@ export const Dashboard = () => {
           <div className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg">
             <TransactionBlock />
           </div>
-          <div className="flex-1 flex flex-col bg-gray-600 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">
+          <div className="flex-1 flex flex-col bg-gray-600 rounded-lg shadow-lg">
             <MainChart />
           </div>
         </div>

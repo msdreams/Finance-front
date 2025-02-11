@@ -12,6 +12,8 @@ import { Account } from "../types/account";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ModalCreateAccount } from "./Modals/ModalCreateAccount";
 import { Tooltip } from "@heroui/react";
+import { useAppDispatch } from "../app/hooks";
+import { SetAccountByDefault } from "../features/accountSlice";
 
 type Props = {
   allAccounts: Account[];
@@ -53,7 +55,7 @@ export const Accounts: React.FC<Props> = ({
       <Dropdown>
         <DropdownTrigger>
           <Button
-            className="capitalize text-md text-white "
+            className="capitalize text-md text-white"
             variant="bordered"
             size="md"
           >
@@ -62,6 +64,7 @@ export const Accounts: React.FC<Props> = ({
         </DropdownTrigger>
         <DropdownMenu
           disallowEmptySelection
+          className="font-sans"
           aria-label="Single selection example"
           selectedKeys={selectedKeys}
           selectionMode="single"

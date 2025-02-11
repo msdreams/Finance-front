@@ -1,5 +1,4 @@
-import { Account, AccountAddAccount, AccountAddTransfer, AccountApdadte, AccountPut, GetAllAccounts, GetAllTransfers } from "../types/account";
-import { Transaction } from "../types/expenseIncomeTransaction";
+import { Account, AccountAddAccount, AccountAddTransfer, AccountApdadte, AccountPut, GetAllTransfers } from "../types/account";
 import { client } from "../utils/fetchClient";
 import { DataAllTarget } from "./target";
 

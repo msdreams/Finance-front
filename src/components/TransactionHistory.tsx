@@ -21,7 +21,6 @@ export const TransactionHistory = () => {
   const [sorterFilter, setSorterFilter] = useState<Selection>("all");
   const [selectedTab, setSelectedTab] = useState<string>("Income"); 
   const [selectedIds, setSelectedIds] = useState("0")
-
   const [page, setPage] = useState(1);
 
   useEffect(() => {

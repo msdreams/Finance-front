@@ -24,7 +24,6 @@ export type DataAllIncome = {
 
 export type DataAllIncomeForChartsMY = {
   accountId: number,
-  categoryIds: number[],
   filterType: string;
 };
 export type DataAllIncomeForChartsDays = {
@@ -90,11 +89,10 @@ export const TransactionsAllIncome = (accessToken: string, data?: DataAllIncome)
 };
 
 export const TransactionsAllIncomeForChartsMY = (data: DataAllIncomeForChartsMY, accessToken: string): Promise<SumsByDateArray> => {
-  const { accountId, categoryIds, filterType } = data;
+  const { accountId, filterType } = data;
   
   const queryParams = new URLSearchParams({
     accountId: accountId.toString(),
-    categoryIds: categoryIds.length ? categoryIds.join(',') : '',
     filterType,
   })
 
