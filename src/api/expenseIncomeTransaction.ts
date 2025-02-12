@@ -144,9 +144,10 @@ export const TransactionsAllExpense = (accessToken: string, data?: DataAllIncome
 };
 
 export const TransactionsAllExpenseForChartsMY = (data: DataAllIncomeForChartsMY, accessToken: string): Promise<SumsByDateArray> => {
-  const { filterType } = data;
+  const { accountId, filterType } = data;
   const queryParams = new URLSearchParams({
-    filterType
+    accountId: accountId.toString(),
+    filterType,
   });
 
   return client.get(`/expense-transactions/get-all-expenses-for-charts-months-years?${queryParams.toString()}`, {

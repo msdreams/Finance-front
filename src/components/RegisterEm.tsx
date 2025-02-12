@@ -93,8 +93,7 @@ export const RegisterEm: React.FC<Props> = ({ setActiveEmailModal }) => {
         </>
       ) : (
         <div className="text-warning-300">
-          {" "}
-          You are successfully registered! <br /> {successMessage}{" "}
+          {successMessage}
         </div>
       )}
     </Form>

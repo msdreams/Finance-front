@@ -15,13 +15,13 @@ export const Dashboard = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
-        // .unwrap()
+        .unwrap()
         .catch((error) => {
           console.error("Failed to refresh token:", error);
-          // dispatch(logout());
+          dispatch(logout());
           onOpen();
         });
-    }, 15 * 60 * 1000);
+    }, 14 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [dispatch, onOpen]);

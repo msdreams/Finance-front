@@ -1,31 +1,25 @@
 import { SumsByDateArray } from "../types/expenseIncomeTransaction";
 
 export const filteredAreaData = (allIncomesMY: SumsByDateArray | null, allExpensesMY: SumsByDateArray | null) => {
-  const filteredIncome = allIncomesMY?.map(data => ({
-    date: data.localDate.slice(0, 7),
-    income: data.sumsByCategory[0].sum
-  })) || [];
+  const mergedData: Record<string, { date: string; income: number; expense: number }> = {};
 
-  const filteredExpense = allExpensesMY?.map(data => ({
-    date: data.localDate.slice(0, 7),
-    expense: data.sumsByCategory[0].sum
-  })) || [];
-
-  const mergedData: any = {};
-
-  filteredIncome.forEach(({ date, income }) => {
+  allIncomesMY?.forEach(({ localDate, sumsByCategory }) => {
+    const date = localDate.slice(0, 7);
+    const income = sumsByCategory[0]?.sum || 0;
     if (!mergedData[date]) {
       mergedData[date] = { date, income, expense: 0 };
     } else {
-      mergedData[date].income = income;
+      mergedData[date].income += income;
     }
   });
 
-  filteredExpense.forEach(({ date, expense }) => {
+  allExpensesMY?.forEach(({ localDate, sumsByCategory }) => {
+    const date = localDate.slice(0, 7);
+    const expense = sumsByCategory[0]?.sum || 0;
     if (!mergedData[date]) {
       mergedData[date] = { date, income: 0, expense };
     } else {
-      mergedData[date].expense = expense;
+      mergedData[date].expense += expense;
     }
   });
 

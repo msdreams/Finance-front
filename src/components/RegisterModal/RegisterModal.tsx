@@ -33,7 +33,7 @@ export const RegisterModal: React.FC<Props> = ({ setActiveEmailModal }) => {
           >
           <Link
             className="font-sans flex flex-row gap-2"
-              to='https://t.me/BudgetApplicationBot'
+              to='https://t.me/CoinBudgetAppBot'
               style={{ cursor: "pointer" }}
             >
               <img src="./img/telegram.svg" alt="Email login" />

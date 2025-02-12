@@ -39,7 +39,7 @@ export const TransactionAction: React.FC<Props> = ({selectedAccount, setAccount 
       <Tab className="pl-1 pr-1" key="Add Income" title="Add Income">
         <FormMoneyTransfer
           selectedAccount={selected}
-          category={incomeCategoryAll.filter(c => c.id !== 6)}
+          category={incomeCategoryAll.filter(c => c.name !== "Target Deletion")}
           selectedTab={selectedTab}
           setAccount={setAccount}
           />
@@ -47,7 +47,7 @@ export const TransactionAction: React.FC<Props> = ({selectedAccount, setAccount 
       <Tab className="pl-1 pr-1" key="Add Expense" title="Add Expense">
         <FormMoneyTransfer
           selectedAccount={selected}
-          category={expenseCategoryAll.filter(c => c.id !== 6)}
+          category={expenseCategoryAll.filter(c => c.name !== "Target Replenishment")}
           selectedTab={selectedTab}
           setAccount={setAccount}
           />
