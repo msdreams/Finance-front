@@ -12,8 +12,6 @@ import { Account } from "../types/account";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ModalCreateAccount } from "./Modals/ModalCreateAccount";
 import { Tooltip } from "@heroui/react";
-import { useAppDispatch } from "../app/hooks";
-import { SetAccountByDefault } from "../features/accountSlice";
 
 type Props = {
   allAccounts: Account[];

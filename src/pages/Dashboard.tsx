@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, refreshAccessToken } from "../features/authSlice";
 import { TransactionHistory } from "../components/TransactionHistory";
 import { MainChart } from "../components/MainLineChart";
@@ -7,24 +7,26 @@ import { TransactionBlock } from "../components/TransactionBlock";
 import { ModalWindow } from "../components/Modals/ModalWindow";
 import { useDisclosure } from "@nextui-org/react";
 import { SettingsBlock } from "../components/SettingsBlock";
+import { Navigate } from "react-router-dom";
 
 export const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const accessToken = useAppSelector((state) => state.auth.accessToken);
 
   useEffect(() => {
+    if (!accessToken) return;
+
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
-        .unwrap()
-        .catch((error) => {
-          console.error("Failed to refresh token:", error);
-          dispatch(logout());
-          onOpen();
-        });
-    }, 14 * 60 * 1000);
+    }, 1 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [dispatch, onOpen]);
+
+  if (!accessToken) {
+    dispatch(logout());
+  }
 
   return (
     <div className="flex flex-col items-center w-full bg-background min-h-screen">

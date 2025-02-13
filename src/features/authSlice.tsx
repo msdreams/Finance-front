@@ -181,6 +181,11 @@ export const authSlice = createSlice({
     });
     builder.addCase(refreshAccessToken.rejected, (state) => {
       state.error = 'Failed to refresh access token';
+      console.log('Failed to refresh access token')
+      state.user = null;
+      state.accessToken = null;
+      localStorage.removeItem('accessToken');
+      Cookies.remove('refreshToken', { path: '/', domain: '.budgetapp.space' });
     });
   }
 })
