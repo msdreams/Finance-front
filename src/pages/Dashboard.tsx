@@ -22,7 +22,7 @@ export const Dashboard = () => {
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [dispatch, onOpen]);
+  }, [dispatch, onOpen, accessToken]);
 
   if (!accessToken) {
     dispatch(logout());

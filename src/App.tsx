@@ -27,7 +27,7 @@ function App() {
         className="absolute inset-0 bg-cover bg-left-top -z-20"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       ></div>
-      <BurgerMenu activeBurger={activeBurger} />
+      <BurgerMenu activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
       <Outlet />
     </div>
   );

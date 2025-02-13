@@ -8,7 +8,7 @@ import { FormTargetTransfer } from "./FormTargetTransfer";
 import { useMediaQuery } from "react-responsive";
 
 type Props = {
-  selectedAccount: Account | null,
+  selectedAccount: Account,
   setAccount: (value: Account) => void;
 }
 

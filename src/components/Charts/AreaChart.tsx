@@ -3,6 +3,9 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis,  Tooltip, ResponsiveConta
 import { useEffect } from "react";
 import { fetchAllExpensesForChartsMY, fetchAllIncomesForChartsMY } from "../../features/expenseIncomeTransactionSlice";
 import { filteredAreaData } from "../../Hendlers/FilterAreaData";
+import { RootState } from "../../app/store";
+import { fetchGetAllAccounts } from "../../features/accountSlice";
+import { useSelector } from "react-redux";
 
     // @ts-ignore
 
@@ -32,24 +35,31 @@ import { filteredAreaData } from "../../Hendlers/FilterAreaData";
 export const AllSpendingChart = () => {
   const dispatch = useAppDispatch();
   const accountDefault = useAppSelector((state) => state.account.accountDefault)
+  const allAccounts = useAppSelector((state: RootState) => state.account.allAccounts);
+  const isLoading = useSelector((state: RootState) => state.account.loading);
   const { allExpensesMY, allIncomesMY } = useAppSelector((state) => state.expenseIncomeTransaction);
-  console.log(allExpensesMY)
 
-useEffect(() => {
-  dispatch(fetchAllIncomesForChartsMY(
-    {
-      "accountId": accountDefault?.id || 1,
-      "filterType": "MONTH"
-    }))
-    dispatch(fetchAllExpensesForChartsMY(
-      {
-        "accountId": accountDefault?.id || 1,
-        "filterType": "MONTH"
-      }))
-}, [accountDefault, dispatch]);
+  useEffect(() => {
+    dispatch(fetchGetAllAccounts());
+  }, []);
+  console.log(allAccounts)
+
+  useEffect(() => {
+    if (allAccounts) {
+      dispatch(fetchAllIncomesForChartsMY(
+        {
+          "accountId": allAccounts[0].id,
+          "filterType": "MONTH"
+        }))
+        dispatch(fetchAllExpensesForChartsMY(
+          {
+            "accountId": allAccounts[0].id,
+            "filterType": "MONTH"
+          }))
+    }
+}, [accountDefault]);
   
   const filteredData = filteredAreaData(allIncomesMY, allExpensesMY)
-  console.log(filteredData)
 
   return (
     <div style={{ width: '100%', height: 370 }}>

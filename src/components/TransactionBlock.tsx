@@ -22,27 +22,22 @@ export const TransactionBlock = () => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (allAccounts && allAccounts.length > 0 && !account) {
-      setAccount(allAccounts[0]);
-    }
-  }, [allAccounts]);
-
   return (
     <div className="flex flex-col text-white gap-8 p-4 pt-6 md:p-8 ">
       <div className="flex gap-4 flex-row items-center flex-wrap justify-between ">
-        {isLoading || !allAccounts || !account ? (
-          <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg"></div>
+        { !allAccounts ? (
+          <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg">
+          </div>
         ) : (
           <Accounts
             allAccounts={allAccounts}
             setAccount={setAccount}
-            account={account}
+            account={account || allAccounts[0]}
           />
         )}
-        {account && allAccounts && (
+        {allAccounts && (
           <div className=" flex flex-row gap-2 items-center text-lg md:text-xl text-end animate-fadeInSlow">
-            {account.balance} {account.currency}
+            {account?.balance || allAccounts[0].balance} {account?.currency || allAccounts[0].currency}
             <Tooltip
               className="font-sans"
               content="Transfer to another account"
@@ -59,13 +54,15 @@ export const TransactionBlock = () => {
               AllAccounts={allAccounts}
               isOpen={isOpen}
               onOpenChange={onOpenChange}
-              currentAccountId={account.id}
+              currentAccountId={account?.id || allAccounts[0].id}
             />
           </div>
         )}
       </div>
       <div className="flex flex-col gap-1 lg:max-w-[420px]">
-        <TransactionAction selectedAccount={account} setAccount={setAccount} />
+        {allAccounts && (
+          <TransactionAction selectedAccount={account || allAccounts[0]} setAccount={setAccount} />
+        )}
       </div>
     </div>
   );

@@ -169,6 +169,7 @@ export const accountSlice = createSlice({
     .addCase(fetchGetAllAccounts.fulfilled, (state, action) => {
       state.loading = false;
       state.allAccounts = action.payload ? action.payload : null;
+      state.accountDefault = action.payload ? action.payload[0] : null;
     })
     .addCase(fetchGetAllAccounts.rejected, (state, action) => {
       state.loading = false;
