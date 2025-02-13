@@ -19,7 +19,7 @@ export const Dashboard = () => {
 
     const interval = setInterval(() => {
       dispatch(refreshAccessToken())
-    }, 1 * 60 * 1000);
+    }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, [dispatch, onOpen]);

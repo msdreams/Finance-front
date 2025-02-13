@@ -26,7 +26,7 @@ type LoginFormData =
 export const loginUser = createAsyncThunk('auth/loginUser', async (formData: LoginFormData) => {
     const response = await LoginUser(formData);
 
-    if (!response?.accessToken || !response?.refreshToken) {
+  if (!response?.accessToken || !response?.refreshToken) {
       throw new Error('Invalid response: missing tokens');
     }
 
@@ -76,6 +76,8 @@ export const refreshAccessToken = createAsyncThunk(
     const refreshToken = Cookies.get('refreshToken');
 
     if (!refreshToken) {
+      console.log('No refresh token')
+      console.log(document.cookie)
       throw new Error('No refresh token');
     }
 
