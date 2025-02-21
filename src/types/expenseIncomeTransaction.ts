@@ -15,6 +15,11 @@ export type SumByCategory = {
   sum: number;
 };
 
+export type DataPieType = SumByCategory & {
+  type: "Income" | "Expense";
+  currency: string
+};
+
 export type SumsByDate = {
   localDate: string;
   sumsByCategory: SumByCategory[];
@@ -28,5 +33,11 @@ export type Transactions = {
   "totalPages": number,
   "transactionsPageDtoList": Transaction[] | [],
 };
+
+export type MonthChartDataType = {
+  date: string;
+  income: number;
+  expense: number;
+}
 
 export type SumsByDateArray = SumsByDate[];

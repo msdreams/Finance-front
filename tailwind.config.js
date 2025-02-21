@@ -36,6 +36,13 @@ module.exports = {
         serif: ['Old Standard TT', 'serif'],
       },
     },
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1200px",
+      xl: "1300px",
+      "2xl": "1536px",
+    },
   },
   plugins: [
     function ({ addUtilities }) {
@@ -50,8 +57,10 @@ module.exports = {
     themes: {
       light: {
         colors: {
-          background: "#f4f4f9", foreground: "#11181C", placeholder: "#A8A8A8", caret: "#185F0B",
-          primary: {
+          background: "#F7F7FF", foreground: "#11181C", placeholder: "#A8A8A8", caret: "#185F0B",
+          selectors: {
+            DEFAULT: "#C8F7D4",100: "#C8F7D4",200: "#93F0B6",300: "#59D493",400: "#2FAA74",500: "#04724D",600: "#02624B",700: "#025246",800: "#01423F",900: "#003336",}
+          ,primary: {
           DEFAULT: "#04724D",100: "#C8F7D4",200: "#93F0B6",300: "#59D493",400: "#2FAA74",500: "#04724D",600: "#02624B",700: "#025246",800: "#01423F",900: "#003336",}
           ,gray: {
             DEFAULT: "#586F7C",100: "#EAF6F8",200: "#D5ECF1",300: "#B2CED7",400: "#89A4B0",500: "#586F7C",600: "#40586A",700: "#2C4359",800: "#1C2F47",900: "#10213B",}

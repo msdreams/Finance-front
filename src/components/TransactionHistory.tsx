@@ -11,6 +11,7 @@ import { DataAllIncome } from "../api/expenseIncomeTransaction";
 import { TopContent } from "./TableTopContent";
 import { fetchGetAllTransfers } from "../features/accountSlice";
 import { HistoryTransfersTable } from "./HistoryTransfersTable";
+import { useMediaQuery } from "react-responsive";
 
 
 export const TransactionHistory = () => {
@@ -22,6 +23,7 @@ export const TransactionHistory = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Income"); 
   const [selectedIds, setSelectedIds] = useState("0")
   const [page, setPage] = useState(1);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
     dispatch(IncomeGetAllCategories());
@@ -62,8 +64,9 @@ export const TransactionHistory = () => {
   const sortedTransfers = allTransfers?.transactionsPageDtoList  || [];
 
   return (
-    <div className="font-sans">
+    <div className="font-sans p-4 pt-6 lg:px-8">
       <Tabs 
+                  {...(isMobile ? { fullWidth: true } : {})}
         aria-label="Disabled Options" 
         size="md"
         color="primary"

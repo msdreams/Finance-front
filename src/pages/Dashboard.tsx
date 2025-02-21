@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, refreshAccessToken } from "../features/authSlice";
 import { TransactionHistory } from "../components/TransactionHistory";
-import { MainChart } from "../components/MainLineChart";
+import { MainChartBlock } from "../components/MainChartBlock";
 import { TransactionBlock } from "../components/TransactionBlock";
 import { ModalWindow } from "../components/Modals/ModalWindow";
 import { useDisclosure } from "@nextui-org/react";
@@ -37,7 +37,7 @@ export const Dashboard = () => {
             <TransactionBlock />
           </div>
           <div className="flex-1 flex flex-col bg-gray-600 rounded-lg shadow-lg">
-            <MainChart />
+            <MainChartBlock />
           </div>
         </div>
         <div className="flex flex-col lg:flex-row gap-6 font-sans pt-16 animate-fadeIn">
@@ -47,7 +47,7 @@ export const Dashboard = () => {
           >
             <SettingsBlock />
           </div>
-          <div className=" flex flex-1 flex-col bg-gray-600 rounded-lg p-t-4 md:p-8 md:pt-6 shadow-lg">
+          <div className=" flex flex-1 flex-col bg-gray-600 rounded-lg shadow-lg">
             <TransactionHistory />
           </div>
         </div>

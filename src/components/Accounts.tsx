@@ -5,13 +5,10 @@ import {
   DropdownItem,
   Button,
   Selection,
-  useDisclosure,
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
 import { Account } from "../types/account";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { ModalCreateAccount } from "./Modals/ModalCreateAccount";
-import { Tooltip } from "@heroui/react";
+import { useMediaQuery } from "react-responsive";
 
 type Props = {
   allAccounts: Account[];
@@ -27,12 +24,11 @@ export const Accounts: React.FC<Props> = ({
   const [selectedKeys, setSelectedKeys] = useState<Selection>(
     new Set([`${account.id}-${account.name}`])
   );
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const selectedValue = useMemo(() => {
     const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
     return value;
   }, [selectedKeys]);
+  const isMobile = useMediaQuery({ maxWidth: 500 });
 
   useEffect(() => {
     setAccount(allAccounts[+selectedValue.split("-")[0] - 1]);
@@ -40,22 +36,12 @@ export const Accounts: React.FC<Props> = ({
 
   return (
     <div className="flex flex-row gap-2 items-center animate-fadeIn">
-      <Tooltip className="font-sans" content="Create New Account">
-        <div>
-          <AiOutlinePlusCircle
-            className="cursor-pointer hover:scale-95"
-            size={28}
-            onClick={onOpen}
-          />
-        </div>
-      </Tooltip>
-
       <Dropdown>
         <DropdownTrigger>
           <Button
-            className="capitalize text-md text-white"
+            className="text-sm md:text-medium capitalize text-white"
             variant="bordered"
-            size="md"
+            size={isMobile ? "sm" : "md"}
           >
             {account.name}
           </Button>
@@ -76,8 +62,6 @@ export const Accounts: React.FC<Props> = ({
           ))}
         </DropdownMenu>
       </Dropdown>
-
-      <ModalCreateAccount isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   );
 };

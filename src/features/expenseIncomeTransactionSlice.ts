@@ -6,10 +6,12 @@ import { fetchGetAllAccounts } from "./accountSlice";
 
 type AuthState = {
   allIncomes: Transactions | null;
-  allIncomesMY: SumsByDateArray | null;
   allIncomesD: SumsByDateArray | null;
   allExpenses: Transactions | null;
-  allExpensesMY: SumsByDateArray | null;
+  allIncomesM: SumsByDateArray | null;
+  allExpensesM: SumsByDateArray | null;
+  allIncomesY: SumsByDateArray | null;
+  allExpensesY: SumsByDateArray | null;
   allExpensesD: SumsByDateArray | null;
   loading: boolean;
   error: string | null;
@@ -17,10 +19,12 @@ type AuthState = {
 
 const initialState: AuthState = {
   allIncomes: null,
-  allIncomesMY: null,
   allIncomesD: null,
   allExpenses: null,
-  allExpensesMY: null,
+  allIncomesM: null,
+  allExpensesM: null,
+  allIncomesY: null,
+  allExpensesY: null,
   allExpensesD: null,
   loading: false,
   error: null,
@@ -107,8 +111,23 @@ export const fetchAllIncomes = createAsyncThunk(
   }
 );
 
-export const fetchAllIncomesForChartsMY = createAsyncThunk(
-  'expenseIncomeCategory/fetchAllIncomesForChartsMY',
+export const fetchAllIncomesForChartsM = createAsyncThunk(
+  'expenseIncomeCategory/fetchAllIncomesForChartsM',
+  async (data: DataAllIncomeForChartsMY) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) throw new Error("Access token not found");
+
+      const response = await TransactionsAllIncomeForChartsMY(data, accessToken);
+      return response;
+    } catch (error) {
+      throw new Error('Failed to fetch income charts (months/years)');
+    }
+  }
+);
+
+export const fetchAllIncomesForChartsY = createAsyncThunk(
+  'expenseIncomeCategory/fetchAllIncomesForChartsY',
   async (data: DataAllIncomeForChartsMY) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
@@ -152,8 +171,23 @@ export const fetchAllExpenses = createAsyncThunk(
   }
 );
 
-export const fetchAllExpensesForChartsMY = createAsyncThunk(
-  'expenseIncomeCategory/fetchAllExpensesForChartsMY',
+export const fetchAllExpensesForChartsM = createAsyncThunk(
+  'expenseIncomeCategory/fetchAllExpensesForChartsM',
+  async (data: DataAllIncomeForChartsMY) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) throw new Error("Access token not found");
+
+      const response = await TransactionsAllExpenseForChartsMY(data, accessToken);
+      return response;
+    } catch (error) {
+      throw new Error('Failed to fetch expense charts (months/years)');
+    }
+  }
+);
+
+export const fetchAllExpensesForChartsY = createAsyncThunk(
+  'expenseIncomeCategory/fetchAllExpensesForChartsY',
   async (data: DataAllIncomeForChartsMY) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
@@ -302,18 +336,31 @@ export const accountSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch incomes';
       })
 
-      // --- Обработка запросов для доходов по месяцам и годам ---
-      .addCase(fetchAllIncomesForChartsMY.pending, (state) => {
+      // --- Обработка запросов для доходов по месяцам ---
+      .addCase(fetchAllIncomesForChartsM.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAllIncomesForChartsMY.fulfilled, (state, action) => {
+      .addCase(fetchAllIncomesForChartsM.fulfilled, (state, action) => {
         state.loading = false;
-        state.allIncomesMY = action.payload;
+        state.allIncomesM = action.payload;
       })
-      .addCase(fetchAllIncomesForChartsMY.rejected, (state, action) => {
+      .addCase(fetchAllIncomesForChartsM.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch income charts (months/years)';
       })
+
+        // --- Обработка запросов для доходов по годам ---
+        .addCase(fetchAllIncomesForChartsY.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(fetchAllIncomesForChartsY.fulfilled, (state, action) => {
+          state.loading = false;
+          state.allIncomesY = action.payload;
+        })
+        .addCase(fetchAllIncomesForChartsY.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message || 'Failed to fetch income charts (months/years)';
+        })
 
       // --- Обработка запросов для доходов по дням ---
       .addCase(fetchAllIncomesForChartsDays.pending, (state) => {
@@ -341,15 +388,28 @@ export const accountSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch expenses';
       })
 
-      // --- Обработка запросов для расходов по месяцам и годам ---
-      .addCase(fetchAllExpensesForChartsMY.pending, (state) => {
+      // --- Обработка запросов для расходов по годам ---
+      .addCase(fetchAllExpensesForChartsY.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchAllExpensesForChartsMY.fulfilled, (state, action) => {
+      .addCase(fetchAllExpensesForChartsY.fulfilled, (state, action) => {
         state.loading = false;
-        state.allExpensesMY = action.payload;
+        state.allExpensesY = action.payload;
       })
-      .addCase(fetchAllExpensesForChartsMY.rejected, (state, action) => {
+      .addCase(fetchAllExpensesForChartsY.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch expense charts (months/years)';
+      })
+
+      // --- Обработка запросов для расходов по месяцам ---
+      .addCase(fetchAllExpensesForChartsM.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllExpensesForChartsM.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allExpensesM = action.payload;
+      })
+      .addCase(fetchAllExpensesForChartsM.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch expense charts (months/years)';
       })

@@ -1,7 +1,6 @@
 import { CiMoneyCheck1 } from "react-icons/ci";
 import { TransactionAction } from "../components/TransactionAction";
 import { Account } from "../types/account";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchGetAllAccounts } from "../features/accountSlice";
 import { RootState } from "../app/store";
@@ -10,30 +9,45 @@ import { Accounts } from "./Accounts";
 import { Tooltip } from "@heroui/react";
 import { useDisclosure } from "@nextui-org/react";
 import { ModalAccountTransfer } from "./Modals/ModalAccountTransfer";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { ModalCreateAccount } from "./Modals/ModalCreateAccount";
 
 export const TransactionBlock = () => {
   const dispatch = useAppDispatch();
-  const isLoading = useSelector((state: RootState) => state.account.loading);
   const allAccounts = useAppSelector((state: RootState) => state.account.allAccounts);
   const [account, setAccount] = useState<Account | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen: isOpenAccount, onOpen: onOpenAccount, onOpenChange: onOpenChangeAccount } = useDisclosure();
+
 
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col text-white gap-8 p-4 pt-6 md:p-8 ">
+    <div className="flex flex-col text-white gap-8 p-4 pt-6 lg:p-8 ">
       <div className="flex gap-4 flex-row items-center flex-wrap justify-between ">
         { !allAccounts ? (
           <div className="flex items-center justify-center h-[40px] w-[140px] bg-gray-600 rounded-lg">
           </div>
         ) : (
+          <div className="flex flex-row gap-2 items-center">
+            <Tooltip className="font-sans" content="Create New Account">
+            <div>
+              <AiOutlinePlusCircle
+                className="cursor-pointer hover:scale-95"
+                size={28}
+                onClick={onOpenAccount}
+              />
+            </div>
+          </Tooltip>
+                  
           <Accounts
             allAccounts={allAccounts}
             setAccount={setAccount}
             account={account || allAccounts[0]}
           />
+          </div>
         )}
         {allAccounts && (
           <div className=" flex flex-row gap-2 items-center text-lg md:text-xl text-end animate-fadeInSlow">
@@ -56,6 +70,8 @@ export const TransactionBlock = () => {
               onOpenChange={onOpenChange}
               currentAccountId={account?.id || allAccounts[0].id}
             />
+            <ModalCreateAccount isOpen={isOpenAccount} onOpenChange={onOpenChangeAccount} />
+
           </div>
         )}
       </div>

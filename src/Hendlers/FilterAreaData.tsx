@@ -1,7 +1,7 @@
-import { SumsByDateArray } from "../types/expenseIncomeTransaction";
+import { MonthChartDataType, SumsByDateArray } from "../types/expenseIncomeTransaction";
 
 export const filteredAreaData = (allIncomesMY: SumsByDateArray | null, allExpensesMY: SumsByDateArray | null) => {
-  const mergedData: Record<string, { date: string; income: number; expense: number }> = {};
+  const mergedData: Record<string, MonthChartDataType> = {};
 
   allIncomesMY?.forEach(({ localDate, sumsByCategory }) => {
     const date = localDate.slice(0, 7);
