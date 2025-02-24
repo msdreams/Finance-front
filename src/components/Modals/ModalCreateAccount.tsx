@@ -96,7 +96,7 @@ export const ModalCreateAccount: React.FC<Props> = ({
                   placeholder="Select currency type"
                 >
                   {currensySet.map((c) => (
-                    <SelectItem key={c.key}>{c.label}</SelectItem>
+                    <SelectItem className="font-sans" key={c.key}>{c.label}</SelectItem>
                   ))}
                 </Select>
               </Form>

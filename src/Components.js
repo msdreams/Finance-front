@@ -13,10 +13,8 @@ export const dataForTable = {
       filterTransactionsDto: {}
 }
 
-export const CategoriesIncomeColors = [ "#59D493", "#2FAA74", "#04724D", "#02624B", "#025246", "#01423F", "#003336"];
-export const CategoriesExpenceColors = [ "#AFC2FF", "#87A1FF", "#6987FF", "#385CFF", "#2845DB", "#1C32B7", "#112293", "#0A167A"];
-
-
+export const CategoriesIncomeColors = [ "#C8F7D4","#93F0B6","#59D493", "#2FAA74", "#04724D", "#02624B", "#025246", "#01423F", "#003336", "#011314"];
+export const CategoriesExpenseColors = [ "#D7E1FF","#AFC2FF", "#87A1FF", "#6987FF", "#385CFF", "#2845DB", "#1C32B7", "#112293", "#0A167A", "#060B3B"];
 
 export const currensySet = [
   {key: "USD", label: "USD"},

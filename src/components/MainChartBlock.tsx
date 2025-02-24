@@ -6,18 +6,21 @@ import { Accounts } from "./Accounts";
 import { useEffect, useMemo, useState } from "react";
 import { Account } from "../types/account";
 import { fetchGetAllAccounts } from "../features/accountSlice";
-import { CategoriesCharts } from "./Charts/CategoriesCharts";
 import { useMediaQuery } from "react-responsive";
 import { fetchAllExpensesForChartsM, fetchAllExpensesForChartsY, fetchAllIncomesForChartsM, fetchAllIncomesForChartsY } from "../features/expenseIncomeTransactionSlice";
 import { SingleSelect } from "./SingleSelect";
 import { filteredAreaData } from "../Hendlers/FilterAreaData";
 import { GetArrayOfYears } from "../Hendlers/GetArrayOfYears";
 import { filterCategoriesData } from "../Hendlers/filterCategiryesData";
+import { CategoriesChartDisplay } from "./Charts/CategoriesChartDisplay";
+import { processData } from "../Hendlers/FilterCategoriesData";
 
 export const MainChartBlock = () => {
   const dispatch = useAppDispatch();
   const allAccounts = useAppSelector((state: RootState) => state.account.allAccounts);
   const [account, setAccount] = useState<Account | null>(null);
+  const [selectedTab, setSelectedTab] = useState<string>("Cash Flow");
+
   const allExpensesM = useAppSelector((state) => state.expenseIncomeTransaction.allExpensesM);
   const allIncomesM = useAppSelector((state) => state.expenseIncomeTransaction.allIncomesM);
   const allExpensesY = useAppSelector((state) => state.expenseIncomeTransaction.allExpensesY);
@@ -63,15 +66,25 @@ export const MainChartBlock = () => {
     }, [account, dispatch]);
     
     const CashFlowByMonth = useMemo(
-      () => filteredAreaData(allIncomesM, allExpensesM), 
-      [allIncomesM, allExpensesM]
+      () => filteredAreaData(allIncomesM, allExpensesM, selectedYear), 
+      [allIncomesM, allExpensesM, selectedYear]
     );
   
-  const CategoriesIncomeByMonth = useMemo(() => filterCategoriesData(allIncomesM), [allIncomesM]);
-  const CategoriesExpenseByMonth = useMemo(() => filterCategoriesData(allExpensesM),[allExpensesM]);
+  const CategoriesIncomeByMonth = useMemo(() => filterCategoriesData(allIncomesM, Number(selectedYear)), [allIncomesM, selectedYear]);
+  const CategoriesExpenseByMonth = useMemo(() => filterCategoriesData(allExpensesM, Number(selectedYear)),[allExpensesM, selectedYear]);
     
-    const incomeFiltered = allIncomesY?.find(acc => acc.localDate.slice(0, 4) === selectedYear)?.sumsByCategory
-    const expenseFiltered = allExpensesY?.find(acc => acc.localDate.slice(0, 4) === selectedYear)?.sumsByCategory
+  const incomeFiltered = allIncomesY?.find(acc => acc.localDate.slice(0, 4) === selectedYear)?.sumsByCategory
+  const expenseFiltered = allExpensesY?.find(acc => acc.localDate.slice(0, 4) === selectedYear)?.sumsByCategory
+  
+    const incomeData = useMemo(() => processData(incomeFiltered, "Income", account?.currency || "USD"), [
+      incomeFiltered,
+      account,
+    ]);
+  
+    const expenseData = useMemo(() => processData(expenseFiltered, "Expense", account?.currency || "USD"), [
+      expenseFiltered,
+      account,
+    ]);
   
   return (
     <div
@@ -87,7 +100,7 @@ export const MainChartBlock = () => {
               account={account || allAccounts[0]}
             />
           </div>
-          <div className="mb:flex-row pb-4 md:absolute right-4 md:right-8 top-6">
+          <div className="mb:flex-row pb-4 md:absolute right-4 md:right-8 top-6 font-sans">
             <SingleSelect
               options={allYears}
               selectedValue={selectedYear}
@@ -101,25 +114,33 @@ export const MainChartBlock = () => {
           aria-label="Charts area"
           color="primary"
           size={isMobile ? "sm" : "md"}
+          onSelectionChange={(key) => setSelectedTab(String(key))}
         >
           
-            <Tab key="Cash Flow" aria-label="Cash Flow" title="Cash Flow">
-              <CashFlowChart filteredData={CashFlowByMonth} currentAccount={account || allAccounts[0]} />
-            </Tab>
+          <Tab key="Cash Flow" aria-label="Cash Flow" title="Cash Flow">
+            <CashFlowChart filteredData={CashFlowByMonth} currentAccount={account || allAccounts[0]} />
+          </Tab>
           <Tab
-            key="Categories"
-            aria-label="Categories"
-            title="Categories"
+            key="Income"
+            aria-label="Income"
+            title="Income"
             >
-              <div>
-                <CategoriesCharts
-                  currentAccount={account || allAccounts[0]}
-                  incomeFiltered={incomeFiltered}
-                  expenseFiltered={expenseFiltered}
-                  CategoriesIncomeByMonth={CategoriesIncomeByMonth}
-                  CategoriesExpenseByMonth={CategoriesExpenseByMonth}
+              <CategoriesChartDisplay
+                  PieIncomeData={incomeData}
+                  BarIncomeData={CategoriesIncomeByMonth}
+                  dataType={selectedTab}
                 />
-              </div>
+          </Tab>
+          <Tab
+            key="Expense"
+            aria-label="Expense"
+            title="Expense"
+          >
+              <CategoriesChartDisplay
+                  PieIncomeData={expenseData}
+                  BarIncomeData={CategoriesExpenseByMonth}
+                  dataType={selectedTab}
+                />
           </Tab>
         </Tabs>
         </>

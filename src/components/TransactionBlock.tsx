@@ -1,3 +1,6 @@
+import { FaMoneyBillWave } from "react-icons/fa"; 
+import { BiMoneyWithdraw } from "react-icons/bi"; 
+import { AiFillPlusCircle } from "react-icons/ai"; 
 import { CiMoneyCheck1 } from "react-icons/ci";
 import { TransactionAction } from "../components/TransactionAction";
 import { Account } from "../types/account";
@@ -34,9 +37,10 @@ export const TransactionBlock = () => {
           <div className="flex flex-row gap-2 items-center">
             <Tooltip className="font-sans" content="Create New Account">
             <div>
-              <AiOutlinePlusCircle
+              <AiFillPlusCircle
                 className="cursor-pointer hover:scale-95"
-                size={28}
+                size={32}
+                fill="#59D493"
                 onClick={onOpenAccount}
               />
             </div>
@@ -57,9 +61,10 @@ export const TransactionBlock = () => {
               content="Transfer to another account"
             >
               <div>
-                <CiMoneyCheck1
+                <FaMoneyBillWave
                   className="cursor-pointer hover:scale-95"
                   size={38}
+                  fill="#59D493"
                   onClick={onOpen}
                 />
               </div>

@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (formData: Log
     Cookies.set('refreshToken', response.refreshToken, {
       expires: expiresDate,
       path: '/',
-      //domain: '.budgetapp.space',
+      domain: '.budgetapp.space',
       secure: true,
       sameSite: 'None',
     });

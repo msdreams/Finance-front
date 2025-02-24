@@ -113,7 +113,7 @@ export const FormMoneyTransfer: React.FC<Props> = ({
               aria-label="Select category"
             >
               {categories.map((category) => (
-                <SelectItem key={category.id} value={category.id.toString()}>
+                <SelectItem className="font-sans" key={category.id} value={category.id.toString()}>
                   {category.name}
                 </SelectItem>
               ))}

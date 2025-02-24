@@ -30,7 +30,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload
 export const CashFlowChart: React.FC<Props> = ({currentAccount, filteredData}) => {
 
   return (
-    <div className="flex flex-col items-center pt-6" style={{ width: '100%', height: 428 }}>
+    <div className="flex flex-col items-center pt-6" style={{ width: '100%', height: 450 }}>
       <ResponsiveContainer>
         <ComposedChart
           barGap={0} 

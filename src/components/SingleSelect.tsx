@@ -19,7 +19,7 @@ export const SingleSelect: React.FC<Props> = ({ options, selectedValue, onChange
     >
       {options.map((option) => {
         return (
-        <SelectItem key={option} value={option} color="primary">
+        <SelectItem className="font-sans" key={option} value={option} color="primary">
           {option}
         </SelectItem>
         )

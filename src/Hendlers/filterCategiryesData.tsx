@@ -1,21 +1,29 @@
 import { SumsByDateArray } from "../types/expenseIncomeTransaction";
 export interface MonthCategoryType {
   date: string;
-  [key: string]: number | string; // Allow `date` to be a string, others to be numbers
+  [key: string]: number | string;
 }
 
-export const filterCategoriesData = (data: SumsByDateArray | null): MonthCategoryType[] => {
+export const filterCategoriesData = (data: SumsByDateArray | null, year: number): MonthCategoryType[] => {
   if (!data) return [];
 
-  return data.map((entry) => {
-    const transformedEntry: Partial<MonthCategoryType> = { date: entry.localDate }; // date is a string
+  return data
+    .filter((entry) => new Date(entry.localDate).getFullYear() === year)
+    .map((entry) => {
+    const transformedEntry: Partial<MonthCategoryType> = { date: entry.localDate };
 
-    entry.sumsByCategory.forEach(({ sumByDateOrCategory, sum }) => {
-      if (sumByDateOrCategory !== "Sum") {
-        (transformedEntry as Record<string, number>)[sumByDateOrCategory] = sum;
-      }
+      entry.sumsByCategory.forEach(({ sumByDateOrCategory, sum }) => {
+        let category = sumByDateOrCategory;
+
+        if (category === "Target Replenishment") {
+          category = category.slice(0,6);
+        }
+
+        if (category !== "Sum") {
+          (transformedEntry as Record<string, number>)[category] = sum;
+        }
     });
 
-    return transformedEntry as MonthCategoryType; // Casting to MonthCategoryType
+    return transformedEntry as MonthCategoryType;
   });
 };

@@ -70,7 +70,7 @@ export const ModalDeleteTarget: React.FC<Props> = ({
                 onChange={(e) => handleSelectionChange(e)}
               >
                 {allAccounts.map((a) => (
-                  <SelectItem key={a.id} value={a.id}>
+                  <SelectItem className="font-sans" key={a.id} value={a.id}>
                     {a.name}
                   </SelectItem>
                 ))}

@@ -8,10 +8,20 @@ export const processData = (
   if (!data) {
     return [];
   }
-  return (
-    data?.filter(d => d.sumByDateOrCategory !== "Sum")).map(item => ({
-    ...item,
-    type,
-    currency
-  }));
+  return data
+    .filter(d => d.sumByDateOrCategory !== "Sum")
+    .map(item => {
+      let category = item.sumByDateOrCategory;
+
+      if (category === "Target Replenishment") {
+        category = category.slice(0,6);
+      }
+
+      return {
+        ...item,
+        sumByDateOrCategory: category,
+        type,
+        currency,
+      };
+    });
 };

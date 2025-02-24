@@ -102,7 +102,7 @@ export const ModalAccountTransfer: React.FC<Props> = ({
                   aria-label="Transfer to"
                 >
                   {AllAccounts.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>
+                    <SelectItem className="font-sans" key={a.id} value={a.id}>
                       {a.name}
                     </SelectItem>
                   ))}

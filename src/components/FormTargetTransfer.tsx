@@ -100,11 +100,11 @@ export const FormTargetTransfer: React.FC<Props> = ({ selectedAccount }) => {
           onSubmit={(e) => handleReplenishTarget(e)}
         >
           <div className="flex flex-row justify-between items-center w-full gap-3 pb-4">
-            <div className="text-white text-md text-end">
+            <div className=" text-md text-end text-white">
               {`${targets[+CurrentTarget.split("-")[0]].name}: ` || ""}
             </div>
             <div className="flex gap-1 items-center text-white text-md">
-              <MdSavings className="min-w-[24px]" />
+              <MdSavings fill="#59D493" className="min-w-[24px]" />
               {`${targets[+CurrentTarget.split("-")[0]].currentSum} ` ||
                 ""} /{" "}
               {`${targets[+CurrentTarget.split("-")[0]].expectedSum} ` || ""}
