@@ -8,6 +8,7 @@ import { fetchGetAllAccounts, UpdateAccount } from "../features/accountSlice";
 import { Tooltip } from "@heroui/react";
 import { EditIcon } from "../assets/SVG/svg";
 import { ModalEditAccount } from "./Modals/ModalEditAccount";
+import { BsUiRadiosGrid } from "react-icons/bs";
 
 export const EditAccounts = () => {
   const dispatch = useAppDispatch();
@@ -44,9 +45,9 @@ export const EditAccounts = () => {
           {allAccounts.map((a) => (
             <div
               key={a.id}
-              className={`flex flex-col gap-4 p-3 pb-6 pt-6 border rounded-md
-                ${account === a ? " border-gray-500 " : "border-gray-600"}
-                hover:border-gray-500 cursor-pointer`}
+              className={`flex flex-col gap-4 p-4 border rounded-md
+                ${account === a ? " border-gray-300 bg-gray-700 " : "border-gray-400"}
+                hover:border-gray-400 cursor-pointer hover:bg-gray-700`}
               onClick={() => {
                 setAccount(account === a ? null : a);
               }}
@@ -67,15 +68,30 @@ export const EditAccounts = () => {
                   <div>
                     {a.balance} {a.currency}
                   </div>
+
+                  <Tooltip
+                      placement="left"
+                      color="primary"
+                      className="font-sans"
+                      content="Transfer to another account"
+                    >
+                      <div>
+                        <BsUiRadiosGrid
+                          className="cursor-pointer hover:scale-95"
+                          size={28}
+                          fill="#59D493"
+                          onClick={onOpen}
+                        />
+                      </div>
+                  </Tooltip>
                   <div
                     className={`flex flex-row gap-2 transition-all duration-300 
-                    ${
-                      account === a
+                    ${account === a
                         ? "opacity-100 max-h-screen"
                         : "opacity-0 max-h-0 overflow-hidden"
                     }`}
                   >
-                    <Tooltip color="warning" content="Edit account">
+                    <Tooltip className="font-sans" placement="left" color="warning" content="Edit account">
                       <span
                         onClick={(e) => {
                           e.stopPropagation();

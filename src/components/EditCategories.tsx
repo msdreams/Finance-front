@@ -76,15 +76,15 @@ export const EditCategories = () => {
     <div className="flex w-full pt-6 pb-6">
       {expenseCategoryAll.length > 0 && incomeCategoryAll.length > 0 && (
         <div className="flex flex-col gap-6 md:gap-4 md:flex-row w-full">
-          <div className="flex w-full flex-col gap-2 ">
-            <div className="flex flex-row md:flex-col gap-4 items-baseline pb-1 ">
+          <div className="flex w-full flex-col gap-2 pb-4 border-b-2 border-primary-400">
+            <div className="flex flex-row gap-4 items-baseline pb-1 mr-2">
               <header className="font-semibold pl-4 text-lg">EXPENSE</header>
               <Tooltip className="font-sans" content="Create New Expense">
                 <Button
-                  className=" text-gray-300 md:w-full flex text-2xl h-8 min-w-8 bg-gray-500"
+                  className=" text-white w-full flex text-2xl h-8 bg-primary-400"
                   isLoading={isLoading}
                   onPress={() => {
-                    onOpen();
+                    onOpen(); 
                     setCategoryType("Expense");
                   }}
                 >
@@ -92,15 +92,15 @@ export const EditCategories = () => {
                 </Button>
               </Tooltip>
             </div>
-            <div className="flex w-full max-h-[120px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col border border-gray-500 rounded-lg ">
+            <div className="flex w-full border-gray-400 max-h-[250px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col gap-2">
               {expenseCategoryAll
                 .filter((c) => c.id !== 6)
                 .map((c) => (
                   <div
                     key={c.id}
-                    className={`flex flex-row justify-between items-center p-2 pr-4 pl-4
-                    ${category === c ? " bg-gray-500 " : "bg-gray-600"}
-                    hover:bg-gray-500 cursor-pointer`}
+                    className={`flex flex-row justify-between items-center p-2 pr-4 pl-4 border border-gray-500 rounded-lg
+                    ${category === c ? " bg-gray-700 " : "bg-gray-600"}
+                    hover:bg-gray-700 cursor-pointer`}
                     onClick={() => {
                       setCategory(category === c ? null : c);
                     }}
@@ -115,7 +115,7 @@ export const EditCategories = () => {
                     }`}
                     >
                       {c.id !== 5 && (
-                        <Tooltip color="danger" content="Delete Category">
+                        <Tooltip className="font-sans" color="danger" content="Delete Category">
                           <span
                             onClick={(e) => {
                               e.stopPropagation();
@@ -133,12 +133,12 @@ export const EditCategories = () => {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-2 ">
-            <div className="flex flex-row md:flex-col gap-4 items-baseline pb-1 ">
+          <div className="flex w-full flex-col gap-2 pb-4 border-b-2 border-primary-400">
+            <div className="flex flex-row gap-4 items-baseline pb-1 ">
               <header className="font-semibold pl-4 text-lg">INCOME</header>
               <Tooltip className="font-sans" content="Create New Income">
                 <Button
-                  className=" text-gray-300 flex md:w-full text-2xl h-8 min-w-8 bg-gray-500"
+                  className=" text-white w-full flex text-2xl h-8 bg-primary-400"
                   isLoading={isLoading}
                   onPress={() => {
                     onOpen();
@@ -149,15 +149,15 @@ export const EditCategories = () => {
                 </Button>
               </Tooltip>
             </div>
-            <div className="flex w-ful max-h-[120px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col border border-gray-500 rounded-lg">
+            <div className="flex w-ful max-h-[250px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col gap-2">
               {incomeCategoryAll
                 .filter((c) => c.id !== 6)
                 .map((c) => (
                   <div
                     key={c.id}
-                    className={`flex flex-row justify-between items-center p-2 pr-4 pl-4 
-                    ${category === c ? " bg-gray-500 " : "bg-gray-600"}
-                    hover:bg-gray-500 cursor-pointer`}
+                    className={`flex flex-row justify-between items-center p-2 pr-4 pl-4 border border-gray-500 rounded-lg
+                      ${category === c ? " bg-gray-700 " : "bg-gray-600"}
+                      hover:bg-gray-700 cursor-pointer`}
                     onClick={() => {
                       setCategory(category === c ? null : c);
                     }}

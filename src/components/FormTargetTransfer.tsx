@@ -104,7 +104,7 @@ export const FormTargetTransfer: React.FC<Props> = ({ selectedAccount }) => {
               {`${targets[+CurrentTarget.split("-")[0]].name}: ` || ""}
             </div>
             <div className="flex gap-1 items-center text-white text-md">
-              <MdSavings fill="#59D493" className="min-w-[24px]" />
+              <MdSavings className="min-w-[24px]" />
               {`${targets[+CurrentTarget.split("-")[0]].currentSum} ` ||
                 ""} /{" "}
               {`${targets[+CurrentTarget.split("-")[0]].expectedSum} ` || ""}

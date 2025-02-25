@@ -64,7 +64,7 @@ export const ModalEditAccount: React.FC<Props> = ({
                   errorMessage="Please enter new name"
                   name="name"
                   maxLength={15}
-                  placeholder="Enter account name"
+                  placeholder="Enter new account name"
                   type="string"
                   autoFocus
                 />

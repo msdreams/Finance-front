@@ -1,3 +1,5 @@
+import { HiViewGrid } from "react-icons/hi"; 
+import { BsUiRadiosGrid } from "react-icons/bs"; 
 import { FaMoneyBillWave } from "react-icons/fa"; 
 import { BiMoneyWithdraw } from "react-icons/bi"; 
 import { AiFillPlusCircle } from "react-icons/ai"; 
@@ -12,7 +14,6 @@ import { Accounts } from "./Accounts";
 import { Tooltip } from "@heroui/react";
 import { useDisclosure } from "@nextui-org/react";
 import { ModalAccountTransfer } from "./Modals/ModalAccountTransfer";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { ModalCreateAccount } from "./Modals/ModalCreateAccount";
 
 export const TransactionBlock = () => {
@@ -35,7 +36,7 @@ export const TransactionBlock = () => {
           </div>
         ) : (
           <div className="flex flex-row gap-2 items-center">
-            <Tooltip className="font-sans" content="Create New Account">
+            <Tooltip placement="bottom-start" color="primary" className="font-sans" content="Create New Account">
             <div>
               <AiFillPlusCircle
                 className="cursor-pointer hover:scale-95"
@@ -57,13 +58,15 @@ export const TransactionBlock = () => {
           <div className=" flex flex-row gap-2 items-center text-lg md:text-xl text-end animate-fadeInSlow">
             {account?.balance || allAccounts[0].balance} {account?.currency || allAccounts[0].currency}
             <Tooltip
+              placement="bottom-end"
               className="font-sans"
+              color="primary"
               content="Transfer to another account"
             >
               <div>
-                <FaMoneyBillWave
+                <BsUiRadiosGrid
                   className="cursor-pointer hover:scale-95"
-                  size={38}
+                  size={28}
                   fill="#59D493"
                   onClick={onOpen}
                 />

@@ -1,6 +1,7 @@
 import { Area, CartesianGrid, XAxis, YAxis,  Tooltip, ResponsiveContainer,ComposedChart,TooltipProps, Bar, Legend } from "recharts";
 import { Account } from "../../types/account";
 import { MonthChartDataType } from "../../types/expenseIncomeTransaction";
+import { useMediaQuery } from "react-responsive";
 
 
 type Props = {
@@ -28,6 +29,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload
 };
 
 export const CashFlowChart: React.FC<Props> = ({currentAccount, filteredData}) => {
+  const isMobile = useMediaQuery({ maxWidth: 500 });
 
   return (
     <div className="flex flex-col items-center pt-6" style={{ width: '100%', height: 450 }}>
@@ -38,12 +40,12 @@ export const CashFlowChart: React.FC<Props> = ({currentAccount, filteredData}) =
           margin={{
               top: 10,
               right:0,
-              left: 0,
+              left: isMobile ? -16 : 0, 
               bottom: 5,
             }}>
       <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{fill: "#59D493", dy: 5}} />
-          <YAxis tick={{ fill: "#59D493" }} />
+          <XAxis fontSize={isMobile ? "12px" : "15px"} dataKey="date" tick={{fill: "#59D493", dy: 5}} />
+          <YAxis fontSize={isMobile ? "12px" : "15px"} tick={{ fill: "#59D493" }} />
           <Legend
             payload={[
             { value: "Income", type: "line", color: "#59D493" }, 

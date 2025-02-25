@@ -26,7 +26,7 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
       {targets.map((item) => (
         <div
           key={item.id}
-          className={`flex flex-col gap-4 p-3 pb-6 pt-6 border rounded-md
+          className={`flex flex-col gap-4 p-4 border rounded-md
             ${targetItem === item ? " border-gray-300 bg-gray-700 " : "border-gray-400"}
             hover:border-gray-400 cursor-pointer hover:bg-gray-700`}
           onClick={() => {
@@ -35,19 +35,17 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
         >
           <div
             id={`${item.id}`}
-            className={`relative flex flex-row gap-2 items-top text-lg`}
+            className={`relative flex flex-col gap-2 items-top text-lg`}
           >
             <div className="flex flex-row gap-4 items-center">
               <div className="flex flex-col">
                 <span className="pr-6 font-semibold min-w-[120px]">
                   {item.name}
                 </span>
-                <span className="text-base">{item.currency}</span>
               </div>
             </div>
 
             <Progress
-              className="max-w-md"
               color="warning"
               formatOptions={{
                 style: "percent",
@@ -59,8 +57,8 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
               size="md"
               value={item.currentSum}
             />
-            <span className="absolute  right-4 text-base">
-              {item.currentSum} / {item.expectedSum}
+            <span className="absolute top-9 right-0 text-base">
+              {item.currentSum} / {item.expectedSum} {item.currency}
             </span>
           </div>
 
@@ -90,13 +88,13 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
               </div>
             </div>
             <div className="flex flex-row gap-2 transition-all duration-300">
-              <Tooltip color="danger" content="Delete target">
+              <Tooltip className="font-sans" color="danger" content="Delete target">
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
                     onOpenDelete();
                   }}
-                  className={`text-lg text-danger cursor-pointer active:opacity-50`}
+                  className={`text-lg font-sans text-danger cursor-pointer active:opacity-50`}
                 >
                   <DeleteIcon />
                 </span>
