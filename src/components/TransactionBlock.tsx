@@ -23,7 +23,6 @@ export const TransactionBlock = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { isOpen: isOpenAccount, onOpen: onOpenAccount, onOpenChange: onOpenChangeAccount } = useDisclosure();
 
-
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);

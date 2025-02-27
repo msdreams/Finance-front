@@ -12,6 +12,7 @@ import { TopContent } from "./TableTopContent";
 import { fetchGetAllTransfers } from "../features/accountSlice";
 import { HistoryTransfersTable } from "./HistoryTransfersTable";
 import { useMediaQuery } from "react-responsive";
+import { BsTable } from "react-icons/bs";
 
 
 export const TransactionHistory = () => {
@@ -108,7 +109,7 @@ export const TransactionHistory = () => {
           />
         </Tab>
         <Tab key="Transfers" title="Transfers">
-          {allTransfers && sortedTransfers.length > 0 && (
+          {allTransfers && sortedTransfers.length > 0 ? (
             <HistoryTransfersTable 
               topContent={<div className="h-[40px]" />} 
               sortedData={sortedTransfers} 
@@ -119,6 +120,10 @@ export const TransactionHistory = () => {
               selectedTab={selectedTab}
               totalPages={allTransfers.totalPages}
             />
+          ) : (
+            <div className="flex flex-row gap-2 text-white items-center justify-center w-full min-h-[400px] border rounded-lg">
+              <BsTable size={60} /> <p> There is no Data yet</p>
+            </div>
           )}
         </Tab>
       </Tabs>

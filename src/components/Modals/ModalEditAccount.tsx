@@ -80,7 +80,7 @@ export const ModalEditAccount: React.FC<Props> = ({
                 Submit
               </Button>
               <Button
-                color="danger"
+                color="primary"
                 variant="light"
                 onPress={onClose}
                 type="submit"

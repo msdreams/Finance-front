@@ -33,10 +33,10 @@ export const ModalApruve:React.FC<Props> = ({ isOpen, onOpenChange, header, body
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="primary" variant="light" onPress={onClose}>
                   Close
               </Button>
-              <Button color="primary" onPress={onOpenChange}>
+              <Button color="danger" onPress={onOpenChange}>
                   Yes
                 </Button>
               </ModalFooter>

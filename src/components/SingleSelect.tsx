@@ -4,26 +4,24 @@ type Props = {
   options: any[],
   selectedValue: string,
   onChange: (value: any) => void,
-  label: string,
 }
 
-export const SingleSelect: React.FC<Props> = ({ options, selectedValue, onChange, label = "Select" }) => {
+export const SingleSelect: React.FC<Props> = ({ options, selectedValue, onChange }) => {
   return (
     <Select
-      className="min-w-24"
-      label={label}
+      className="min-w-28"
+      label="Select a year"
       variant="flat"
       selectedKeys={[selectedValue]}
       onChange={(e) => onChange(e.target.value)}
-      color="primary"
+      color="secondary"
     >
       {options.map((option) => {
         return (
-        <SelectItem className="font-sans" key={option} value={option} color="primary">
+        <SelectItem className="font-sans" key={option} value={option} color="secondary">
           {option}
         </SelectItem>
         )
-
       })}
     </Select>
   );

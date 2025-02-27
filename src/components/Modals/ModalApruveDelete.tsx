@@ -1,13 +1,22 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@nextui-org/react";
 
 type Props = {
   isOpen: boolean;
   onOpenChange: () => void;
   header: string;
   body: string;
+  action: () => void
+  error?: string | null;
 }
 
-export const ModalDetails:React.FC<Props> = ({ isOpen, onOpenChange, header, body }) => {
+export const ModalApruveDelete:React.FC<Props> = ({ isOpen, onOpenChange, header, body, action }) => {
   return (
     <Modal
       isDismissable={false}
@@ -25,9 +34,15 @@ export const ModalDetails:React.FC<Props> = ({ isOpen, onOpenChange, header, bod
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" variant="light" onPress={onOpenChange}>
-                  Close
+              <Button color="danger" onPress={() => { 
+                onOpenChange();
+                action(); 
+              }}>
+                  Yes
                 </Button>
+                <Button color="primary" variant="light" onPress={onClose}>
+                  Close
+              </Button>
               </ModalFooter>
             </>
           )}

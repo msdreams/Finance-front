@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Selection,
@@ -17,10 +17,16 @@ import { Transaction } from "../types/expenseIncomeTransaction";
 import { DeleteIcon, EyeIcon } from "../assets/SVG/svg";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
+  fetchAllExpenses,
+  fetchAllIncomes,
   fetchTransactionsDeleteExpense,
   fetchTransactionsDeleteIncome,
 } from "../features/expenseIncomeTransactionSlice";
 import { ModalWindow } from "./Modals/ModalWindow";
+import { useMediaQuery } from "react-responsive";
+import { ModalDitalesTransaction } from "./Modals/ModalDitalesTransaction";
+import { ModalApruveDelete } from "./Modals/ModalApruveDelete";
+import { dataForTable } from "../Components";
 
 type Props = {
   topContent: any;
@@ -46,9 +52,21 @@ export const HistoryTable: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.expenseIncomeTransaction.error);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
-  );
+  const { isOpen: isOpenMobile, onOpen: onOpenMobile, onOpenChange: onOpenChangeMobile } = useDisclosure();
+  const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
+
+
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const isMobile = useMediaQuery({ maxWidth: 500 });
+
+  const TransactionId = Array.from(selectedKeys)[0]; 
+  
+  const handleDitalesClick = React.useCallback((transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+      onOpenMobile();
+  },[]);
+  
   const columns = [
     {
       key: "transactionDate",
@@ -81,18 +99,34 @@ export const HistoryTable: React.FC<Props> = ({
     },
   ];
 
+  const columnsMobile = [
+    {
+      key: "transactionDate",
+      label: "DATE",
+    },
+    {
+      key: "amount",
+      label: "AMOUNT",
+      sortable: true,
+    },
+  ];
+
   const handleDelete = React.useCallback(
     (transactionId: string) => {
       if (selectedTab === "Income") {
         dispatch(fetchTransactionsDeleteIncome(transactionId))
           .unwrap()
-          .then()
+          .then( () => dispatch(fetchAllIncomes({ ...dataForTable, page: page - 1 }))
+          )
           .catch(() => onOpen());
       } else {
-        dispatch(fetchTransactionsDeleteExpense(transactionId));
+        dispatch(fetchTransactionsDeleteExpense(transactionId))
+        .unwrap()
+        .then(() => dispatch(fetchAllExpenses({ ...dataForTable, page: page - 1 })))
+        .catch(() => onOpen());
       }
     },
-    [dispatch, selectedTab, onOpen]
+    [dispatch, selectedTab, onOpen, page]
   );
 
   const renderCell = React.useCallback(
@@ -135,24 +169,18 @@ export const HistoryTable: React.FC<Props> = ({
           return (
             <div className="relative flex items-center gap-2">
               <Tooltip className="font-sans" content="Details">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => handleDitalesClick(MoneyTransfer)}
+                >
                   <EyeIcon />
                 </span>
+                
               </Tooltip>
-              {/* <Tooltip content="Edit transaction">
-              <span
-                className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              >
-                <EditIcon />
-              </span>
-            </Tooltip> */}
               <Tooltip  className="font-sans" color="danger" content="Delete transaction">
                 <span
                   className="text-lg text-danger cursor-pointer active:opacity-50"
-                  onClick={() => {
-                    console.log(MoneyTransfer.id);
-                    handleDelete(`${MoneyTransfer.id}`);
-                  }}
+                  onClick={() => onOpenDelete()}
                 >
                   <DeleteIcon />
                 </span>
@@ -163,7 +191,51 @@ export const HistoryTable: React.FC<Props> = ({
           return cellValue;
       }
     },
-    [handleDelete]
+    [handleDitalesClick, onOpenDelete]
+  );
+
+  const renderCellMobile = React.useCallback(
+    (MoneyTransfer: Transaction, columnKey: React.Key) => {
+      const cellValue = MoneyTransfer[columnKey as keyof Transaction];
+      const statusColorMap: Record<string, ChipProps["color"]> = {
+        Salary: "warning",
+        Freelance: "success",
+        Investments: "danger",
+        "Rental Income": "primary",
+        Other: "secondary",
+        Utilities: "warning",
+        Groceries: "success",
+        Transportation: "danger",
+        Entertainment: "primary",
+      };
+
+      switch (columnKey) {
+        case "transactionDate":
+          return (
+            <div className="flex flex-col text-xs md:text-sm gap-2">
+              <p className="text-bold  capitalize" > {cellValue}</p >
+              <Chip
+                className="capitalize"
+                color={statusColorMap[MoneyTransfer.categoryName]}
+                size="sm"
+                variant="flat"
+              >
+                {MoneyTransfer.categoryName}
+              </Chip>
+            </div>
+          )
+        case "amount":
+          return (
+            <div className="flex flex-col gap-1">
+              <p className="text-bold text-xs md:text-sm capitalize">{cellValue} {MoneyTransfer.currency}</p>
+              <p className="text-xs md:text-sm">{MoneyTransfer.accountName}</p>
+            </div>
+          )
+        default:
+          return cellValue;
+      }
+    },
+    []
   );
 
   return (
@@ -175,11 +247,10 @@ export const HistoryTable: React.FC<Props> = ({
         selectionMode="single"
         selectedKeys={selectedKeys}
         onSelectionChange={setSelectedKeys}
-        color="secondary"
+        color="primary"
         classNames={{
-          base: "max-h-[720px]",
+          base: "max-h-[800px]",
           table: "min-h-[500px] ",
-          wrapper: "bg-gray-200",
         }}
         sortDescriptor={sortDescriptor}
         onSortChange={setSortDescriptor}
@@ -202,7 +273,7 @@ export const HistoryTable: React.FC<Props> = ({
           ) : null
         }
       >
-        <TableHeader columns={columns}>
+        <TableHeader columns={!isMobile ? columns : columnsMobile}>
           {(column) => (
             <TableColumn
               key={column.key}
@@ -214,13 +285,13 @@ export const HistoryTable: React.FC<Props> = ({
         </TableHeader>
         <TableBody items={sortedData}>
           {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell key={columnKey}>
-                  {renderCell(item, columnKey)}
-                </TableCell>
+              <TableRow key={item.id} onClick={() => isMobile && handleDitalesClick(item)}>
+                {(columnKey) => (
+                  <TableCell key={columnKey}>
+                  {!isMobile? renderCell(item, columnKey): renderCellMobile(item, columnKey)}
+                  </TableCell>
               )}
-            </TableRow>
+              </TableRow>
           )}
         </TableBody>
       </Table>
@@ -231,6 +302,29 @@ export const HistoryTable: React.FC<Props> = ({
         header={"Rejected"}
         body={error ?? "Errow"}
       />
+
+      {TransactionId && (
+        <ModalApruveDelete
+          isOpen={isOpenDelete}
+          onOpenChange={onOpenChangeDelete}
+          header="Delete Transaction"
+          body="Are you shure you want to delete this transaction?"
+          action={() => handleDelete(`${TransactionId}`)}
+        />
+      )}
+
+      {selectedTransaction && (
+        <ModalDitalesTransaction
+          isOpen={isOpenMobile}
+          onOpenChange={() => {
+            setSelectedTransaction(null);
+            onOpenChangeMobile();
+          }}
+          transaction={selectedTransaction}
+          action={onOpenDelete}
+        />
+       )
+      }
     </>
   );
 };

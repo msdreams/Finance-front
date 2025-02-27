@@ -223,11 +223,10 @@ export const fetchTransactionsDeleteIncome = createAsyncThunk(
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
-      const response = await TransactionsDeleteIncome(id, accessToken);
-      dispatch(fetchAllIncomes())
+      await TransactionsDeleteIncome(id, accessToken);
       dispatch(fetchGetAllAccounts());
     
-      return response;
+      //return response;
     } catch (error: any) {
       throw new Error(error.message || 'Failed to fetch TransactionsDeleteExpense');
     }
@@ -241,14 +240,12 @@ export const fetchTransactionsDeleteExpense = createAsyncThunk(
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) throw new Error("Access token not found");
 
-      const response = await TransactionsDeleteExpense(id, accessToken);
-      dispatch(fetchAllExpenses())
+      await TransactionsDeleteExpense(id, accessToken);
+      dispatch(fetchAllExpenses(dataForTable))
           dispatch(fetchGetAllAccounts());
     
-      return response;
+      //return response;
     } catch (error: any) {
-      console.log("no DeleteExpense")
-
       throw new Error(error.message ||'Failed to fetch TransactionsDeleteExpense');
     }
   }

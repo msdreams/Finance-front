@@ -47,6 +47,7 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
 
             <Progress
               color="warning"
+              aria-label="Progress"
               formatOptions={{
                 style: "percent",
                 minimumFractionDigits: 1,

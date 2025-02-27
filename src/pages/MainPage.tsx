@@ -8,7 +8,7 @@ export const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center h-auto md:min-h-screen w-full" >
+    <div className="flex flex-col items-center h-full w-full" >
       <div className=" flex flex-col md:flex-row-reverse w-full h-screen max-w-screen-3xl" >
         <div className="flex-1 bg-background shadow-custom-direction overflow-visible z-10">
           <div className="flex flex-col px-4 md:px-10 xl:px-24 pt-24 md:pt-24 lg:pt-36">
@@ -37,7 +37,7 @@ export const MainPage = () => {
             </div>
           </div>
         </div>
-        <div className=" flex-1 md:max-h-screen bg-[#3890ca2b]">
+        <div className=" flex-1 h-full  bg-[#3890ca2b]">
           <div className="relative flex flex-col items-center mx-4 md:mx-8 xl:mx-24 pt-6 md:pt-14 lg:pt-32">
             <div>
               <Background />
@@ -52,7 +52,7 @@ export const MainPage = () => {
                 text="your income and expenses with an intuitive scale"
               />
               <Description
-                header="YUOR SPENDING"
+                header="YOUR SPENDING"
                 text="is easily categorized, with multiple bank accounts and tracked income sources"
               />
             </div>

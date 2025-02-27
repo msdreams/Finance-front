@@ -11,6 +11,7 @@ import {
   Select,
   SelectItem,
   useDraggable,
+  divider,
 } from "@nextui-org/react";
 import { DataAddTarget } from "../../api/target";
 import { AddTarget, GetAllTargets } from "../../features/targetSlice";
@@ -19,7 +20,7 @@ import { getLocalTimeZone, today } from "@internationalized/date";
 import { currensySet } from "../../Components";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -34,6 +35,7 @@ export const ModalCreateTarget: React.FC<Props> = ({
   const isLoading = useSelector((state: RootState) => state.target.loading);
   const targetRef = useRef(null);
   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+  const[errorMessage, setErrowMessage] = useState("")
 
   const handleSubmitAddTarget = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,10 +47,13 @@ export const ModalCreateTarget: React.FC<Props> = ({
       currency: String(data.currency),
     };
 
-    dispatch(AddTarget(formDataIncome)).finally(() =>
+    dispatch(AddTarget(formDataIncome))
+      .unwrap()
+      .then(() => onOpenChange())
+      .catch((err) => setErrowMessage(err.message))
+      .finally(() =>
       dispatch(GetAllTargets())
     );
-    onOpenChange();
   };
 
   return (
@@ -111,6 +116,9 @@ export const ModalCreateTarget: React.FC<Props> = ({
                   aria-label="date"
                 />
               </Form>
+              {errorMessage && (
+                <div>{ errorMessage }</div>
+              )}
             </ModalBody>
             <ModalFooter>
               <Button
@@ -122,7 +130,7 @@ export const ModalCreateTarget: React.FC<Props> = ({
                 Submit
               </Button>
               <Button
-                color="danger"
+                color="primary"
                 variant="light"
                 onPress={onClose}
                 type="submit"

@@ -94,7 +94,7 @@ export const EditCategories = () => {
             </div>
             <div className="flex w-full border-gray-400 max-h-[250px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col gap-2">
               {expenseCategoryAll
-                .filter((c) => c.id !== 6)
+                .filter((c) => c.name !== "Target Replenishment")
                 .map((c) => (
                   <div
                     key={c.id}
@@ -151,7 +151,7 @@ export const EditCategories = () => {
             </div>
             <div className="flex w-ful max-h-[250px] md:max-h-[500px] overflow-y-scroll dark-scroll flex-col gap-2">
               {incomeCategoryAll
-                .filter((c) => c.id !== 6)
+                .filter((c) => c.name !== "Target Deletion")
                 .map((c) => (
                   <div
                     key={c.id}
@@ -171,12 +171,12 @@ export const EditCategories = () => {
                         : "opacity-0 max-h-0 overflow-hidden"
                     }`}
                     >
-                      {c.id !== 5 && (
+                      {c.name !== "other" && (
                         <Tooltip color="danger" content="Delete Category">
                           <span
                             onClick={(e) => {
                               e.stopPropagation();
-                              onOpenExpense();
+                              onOpenIncome();
                             }}
                             className={`text-lg text-danger cursor-pointer active:opacity-50`}
                           >

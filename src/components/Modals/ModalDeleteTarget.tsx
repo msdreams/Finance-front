@@ -80,11 +80,11 @@ export const ModalDeleteTarget: React.FC<Props> = ({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="primary" variant="light" onPress={onClose}>
                 Close
               </Button>
               <Button
-                color="primary"
+                color="danger"
                 onPress={() => handleDelete(targetId, value)}
               >
                 Delete Target

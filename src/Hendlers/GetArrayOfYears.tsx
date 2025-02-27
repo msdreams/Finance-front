@@ -1,6 +1,6 @@
 import { SumsByDateArray } from "../types/expenseIncomeTransaction";
 
-export const GetArrayOfYears = (expenses: SumsByDateArray | null, incomes: SumsByDateArray | null) => {
+export const GetArrayOfYears = (expenses: SumsByDateArray | null, incomes: SumsByDateArray | null): string[] => {
   const expenseYears = expenses?.map(item => item.localDate.slice(0, 4)) || [];
   const incomeYears = incomes?.map(item => item.localDate.slice(0, 4)) || [];
 

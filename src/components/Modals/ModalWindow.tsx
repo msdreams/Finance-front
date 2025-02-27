@@ -33,7 +33,7 @@ export const ModalWindow:React.FC<Props> = ({ isOpen, onOpenChange, header, body
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onOpenChange}>
+                <Button color="primary" variant="light" onPress={onOpenChange}>
                   Close
                 </Button>
               </ModalFooter>

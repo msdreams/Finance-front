@@ -7,8 +7,6 @@ import {
   Button,
   Form,
   Input,
-  Select,
-  SelectItem,
   useDraggable,
 } from "@nextui-org/react";
 import { useAppDispatch } from "../../app/hooks";
@@ -104,7 +102,7 @@ export const ModalCreateCategory: React.FC<Props> = ({
                 Submit
               </Button>
               <Button
-                color="danger"
+                color="primary"
                 variant="light"
                 onPress={onClose}
                 type="submit"

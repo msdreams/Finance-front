@@ -24,8 +24,6 @@ export const HistoryTransfersTable: React.FC<Props> = ({
     new Set([])
   );
 
-  console.log(sortedData)
-
   const columns = [
     {
       key: "transactionDate",
@@ -33,12 +31,12 @@ export const HistoryTransfersTable: React.FC<Props> = ({
       sortable: true,
     },
     {
-      key: "fromAccountId",
+      key: "fromAccountName",
       label: "FROM",
       sortable: true,
     },
     {
-      key: "toAccountId",
+      key: "toAccountName",
       label: "TO",
       sortable: true,
     },
@@ -65,9 +63,9 @@ export const HistoryTransfersTable: React.FC<Props> = ({
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
         case "currency":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-        case "fromAccountId":
+        case "fromAccountName":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-        case "toAccountId":
+        case "toAccountName":
           return <p className="text-bold text-sm capitalize">{cellValue}</p>;
       }
     },
@@ -76,60 +74,60 @@ export const HistoryTransfersTable: React.FC<Props> = ({
 
   return (
     <>
-      <Table
-        isStriped
-        isCompact
-        aria-label="table with dynamic content"
-        selectionMode="single"
-        selectedKeys={selectedKeys}
-        onSelectionChange={setSelectedKeys}
-        color="secondary"
-        classNames={{
-          base: "max-h-[720px]",
-          table: "min-h-[500px] ",
-          wrapper: "bg-gray-200",
-        }}
-        topContent={topContent}
-        topContentPlacement="inside"
-        bottomContentPlacement="outside"
-        bottomContent={
-          totalPages > 0 ? (
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                showControls
-                showShadow
-                color="primary"
-                page={page}
-                total={totalPages}
-                onChange={(page) => setPage(page)}
-              />
-            </div>
-          ) : null
-        }
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              key={column.key}
-              align={column.key === "actions" ? "start" : "start"}
-            >
-              {column.label}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody items={sortedData}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell key={columnKey}>
-                  {renderCell(item, columnKey)}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+        <Table
+          isStriped
+          isCompact
+          aria-label="table with dynamic content"
+          selectionMode="single"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          color="secondary"
+          classNames={{
+            base: "max-h-[720px]",
+            table: "min-h-[500px] ",
+            wrapper: "bg-gray-200",
+          }}
+          topContent={topContent}
+          topContentPlacement="inside"
+          bottomContentPlacement="outside"
+          bottomContent={
+            totalPages > 0 ? (
+              <div className="flex w-full justify-center">
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color="primary"
+                  page={page}
+                  total={totalPages}
+                  onChange={(page) => setPage(page)}
+                />
+              </div>
+            ) : null
+          }
+        >
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn
+                key={column.key}
+                align={column.key === "actions" ? "start" : "start"}
+              >
+                {column.label}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody items={sortedData}>
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell key={columnKey}>
+                    {renderCell(item, columnKey)}
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
     </>
   );
 };

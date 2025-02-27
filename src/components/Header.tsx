@@ -1,3 +1,5 @@
+import { GiHamburgerMenu } from "react-icons/gi"; 
+import { RxHamburgerMenu } from "react-icons/rx"; 
 import { FiSettings } from "react-icons/fi";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -26,21 +28,21 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
       <div className="flex w-full text-lg flex-row items-center justify-between p-2 md:px-10  xl:px-24">
       {!accessToken ? (
           <NavLink to="/" className="flex flex-row items-center">
-            <img src="./img/Logo(Nav).svg" alt="img" />
-            <p className="text-2xl font-bold pt-1.5">MONETA</p>
+          <img className="w-9 pr-2" src="./img/Logo.svg" alt="img" />
+            <p className="text-2xl text-primary-900 font-bold pt-1.5">MONETA</p>
           </NavLink>
         ) : (
           <NavLink to="dashboard" className="flex flex-row items-center">
-          <img src="./img/Logo(Nav).svg" alt="img" />
-          <p className="text-2xl font-bold pt-1.5">MONETA</p>
+          <img className="w-9 pr-2" src="./img/Logo.svg" alt="img" />
+          <p className="text-2xl font-bold  text-primary-900 pt-1.5">MONETA</p>
         </NavLink>
         )}
 
         <nav className="md:hidden">
-          <img
+          <GiHamburgerMenu
+            color="primary"
+            size={28}
             onClick={() => setActiveBurger(!activeBurger)}
-            src="./img/Menu.png"
-            alt=""
           />
         </nav>
 
