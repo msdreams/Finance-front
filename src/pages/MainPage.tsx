@@ -37,9 +37,9 @@ export const MainPage = () => {
             </div>
           </div>
         </div>
-        <div className=" flex-1 h-full  bg-[#3890ca2b]">
+        <div className=" flex-1 h-full min-h-[550px] bg-primary-600 md:bg-[#3890ca2b]">
           <div className="relative flex flex-col items-center mx-4 md:mx-8 xl:mx-24 pt-6 md:pt-14 lg:pt-32">
-            <div>
+            <div className=" h-full bg-primary-600">
               <Background />
             </div>
             <div className="absolute flex flex-col gap-4 min-w-52 max-w-96  mt-6 text-white font-sans z-10">

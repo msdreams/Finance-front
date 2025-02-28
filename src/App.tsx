@@ -24,7 +24,7 @@ function App() {
     <div className="relative flex flex-col h-full items-center w-full overflow-x-hidden">
       <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
       <div
-        className="absolute h-full inset-0 md:bg-cover top-64 md:top-0 md:bg-left-top -z-20"
+        className="hidden md:block absolute h-full inset-0 md:bg-cover md:top-0 md:bg-left-top -z-20"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       ></div>
       <BurgerMenu activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
