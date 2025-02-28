@@ -3,14 +3,14 @@ import { Transaction } from "../types/expenseIncomeTransaction";
 export enum Currency {
   USD = "USD",
   EURO = "EURO",
-  UAN = "UAN"
+  UAH = "UAH"
 }
 
 export const FilterBalance = (transactions: Transaction[], selectedTab: string) => {
   const totalByCurrency: Record<Currency, number> = {
     [Currency.USD]: 0,
     [Currency.EURO]: 0,
-    [Currency.UAN]: 0,
+    [Currency.UAH]: 0,
   };
 
   transactions.reduce((acc, tr) => {
@@ -25,7 +25,7 @@ export const FilterBalance = (transactions: Transaction[], selectedTab: string) 
       <span>Total {selectedTab}</span>
       <p>USD: {totalByCurrency[Currency.USD]} $</p>
       <p>EURO: {totalByCurrency[Currency.EURO]} €</p>
-      <p>UAN: {totalByCurrency[Currency.UAN]} ₴</p>
+      <p>UAN: {totalByCurrency[Currency.UAH]} ₴</p>
     </div>
   );
 };

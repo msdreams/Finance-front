@@ -21,11 +21,16 @@ export const Dashboard = () => {
     }, 15 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, [dispatch, onOpen, accessToken]);
+  }, [dispatch, accessToken]);
 
-  if (!accessToken) {
-    dispatch(logout());
-  }
+  useEffect(() => {
+    if (!accessToken) {
+      dispatch(logout());
+      onOpen()
+
+    }
+  }, [accessToken, dispatch, onOpen]);
+
   return (
     <div className="flex flex-col items-center w-full bg-background min-h-screen">
         <div className="flex flex-col w-[100%] p-2 md:p-10 gap-6 ">

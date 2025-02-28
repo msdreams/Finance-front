@@ -20,7 +20,7 @@ export const filterCategoriesData = (data: SumsByDateArray | null, year: number)
         }
 
         if (category !== "Sum") {
-          (transformedEntry as Record<string, number>)[category] = sum;
+          (transformedEntry as Record<string, number>)[category.toUpperCase()] = sum;
         }
     });
 

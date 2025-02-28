@@ -1,7 +1,5 @@
 import { BsBarChartLine } from "react-icons/bs"; 
-import { BiBarChartAlt2 } from "react-icons/bi"; 
 import { AiOutlinePieChart } from "react-icons/ai"; 
-import { AiFillPieChart } from "react-icons/ai"; 
 import { PieChart, Pie, ResponsiveContainer, Tooltip, Legend, TooltipProps, Cell, LabelProps, ComposedChart, CartesianGrid, XAxis, YAxis, Bar, LegendType } from "recharts";
 import { CategoriesExpenseColors, CategoriesIncomeColors } from "../../Components";
 import { DataPieType } from "../../types/expenseIncomeTransaction";
@@ -133,7 +131,7 @@ export const CategoriesChartDisplay: React.FC<Props> = ({ PieIncomeData, BarInco
                 },
                 ...incomeDataWithPercentages
                   .map(({ sumByDateOrCategory, percentage, type }, index) => ({
-                value: `${sumByDateOrCategory}: ${percentage}%`,
+                value: `${sumByDateOrCategory.toUpperCase()}: ${percentage}%`,
                 type: 'triangle' as LegendType,
                 color: type === "Income" ? CategoriesIncomeColors[index] : CategoriesExpenseColors[index],
               }))]}

@@ -27,6 +27,5 @@ export const sortData = <T extends keyof Transaction>(data: Transaction[], key: 
     return sorteData;
   } else {
     return sorteData.filter(data => Array.from(statusFilter).includes(data.categoryId.toString().slice(0,5)));
-
   }
 };
