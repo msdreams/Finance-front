@@ -32,7 +32,7 @@ const CustomTooltipPie: React.FC<TooltipProps<number, string>> = ({ active, payl
   return (
     <div className=" bg-gray-700 flex flex-col gap-2 rounded-md p-2">
     <p className={`text-sm ${data?.type === "Income" ? "text-primary-200" : "text-secondary-200"} font-semibold`}>
-    {data?.sumByDateOrCategory}
+    {data?.sumByDateOrCategory.toUpperCase()}
       </p>
         <span>{data?.sum} {data?.currency}</span>
     </div>
@@ -109,7 +109,7 @@ export const CategoriesChartDisplay: React.FC<Props> = ({ PieIncomeData, BarInco
   const categoryIncomeKeys = BarIncomeData.reduce((keys, entry) => {
     Object.keys(entry).forEach(key => {
       if (key !== 'date' && !keys.includes(key)) {
-        keys.push(key);
+        keys.push(key.toUpperCase());
       }
     });
     return keys;

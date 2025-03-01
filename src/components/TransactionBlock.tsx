@@ -1,9 +1,5 @@
-import { HiViewGrid } from "react-icons/hi"; 
 import { BsUiRadiosGrid } from "react-icons/bs"; 
-import { FaMoneyBillWave } from "react-icons/fa"; 
-import { BiMoneyWithdraw } from "react-icons/bi"; 
 import { AiFillPlusCircle } from "react-icons/ai"; 
-import { CiMoneyCheck1 } from "react-icons/ci";
 import { TransactionAction } from "../components/TransactionAction";
 import { Account } from "../types/account";
 import { useEffect, useState } from "react";
@@ -26,6 +22,8 @@ export const TransactionBlock = () => {
   useEffect(() => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
+
+  console.log(allAccounts)
 
   return (
     <div className="flex flex-col text-white gap-8 p-4 pt-6 lg:p-8 ">

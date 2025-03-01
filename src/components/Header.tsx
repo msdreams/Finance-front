@@ -1,5 +1,4 @@
 import { GiHamburgerMenu } from "react-icons/gi"; 
-import { RxHamburgerMenu } from "react-icons/rx"; 
 import { FiSettings } from "react-icons/fi";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";

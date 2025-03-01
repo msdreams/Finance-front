@@ -105,7 +105,7 @@ export const EditCategories = () => {
                       setCategory(category === c ? null : c);
                     }}
                   >
-                    <span>{c.name}</span>
+                    <span>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
                     <div
                       className={`flex flex-row gap-2 transition-all duration-300 
                     ${
@@ -162,7 +162,7 @@ export const EditCategories = () => {
                       setCategory(category === c ? null : c);
                     }}
                   >
-                    <span>{c.name}</span>
+                    <span>{c.name.charAt(0).toUpperCase() + c.name.slice(1)}</span>
                     <div
                       className={`flex flex-row gap-2 transition-all duration-300 
                     ${

@@ -42,7 +42,7 @@ export const Dashboard = () => {
               <MainChartBlock />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row gap-6 font-sans pt-16 animate-fadeIn">
+          <div className="flex flex-col lg:flex-row gap-6 font-sans animate-fadeIn">
             <div
               aria-label="SettingsBlock"
               className="flex-2 md:min-w-[450px] bg-gray-600 rounded-lg shadow-lg"

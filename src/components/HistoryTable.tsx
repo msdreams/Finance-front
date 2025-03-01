@@ -131,18 +131,15 @@ export const HistoryTable: React.FC<Props> = ({
 
   const renderCell = React.useCallback(
     (MoneyTransfer: Transaction, columnKey: React.Key) => {
+      const categories = sortedData.map(d => d.categoryName)
+      const colorList: ChipProps["color"][] = [
+        "warning", "success", "danger", "primary", "default",
+        "warning", "success", "danger", "primary", "secondary"
+      ];
       const cellValue = MoneyTransfer[columnKey as keyof Transaction];
-      const statusColorMap: Record<string, ChipProps["color"]> = {
-        Salary: "warning",
-        Freelance: "success",
-        Investments: "danger",
-        "Rental Income": "primary",
-        Other: "secondary",
-        Utilities: "warning",
-        Groceries: "success",
-        Transportation: "danger",
-        Entertainment: "primary",
-      };
+      const statusColorMap = Object.fromEntries(
+        categories.map((category, index) => [category, colorList[index]])
+      );
 
       switch (columnKey) {
         case "transactionDate":
@@ -191,23 +188,20 @@ export const HistoryTable: React.FC<Props> = ({
           return cellValue;
       }
     },
-    [handleDitalesClick, onOpenDelete]
+    [handleDitalesClick, onOpenDelete, sortedData]
   );
 
   const renderCellMobile = React.useCallback(
     (MoneyTransfer: Transaction, columnKey: React.Key) => {
+      const categories = sortedData.map(d => d.categoryName)
+      const colorList: ChipProps["color"][] = [
+        "warning", "success", "danger", "primary", "default",
+        "warning", "success", "danger", "primary", "secondary"
+      ];
       const cellValue = MoneyTransfer[columnKey as keyof Transaction];
-      const statusColorMap: Record<string, ChipProps["color"]> = {
-        Salary: "warning",
-        Freelance: "success",
-        Investments: "danger",
-        "Rental Income": "primary",
-        Other: "secondary",
-        Utilities: "warning",
-        Groceries: "success",
-        Transportation: "danger",
-        Entertainment: "primary",
-      };
+      const statusColorMap = Object.fromEntries(
+        categories.map((category, index) => [category, colorList[index]])
+      );
 
       switch (columnKey) {
         case "transactionDate":
@@ -235,7 +229,7 @@ export const HistoryTable: React.FC<Props> = ({
           return cellValue;
       }
     },
-    []
+    [sortedData]
   );
 
   return (
