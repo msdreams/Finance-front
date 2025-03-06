@@ -27,12 +27,12 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
       <div className="flex w-full text-lg flex-row items-center justify-between p-2 md:px-10  xl:px-24">
       {!accessToken ? (
           <NavLink to="/" className="flex flex-row items-center">
-          <img className="w-9 pr-2" src="./img/Logo.svg" alt="img" />
+          <img className="w-9 pr-2" src="./img/Logo2.svg" alt="img" />
             <p className="text-2xl text-primary-900 font-bold pt-1.5">MONETA</p>
           </NavLink>
         ) : (
           <NavLink to="dashboard" className="flex flex-row items-center">
-          <img className="w-9 pr-2" src="./img/Logo.svg" alt="img" />
+          <img className="w-9 pr-2" src="./img/Logo2.svg" alt="img" />
           <p className="text-2xl font-bold  text-primary-900 pt-1.5">MONETA</p>
         </NavLink>
         )}
@@ -48,23 +48,12 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
         <nav className=" hidden md:flex font-sans text-base text-gray-900 flex-row justify-center items-center gap-10">
           {accessToken ? (
             <>
-              {/* <NavLink
-                className={
-                  location.pathname === "/account"
-                    ? " border-b-1.5 border-gray-900"
-                    : " border-b-1.5 border-transparent hover:border-gray-900"
-                }
-                to="account"
-              >
-                Dashboard
-              </NavLink> */}
-              
               <NavLink
                 className= "border-b-1.5 border-transparent hover:border-gray-900"
                 to="#"
                 onClick={() => handleUnlogin()}
               >
-                log Out
+                log out
               </NavLink>
 
               <Button
@@ -88,7 +77,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 }
                 to="login"
               >
-                Log In
+                Log in
               </NavLink>
 
               <NavLink
@@ -99,7 +88,7 @@ export const Header: React.FC<Props> = ({ activeBurger, setActiveBurger }) => {
                 }
                 to="register"
               >
-                Sign Up
+                Sign up
               </NavLink>
               
 

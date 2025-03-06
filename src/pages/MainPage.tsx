@@ -37,7 +37,7 @@ export const MainPage = () => {
             </div>
           </div>
         </div>
-        <div className=" flex-1 h-full min-h-[550px] bg-primary-600 md:bg-[#3890ca2b]">
+        <div className=" flex-1 h-full min-h-[550px] bg-primary-600 md:bg-[#cbdcdda0]">
           <div className="relative flex flex-col items-center mx-4 md:mx-8 xl:mx-24 pt-6 md:pt-14 lg:pt-32">
             <div className=" h-full bg-primary-600">
               <Background />

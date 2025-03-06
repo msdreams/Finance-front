@@ -14,9 +14,9 @@ export const AboutPage = () => {
     console.log(data)
 
     const formData = {
+      name: String(data.name),
       email: String(data.email),
-      name: String(data.password),
-      message: String(data.repeatPassword),
+      message: String(data.message),
     };
 
     mailToSupport(formData)
@@ -54,7 +54,7 @@ export const AboutPage = () => {
                 className="font-sans"
                 isRequired
                 errorMessage="Please enter your name"
-                name="Name"
+                name="name"
                 placeholder="Enter your name"
                 type="text"
               />
@@ -67,7 +67,7 @@ export const AboutPage = () => {
                 type="email"
               />
 
-              <Textarea className=" max-w-lg" placeholder="Enter your message" />
+              <Textarea name="message" className=" max-w-lg" placeholder="Enter your message" />
 
               <div className="flex w-full flex-col md:flex-row gap-2 ">
                 <Button className="border-gray-300 text-gray-300" type="reset" variant="bordered">
