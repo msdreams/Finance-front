@@ -11,7 +11,6 @@ import {
   Select,
   SelectItem,
   useDraggable,
-  divider,
 } from "@nextui-org/react";
 import { DataAddTarget } from "../../api/target";
 import { AddTarget, GetAllTargets } from "../../features/targetSlice";
@@ -82,7 +81,7 @@ export const ModalCreateTarget: React.FC<Props> = ({
                   className="text-gray-500"
                   errorMessage="Please enter target name"
                   name="name"
-                  maxLength={12}
+                  maxLength={20}
                   placeholder="Enter target name"
                   type="string"
                   autoFocus

@@ -27,6 +27,7 @@ type Props = {
   AllAccounts: Account[];
   onOpenChange: () => void;
   currentAccountId: number;
+  currentAccountname?: string;
 };
 
 export const ModalAccountTransfer: React.FC<Props> = ({
@@ -34,6 +35,7 @@ export const ModalAccountTransfer: React.FC<Props> = ({
   isOpen,
   currentAccountId,
   onOpenChange,
+  currentAccountname
 }) => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.target.loading);
@@ -74,7 +76,7 @@ export const ModalAccountTransfer: React.FC<Props> = ({
         {(onClose) => (
           <>
             <ModalHeader {...moveProps} className="flex flex-col gap-1">
-              New Transaction
+              New Transaction {`from ${currentAccountname}`}
             </ModalHeader>
             <ModalBody>
               <Form

@@ -99,8 +99,8 @@ export const EditCategories = () => {
                   <div
                     key={c.id}
                     className={`flex flex-row justify-between items-center p-2 pr-4 pl-4 border border-gray-500 rounded-lg
-                    ${category === c ? " bg-gray-700 " : "bg-gray-600"}
-                    hover:bg-gray-700 cursor-pointer`}
+                    ${category === c ? " bg-gray-700 " : "bg-gray-600 hover:bg-gray-500"}
+                     cursor-pointer`}
                     onClick={() => {
                       setCategory(category === c ? null : c);
                     }}
@@ -156,8 +156,8 @@ export const EditCategories = () => {
                   <div
                     key={c.id}
                     className={`flex flex-row justify-between items-center p-2 pr-4 pl-4 border border-gray-500 rounded-lg
-                      ${category === c ? " bg-gray-700 " : "bg-gray-600"}
-                      hover:bg-gray-700 cursor-pointer`}
+                      ${category === c ? " bg-gray-700 " : "bg-gray-600 hover:bg-gray-500"}
+                       cursor-pointer`}
                     onClick={() => {
                       setCategory(category === c ? null : c);
                     }}

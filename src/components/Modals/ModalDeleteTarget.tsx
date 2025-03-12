@@ -39,12 +39,16 @@ export const ModalDeleteTarget: React.FC<Props> = ({
 
   const handleDelete = (targetId: number, accountId: number | null) => {
     if (accountId) {
-      dispatch(DeleteTarget({ targetId, accountId }));
-      onOpenChange();
+      dispatch(DeleteTarget({ targetId, accountId }))
+        .unwrap()
+        .then(() => onOpenChange())
+        .catch((err) => setErrowMessage(err.message))
+      ;
     } else {
       setErrowMessage("Please, choose one of your accounts to send money back");
     }
   };
+  
   return (
     <Modal
       isDismissable={false}

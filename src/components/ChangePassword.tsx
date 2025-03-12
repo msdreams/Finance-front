@@ -6,8 +6,13 @@ import { Form, Input, Button } from "@nextui-org/react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Components";
 
 export const ChangePassword = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
+  const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+  const [isRepeatNewPasswordVisible, setIsRepeatNewPasswordVisible] = useState(false);
+
+  const toggleCurrentPasswordVisibility = () => setIsCurrentPasswordVisible(!isCurrentPasswordVisible);
+  const toggleNewPasswordVisibility = () => setIsNewPasswordVisible(!isNewPasswordVisible);
+  const toggleRepeatNewPasswordVisibility = () => setIsRepeatNewPasswordVisible(!isRepeatNewPasswordVisible);
 
   const { error } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -15,21 +20,21 @@ export const ChangePassword = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.currentTarget));
-      const formData: userChangePassword = {
-        currentPassword: String(data.currentPassword),
-        newPassword: String(data.newPassword),
-        repeatNewPassword: String(data.repeatNewPassword),
-      };
-    
+    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const formData: userChangePassword = {
+      currentPassword: String(data.currentPassword),
+      newPassword: String(data.newPassword),
+      repeatNewPassword: String(data.repeatNewPassword),
+    };
+
     dispatch(changePasswordUser(formData))
-    .unwrap()
-    .then(() => setSuccessMessage("New password has been set successfully"))
+      .unwrap()
+      .then(() => setSuccessMessage("New password has been set successfully"));
   };
 
   return (
     <>
-      <div className="flex flex-col w-full gap-2  max-w-xl  font-sans">
+      <div className="flex flex-col w-full gap-2 max-w-xl font-sans">
         <h2>Change password</h2>
         <Form
           className="flex flex-col gap-4"
@@ -43,15 +48,15 @@ export const ChangePassword = () => {
             validationBehavior="native"
             name="currentPassword"
             placeholder="Enter your current password"
-            type={isVisible ? "text" : "password"}
+            type={isCurrentPasswordVisible ? "text" : "password"}
             endContent={
               <button
-                aria-label="toggle password visibility"
+                aria-label="toggle current password visibility"
                 className="focus:outline-none"
                 type="button"
-                onClick={toggleVisibility}
+                onClick={toggleCurrentPasswordVisibility}
               >
-                {isVisible ? (
+                {isCurrentPasswordVisible ? (
                   <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
                 ) : (
                   <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
@@ -65,7 +70,21 @@ export const ChangePassword = () => {
             errorMessage="Please enter a new password"
             name="newPassword"
             placeholder="Enter your new password"
-            type="password"
+            type={isNewPasswordVisible ? "text" : "password"}
+            endContent={
+              <button
+                aria-label="toggle new password visibility"
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleNewPasswordVisibility}
+              >
+                {isNewPasswordVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
           />
           <Input
             isRequired
@@ -73,12 +92,24 @@ export const ChangePassword = () => {
             errorMessage="Please repeat a new password"
             name="repeatNewPassword"
             placeholder="Repeat your new password"
-            type="password"
+            type={isRepeatNewPasswordVisible ? "text" : "password"}
+            endContent={
+              <button
+                aria-label="toggle repeat new password visibility"
+                className="focus:outline-none"
+                type="button"
+                onClick={toggleRepeatNewPasswordVisibility}
+              >
+                {isRepeatNewPasswordVisible ? (
+                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                ) : (
+                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                )}
+              </button>
+            }
           />
 
-          <Button
-            color="primary"
-            type="submit">
+          <Button color="primary" type="submit">
             Change password
           </Button>
         </Form>
@@ -88,3 +119,4 @@ export const ChangePassword = () => {
     </>
   );
 };
+

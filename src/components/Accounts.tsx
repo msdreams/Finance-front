@@ -24,16 +24,28 @@ export const Accounts: React.FC<Props> = ({
   const [selectedKeys, setSelectedKeys] = useState<Selection>(
     new Set([`${account.id}-${account.name}`])
   );
-  const selectedValue = useMemo(() => {
-    const value = Array.from(selectedKeys).join(", ").replace(/_/g, "");
-    return value;
+
+  console.log(account.balance)
+
+  const selectedId = useMemo(() => {
+    const keys = selectedKeys as Set<string>
+    
+    return keys.size ? Number(Array.from(keys)[0].split("-")[0]) : null;
   }, [selectedKeys]);
+
   const isMobile = useMediaQuery({ maxWidth: 500 });
 
   useEffect(() => {
-    setAccount(allAccounts[+selectedValue.split("-")[0] - 1]);
-  }, [selectedValue, allAccounts, setAccount, account]);
+    if (!selectedId ) return;
+    const newAccount = allAccounts.find((acc) => acc.id === selectedId);
+    if (newAccount) {
+      setAccount(newAccount);
+    }
+  }, [selectedId, allAccounts, setAccount]);
 
+  useEffect(() => {
+    setSelectedKeys(new Set([`${account.id}-${account.name}`]));
+  }, [account]);
   return (
     <div className="flex flex-row gap-2 items-center animate-fadeIn">
       <Dropdown>

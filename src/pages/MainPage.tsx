@@ -45,11 +45,11 @@ export const MainPage = () => {
             <div className="absolute flex flex-col gap-4 min-w-52 max-w-96  mt-6 text-white font-sans z-10">
               <Description
                 header="EASILY"
-                text="track your personal finances with detailed dashboards"
+                text="track your personal finance with detailed dashboards"
               />
               <Description
                 header="VISUALIZE"
-                text="your income and expenses with an intuitive scale"
+                text="your income and expenses with an intuitive visualize"
               />
               <Description
                 header="YOUR SPENDING"

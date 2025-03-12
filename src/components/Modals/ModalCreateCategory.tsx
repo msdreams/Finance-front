@@ -12,7 +12,7 @@ import {
 import { useAppDispatch } from "../../app/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DataName } from "../../api/expenseIncomeCategory";
 import {
   ExpenseGetAllCategories,
@@ -32,6 +32,8 @@ export const ModalCreateCategory: React.FC<Props> = ({
   onOpenChange,
   categoryType,
 }) => {
+    const [errowMessage, setErrowMessage] = useState<string | null>(null);
+
   const dispatch = useAppDispatch();
   const isLoading = useSelector(
     (state: RootState) => state.expenseIncomeCategory.loading
@@ -47,15 +49,19 @@ export const ModalCreateCategory: React.FC<Props> = ({
     };
 
     if (categoryType === "Income") {
-      dispatch(fetchIncomeAddCategory(formData)).finally(() =>
-        dispatch(IncomeGetAllCategories())
+      dispatch(fetchIncomeAddCategory(formData))
+        .unwrap()
+        .then(() => onOpenChange())
+        .catch((err) => setErrowMessage(err.message))
+        .finally(() => dispatch(IncomeGetAllCategories())
       );
-      onOpenChange();
     } else if (categoryType === "Expense") {
-      dispatch(fetchExpenseAddCategory(formData)).finally(() =>
-        dispatch(ExpenseGetAllCategories())
+      dispatch(fetchExpenseAddCategory(formData))
+        .unwrap()
+        .then(() => onOpenChange())
+        .catch((err) => setErrowMessage(err.message))
+        .finally(() => dispatch(ExpenseGetAllCategories())
       );
-      onOpenChange();
     }
   };
 
@@ -91,6 +97,9 @@ export const ModalCreateCategory: React.FC<Props> = ({
                   autoFocus
                 />
               </Form>
+              {errowMessage && (
+                <div className="text-danger">{errowMessage}</div>
+              )}
             </ModalBody>
             <ModalFooter>
               <Button

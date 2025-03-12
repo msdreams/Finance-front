@@ -23,7 +23,7 @@ export const TransactionBlock = () => {
     dispatch(fetchGetAllAccounts());
   }, [dispatch]);
 
-  console.log(allAccounts)
+  console.log(account?.balance)
 
   return (
     <div className="flex flex-col text-white gap-8 p-4 pt-6 lg:p-8 ">
@@ -74,6 +74,7 @@ export const TransactionBlock = () => {
               isOpen={isOpen}
               onOpenChange={onOpenChange}
               currentAccountId={account?.id || allAccounts[0].id}
+              currentAccountname={account?.name || allAccounts[0].name}
             />
             <ModalCreateAccount isOpen={isOpenAccount} onOpenChange={onOpenChangeAccount} />
 

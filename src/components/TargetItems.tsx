@@ -27,8 +27,8 @@ export const TargetItems: React.FC<Props> = ({ targets }) => {
         <div
           key={item.id}
           className={`flex flex-col gap-4 p-4 border rounded-md
-            ${targetItem === item ? " border-gray-300 bg-gray-700 " : "border-gray-400"}
-            hover:border-gray-400 cursor-pointer hover:bg-gray-700`}
+            ${targetItem === item ? " border-gray-300 bg-gray-700 " : "border-gray-400 hover:bg-gray-500"}
+            hover:border-gray-400 cursor-pointer`}
           onClick={() => {
             setTargetItem(targetItem === item ? null : item);
           }}

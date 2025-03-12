@@ -65,7 +65,11 @@ export const fetchIncomeAddCategory = createAsyncThunk(
       const response = await IncomeAddCategory(data, accessToken);
       return response;
     } catch (error) {
-      throw new Error('Failed to update expense category');
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('Failed to update income category');
+      }
     }
   }
 );
@@ -82,8 +86,12 @@ export const fetchExpenseAddCategory = createAsyncThunk(
     try {
       const response = await ExpenseAddCategory(data, accessToken);
       return response;
-    } catch (error) {
-      throw new Error('Failed to update expense category');
+    }catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('Failed to update expense category');
+      }
     }
   }
 );

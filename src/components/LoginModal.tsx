@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../app/hooks";
 import { RootState } from "../app/store";
 import { forgotPassword } from "../features/authSlice";
+import { Link } from "react-router-dom";
 
 
 type Props = {
@@ -56,12 +57,21 @@ export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
               <img src="./img/telegram.svg" alt="Telegram login" />
               Log in with Telegram
           </Button>
+          <div className="flex flex-row justify-between py-4">
+            <Link
+              className="px-2 font-sans flex flex-row gap-2 text-sm text-primary-400 hover:text-white cursor-pointer"
+                to='https://t.me/CoinBudgetAppBot'
+                style={{ cursor: "pointer" }}
+              >
+                Telegram Bot
+            </Link>
             <p
-              className="p-2 font-sans text-sm text-primary-400 hover:text-white cursor-pointer"
+              className="px-2 font-sans text-sm text-primary-400 hover:text-white cursor-pointer"
               onClick={() => setFPassword(true)}
             >
               Forgot password?
             </p>
+          </div>
         </div>
       ) : (
           <>
