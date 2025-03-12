@@ -65,7 +65,7 @@ export const HistoryTable: React.FC<Props> = ({
   const handleDitalesClick = React.useCallback((transaction: Transaction) => {
     setSelectedTransaction(transaction);
       onOpenMobile();
-  },[]);
+  },[onOpenMobile]);
   
   const columns = [
     {
@@ -279,7 +279,11 @@ export const HistoryTable: React.FC<Props> = ({
         </TableHeader>
         <TableBody items={sortedData}>
           {(item) => (
-              <TableRow key={item.id} onClick={() => isMobile && handleDitalesClick(item)}>
+            <TableRow
+              key={item.id}
+              onClick={() => isMobile ? handleDitalesClick(item) : null}
+              onTouchEnd={() => isMobile ? handleDitalesClick(item) : null}
+            >
                 {(columnKey) => (
                   <TableCell key={columnKey}>
                   {!isMobile? renderCell(item, columnKey): renderCellMobile(item, columnKey)}
