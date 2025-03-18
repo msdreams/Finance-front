@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        1500: "1500ms", 
+      },
       textStroke: {
         2: '2px black',
       },
@@ -20,13 +23,24 @@ module.exports = {
         },
         wave: {
           '0%': { transform: 'translateX(0)' },
-          '50%': { transform: 'translateX(-20px)' },
+          '50%': { transform: 'translateX(-40px)' },
           '100%': { transform: 'translateY(0)' },
         },
+        enterUp: {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        enterUpModals: {
+          "0%": { transform: "translateY(20px)"},
+          "100%": { transform: "translateY(0)"},
+        }
+
       },
       animation: {
         wave: 'wave 6s ease-in-out infinite',
-        fadeIn: 'fadeIn 0.3s ease-out',
+        enterUp: 'enterUp 0.6s ease-out forwards',
+        enterUpModals: 'enterUpModals 0.6s ease-out',
+        fadeIn: 'fadeIn 0.6s ease-out',
         fadeInSlow: 'fadeIn 0.6s ease-out',
         fadeInSlowDelayed: 'fadeIn 0.6s ease-out 0.3s'
 

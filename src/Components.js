@@ -89,3 +89,18 @@ export const EyeFilledIcon = (props) => {
     </svg>
   );
 };
+
+export const cardsContent = [
+  {
+    header: "EASILY",
+    text:"track your personal finance with detailed dashboards"
+  },
+  {
+    header: "VISUALIZE",
+    text:"your income and expenses with an intuitive visualize"
+  },
+  {
+    header: "YOUR SPENDING",
+    text:"is easily categorized, with multiple bank accounts and tracked income sources"
+  }
+]

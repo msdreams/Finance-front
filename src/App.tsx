@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
+      console.log("setFadeIn(true);")
     }, 2000);
   }, []);
 
@@ -21,7 +22,7 @@ function App() {
   }
 
   return (
-    <div className="relative flex flex-col h-full items-center w-full overflow-x-hidden">
+    <div className="relative flex flex-col h-full items-center w-full overflow-x-hidden animate-fadeIn ">
       <Header activeBurger={activeBurger} setActiveBurger={setActiveBurger} />
       <div
         className="hidden md:block absolute h-full inset-0 md:bg-cover md:top-0 md:bg-left-top -z-20"

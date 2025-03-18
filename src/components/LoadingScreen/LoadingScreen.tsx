@@ -1,6 +1,6 @@
 export const LoadingScreen = () => {
   return (
-    <div className="loading-screen">
+    <div className="loading-screen animate-fadeIn">
       <div className="loading-content">
         <div className="cssload-thecube">
           <div className="cssload-cube cssload-c1"></div>
@@ -10,6 +10,7 @@ export const LoadingScreen = () => {
         </div>
         <h1 className="font-sans text-lg">Please wait while we load the data</h1>
       </div>
+      {/* <img className="object-cover" src="/loading1.gif" alt="loading" /> */}
     </div>
   );
 };
