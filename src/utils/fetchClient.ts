@@ -1,4 +1,4 @@
-const BASE_URL = 'https://budgetapp.space';
+const BASE_URL = 'https://moneta-api.space';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
