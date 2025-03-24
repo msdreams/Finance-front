@@ -114,7 +114,7 @@ export const EditCategories = () => {
                         : "opacity-0 max-h-0 overflow-hidden"
                     }`}
                     >
-                      {c.id !== 5 && (
+                      {c.name !== "Other" && (
                         <Tooltip className="font-sans" color="danger" content="Delete Category">
                           <span
                             onClick={(e) => {
@@ -171,7 +171,7 @@ export const EditCategories = () => {
                         : "opacity-0 max-h-0 overflow-hidden"
                     }`}
                     >
-                      {c.name !== "other" && (
+                      {c.name !== "Other" && (
                         <Tooltip color="danger" content="Delete Category">
                           <span
                             onClick={(e) => {

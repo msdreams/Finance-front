@@ -10,6 +10,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { MainPage } from "./pages/MainPage";
 import { SignUpPage } from './pages/SignUpPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { PasswordUpdate } from './pages/PasswordUpdate';
 
 
 export const Root = () => {
@@ -22,6 +23,7 @@ export const Root = () => {
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<SignUpPage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="password_update" element={<PasswordUpdate />} />
             <Route path='dashboard' element={<ProtectedRoute />}>
               <Route index element={<Dashboard />} />
               <Route path="settings" element={<SettingsPage />} />

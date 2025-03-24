@@ -19,7 +19,7 @@ export const BurgerMenu: React.FC<Props> = ({ activeBurger, setActiveBurger }) =
   return (
     <div
       className={classNames(
-        "absolute z-40 text-lg font-sans right-0 flex flex-col-reverse items-end justify-end pt-24 pr-4 gap-5 bg-primary-300 h-[60vh] w-[100px] transition-transform duration-500",
+        "absolute z-40 text-lg font-sans right-0 -top-6 flex flex-col-reverse items-end justify-end pt-24 pr-4 gap-5 bg-primary-300 h-[60vh] w-[100px] transition-transform duration-500 rounded-l-3xl",
         {
           "translate-x-full": !activeBurger,
           "translate-x-0": activeBurger,
