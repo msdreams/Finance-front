@@ -60,8 +60,10 @@ export const LoginModal: React.FC<Props> = ({ setActiveEmailModal }) => {
           <div className="flex flex-row justify-between py-4">
             <Link
               className="px-2 font-sans flex flex-row gap-2 text-sm text-primary-400 hover:text-white cursor-pointer"
-                to='https://t.me/CoinBudgetAppBot'
-                style={{ cursor: "pointer" }}
+                to='https://t.me/MonetaSpaceBot'
+              style={{ cursor: "pointer" }}
+              target="_blank"
+              rel="noopener noreferrer"
               >
                 Telegram Bot
             </Link>

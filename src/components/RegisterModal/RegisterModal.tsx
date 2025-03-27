@@ -33,8 +33,10 @@ export const RegisterModal: React.FC<Props> = ({ setActiveEmailModal }) => {
           >
           <Link
             className="font-sans flex flex-row gap-2"
-              to='https://t.me/CoinBudgetAppBot'
-              style={{ cursor: "pointer" }}
+              to='https://t.me/MonetaSpaceBot'
+            style={{ cursor: "pointer" }}
+            target="_blank"
+            rel="noopener noreferrer"
             >
               <img src="./img/telegram.svg" alt="Email login" />
               Sign Up with Telegram
