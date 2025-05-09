@@ -1,4 +1,4 @@
-const BASE_URL = 'https://moneta-api.space';
+const BASE_URL = 'https://moneta.adammudrak.space';
 
 type RequestMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE' | 'PUT';
 
