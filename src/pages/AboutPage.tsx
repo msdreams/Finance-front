@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export const AboutPage = () => {
   const [isSend, setIsSend] = useState(false);
+  const [errowMessage, setErrowMessage] = useState<null | string>(null)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ export const AboutPage = () => {
 
     mailToSupport(formData)
       .then(() => setIsSend(true))
+      .catch((err) => setErrowMessage(err.message))
   };
 
   const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,7 +70,9 @@ export const AboutPage = () => {
               />
 
               <Textarea name="message" className=" max-w-lg" placeholder="Enter your message" />
-
+              {errowMessage && (
+                <div className="text-danger">{errowMessage}</div>
+              )}
               <div className="flex w-full flex-col md:flex-row gap-2 ">
                 <Button className="border-gray-300 text-gray-300" type="reset" variant="bordered">
                   Reset

@@ -37,11 +37,19 @@ export const client = {
   patch: <T>(url: string, data: any, headers?: Record<string, string>) => request<T>(url, 'PATCH', data, headers),
   deleteById: (url: string, headers: Record<string, string>) => request(url, 'DELETE', null, headers),
   delete: (url: string, data: any, headers?: Record<string, string>) => request(url, 'DELETE', data, headers),
-
 };
 
 function handleError(response: Response): Promise<never> {
+
   return response.json().then((error) => {
+    
+    if (response.status === 403) {
+      throw new Error(
+        error.message || 
+        error.errors || 
+        'Forbidden: Access denied'
+      );
+    }
     if (response.status === 409) {
       const errorMessage = error.errors || 'Conflict error occurred';
       throw new Error(errorMessage);
